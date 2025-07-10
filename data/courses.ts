@@ -10,7 +10,36 @@ export interface Course {
   likeCount: number;
   thumbnail: string;
   isLiked?: boolean;
+  url: string;
 }
+
+// TODO: 챌린지 타입 따로 정의 필
+export const challenges: Course[] = [
+  {
+    id: 1,
+    title: "랜딩페이지 챌린지",
+    instructor: "",
+    category: "웹개발",
+    price: 49500,
+    rating: 0,
+    ratingCount: 0,
+    likeCount: 0,
+    thumbnail: "/channels4_profile.jpg",
+    url: "https://www.latpeed.com/products/rR7ny?utm_source=youtube&utm_medium=video&utm_campaign=dmdwebchall",
+  },
+  {
+    id: 2,
+    title: "크롤링 마스터 챌린지",
+    instructor: "",
+    category: "웹개발",
+    price: 100000,
+    rating: 0,
+    ratingCount: 0,
+    likeCount: 0,
+    thumbnail: "/channels4_profile.jpg",
+    url: "https://www.latpeed.com/products/kU30C?utm_source=youtube&utm_medium=video&utm_campaign=dmdwebchall",
+  },
+];
 
 export const newCourses: Course[] = [
   {
@@ -22,7 +51,9 @@ export const newCourses: Course[] = [
     rating: 0,
     ratingCount: 0,
     likeCount: 2,
-    thumbnail: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=400&h=300&fit=crop",
+    thumbnail:
+      "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=400&h=300&fit=crop",
+    url: "",
   },
   {
     id: 2,
@@ -33,7 +64,9 @@ export const newCourses: Course[] = [
     rating: 0,
     ratingCount: 0,
     likeCount: 4,
-    thumbnail: "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=400&h=300&fit=crop",
+    thumbnail:
+      "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=400&h=300&fit=crop",
+    url: "",
   },
   {
     id: 3,
@@ -44,7 +77,9 @@ export const newCourses: Course[] = [
     rating: 0,
     ratingCount: 0,
     likeCount: 7,
-    thumbnail: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=300&fit=crop",
+    thumbnail:
+      "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=300&fit=crop",
+    url: "",
   },
 ];
 
@@ -58,7 +93,9 @@ export const popularCourses: Course[] = [
     rating: 0,
     ratingCount: 0,
     likeCount: 16,
-    thumbnail: "https://images.unsplash.com/photo-1560472355-536de3962603?w=400&h=300&fit=crop",
+    thumbnail:
+      "https://images.unsplash.com/photo-1560472355-536de3962603?w=400&h=300&fit=crop",
+    url: "",
   },
   {
     id: 5,
@@ -69,7 +106,9 @@ export const popularCourses: Course[] = [
     rating: 0,
     ratingCount: 0,
     likeCount: 67,
-    thumbnail: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=300&fit=crop",
+    thumbnail:
+      "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=300&fit=crop",
+    url: "",
   },
   {
     id: 6,
@@ -80,7 +119,9 @@ export const popularCourses: Course[] = [
     rating: 0,
     ratingCount: 0,
     likeCount: 38,
-    thumbnail: "https://images.unsplash.com/photo-1526379095098-d400fd0bf935?w=400&h=300&fit=crop",
+    thumbnail:
+      "https://images.unsplash.com/photo-1526379095098-d400fd0bf935?w=400&h=300&fit=crop",
+    url: "",
   },
 ];
 
@@ -94,7 +135,9 @@ export const editorChoiceCourses: Course[] = [
     rating: 0,
     ratingCount: 0,
     likeCount: 261,
-    thumbnail: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=300&fit=crop",
+    thumbnail:
+      "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=300&fit=crop",
+    url: "",
   },
   {
     id: 8,
@@ -105,7 +148,9 @@ export const editorChoiceCourses: Course[] = [
     rating: 4,
     ratingCount: 179,
     likeCount: 179,
-    thumbnail: "https://images.unsplash.com/photo-1609921212029-bb5a28e60960?w=400&h=300&fit=crop",
+    thumbnail:
+      "https://images.unsplash.com/photo-1609921212029-bb5a28e60960?w=400&h=300&fit=crop",
+    url: "",
   },
   {
     id: 9,
@@ -116,7 +161,9 @@ export const editorChoiceCourses: Course[] = [
     rating: 0,
     ratingCount: 0,
     likeCount: 131,
-    thumbnail: "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=400&h=300&fit=crop",
+    thumbnail:
+      "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=400&h=300&fit=crop",
+    url: "",
   },
 ];
 
@@ -130,7 +177,9 @@ export const hobbyCourses: Course[] = [
     rating: 4,
     ratingCount: 134,
     likeCount: 134,
-    thumbnail: "https://images.unsplash.com/photo-1545389336-cf090694435e?w=400&h=300&fit=crop",
+    thumbnail:
+      "https://images.unsplash.com/photo-1545389336-cf090694435e?w=400&h=300&fit=crop",
+    url: "",
   },
   {
     id: 11,
@@ -141,7 +190,9 @@ export const hobbyCourses: Course[] = [
     rating: 4,
     ratingCount: 226,
     likeCount: 226,
-    thumbnail: "https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=400&h=300&fit=crop",
+    thumbnail:
+      "https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=400&h=300&fit=crop",
+    url: "",
   },
   {
     id: 12,
@@ -152,7 +203,9 @@ export const hobbyCourses: Course[] = [
     rating: 0,
     ratingCount: 0,
     likeCount: 134,
-    thumbnail: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=300&fit=crop",
+    thumbnail:
+      "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=300&fit=crop",
+    url: "",
   },
 ];
 
@@ -166,7 +219,9 @@ export const certificationCourses: Course[] = [
     rating: 0,
     ratingCount: 0,
     likeCount: 170,
-    thumbnail: "https://images.unsplash.com/photo-1582095133179-bfd08e2fc6b3?w=400&h=300&fit=crop",
+    thumbnail:
+      "https://images.unsplash.com/photo-1582095133179-bfd08e2fc6b3?w=400&h=300&fit=crop",
+    url: "",
   },
   {
     id: 14,
@@ -177,7 +232,9 @@ export const certificationCourses: Course[] = [
     rating: 4,
     ratingCount: 315,
     likeCount: 315,
-    thumbnail: "https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=400&h=300&fit=crop",
+    thumbnail:
+      "https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=400&h=300&fit=crop",
+    url: "",
   },
   {
     id: 15,
@@ -188,6 +245,8 @@ export const certificationCourses: Course[] = [
     rating: 5,
     ratingCount: 241,
     likeCount: 241,
-    thumbnail: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=300&fit=crop",
+    thumbnail:
+      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=300&fit=crop",
+    url: "",
   },
 ];
