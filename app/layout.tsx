@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ClientBody from "./ClientBody";
 import Script from "next/script";
+import Footer from "@/components/Footer";
+import Header from "@/components/Header";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,8 +17,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "데모데브 - 창작별, 교재별, 고퀄리티 강의 페이지 시스템",
-  description: "스펙설부터 스킬업까지 따뜻한 프리패스토리",
+  title: "대모산 개발단 - 실전 성장형 챌린지",
+  description: "대모산 개발단과 함께하는 실전 성장형 챌린지",
+  icons: {
+    icon: "/favicon.ico?v=111",
+  },
 };
 
 export default function RootLayout({
@@ -26,13 +31,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body suppressHydrationWarning className="antialiased">
+      <body
+        suppressHydrationWarning
+        className="antialiased flex flex-col min-h-screen"
+      >
         <Script
           src="https://unpkg.com/same-runtime/dist/index.global.js"
           strategy="beforeInteractive"
           crossOrigin="anonymous"
         />
-        <ClientBody>{children}</ClientBody>
+        <Header />
+        <main className="flex-1">
+          <ClientBody>{children}</ClientBody>
+        </main>
+        <Footer />
       </body>
     </html>
   );
