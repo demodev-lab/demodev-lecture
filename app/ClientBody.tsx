@@ -10,8 +10,11 @@ export default function ClientBody({
   // Remove any extension-added classes during hydration
   useEffect(() => {
     // This runs only on the client after hydration
-    document.body.className = "antialiased";
+    const originalClasses = "antialiased flex flex-col min-h-screen";
+    if (document.body.className !== originalClasses) {
+      document.body.className = originalClasses;
+    }
   }, []);
 
-  return <div className="antialiased">{children}</div>;
+  return <>{children}</>;
 }
