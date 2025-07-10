@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
 // import { Star, Heart } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 // import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import Link from "next/link";
+import Image from 'next/image';
+import Link from 'next/link';
 
 interface CourseCardProps {
   id: number;
@@ -36,7 +36,7 @@ export default function CourseCard({
   url,
 }: CourseCardProps) {
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("ko-KR").format(price);
+    return new Intl.NumberFormat('ko-KR').format(price);
   };
 
   // const renderStars = (rating: number) => {
