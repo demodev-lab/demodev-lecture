@@ -1,6 +1,6 @@
 "use client";
 
-import { Search, Menu, User } from "lucide-react";
+import { Search, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -21,8 +21,12 @@ export default function Header() {
 
         {/* Navigation */}
         <nav className="hidden lg:flex items-center space-x-8">
-          <a href="#" className="text-gray-700 hover:text-gray-900">패키지</a>
-          <a href="#" className="text-gray-700 hover:text-gray-900">게시판</a>
+          <a href="#" className="text-gray-700 hover:text-gray-900">
+            패키지
+          </a>
+          <a href="#" className="text-gray-700 hover:text-gray-900">
+            게시판
+          </a>
         </nav>
 
         {/* Search and Actions */}
@@ -47,9 +51,7 @@ export default function Header() {
             <Button variant="outline" size="sm">
               회원가입
             </Button>
-            <Button size="sm">
-              로그인
-            </Button>
+            <Button size="sm">로그인</Button>
           </div>
 
           {/* Mobile Menu */}
