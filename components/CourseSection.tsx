@@ -2,21 +2,8 @@
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import CourseCard from "./CourseCard";
-
-interface Course {
-  id: number;
-  title: string;
-  instructor: string;
-  category: string;
-  price: number;
-  originalPrice?: number;
-  rating: number;
-  ratingCount: number;
-  likeCount: number;
-  thumbnail: string;
-  isLiked?: boolean;
-}
+import CourseCard from "@/components/CourseCard";
+import { Course } from "@/data/courses";
 
 interface CourseSectionProps {
   title: string;
@@ -27,7 +14,7 @@ interface CourseSectionProps {
 export default function CourseSection({
   title,
   courses,
-  showNavigation = true
+  showNavigation = true,
 }: CourseSectionProps) {
   return (
     <section className="px-4 py-8">
