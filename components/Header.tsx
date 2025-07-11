@@ -12,7 +12,12 @@ export default function Header() {
         {/* Logo */}
         <div className="flex items-center space-x-8">
           <div className="flex items-center space-x-2">
-            <Image src="/logo.png" alt="" width={110} height={20} />
+            <Image
+              src="/logo.png"
+              alt="대모산 개발단 로고"
+              width={165}
+              height={30}
+            />
           </div>
 
           <h1 className="text-gray-700 hidden md:block text-2xl font-bold">
