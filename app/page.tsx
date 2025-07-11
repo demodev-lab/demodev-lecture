@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <main className="container mx-auto px-4 py-8 bg-white">
       <div className="space-y-12">
-        <CourseSection title="신규 오픈 챌린지" courses={challenges} />
+        <CourseSection title="지금 진행중인 챌린지" courses={challenges} />
         {/* <CourseSection title="이번 주 인기 강좌" courses={popularCourses} />
           <CourseSection
             title="에디터 추천 강좌"
