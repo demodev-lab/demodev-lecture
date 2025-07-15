@@ -54,7 +54,11 @@ export default function Footer() {
         {/* Top Button */}
         <div className="flex justify-end mt-6">
           <button
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            onClick={() => {
+              if (typeof window !== 'undefined') {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }
+            }}
             className="bg-gray-800 text-white px-4 py-2 rounded text-sm hover:bg-gray-700 transition-colors"
           >
             TOP ↑
