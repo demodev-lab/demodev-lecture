@@ -1,26 +1,19 @@
+import HeroSection from "@/components/HeroSection";
+// import CategoryIcons from "@/components/CategoryIcons";
 import CourseSection from "@/components/CourseSection";
-import Header from "@/components/Header";
 import { challenges } from "@/data/courses";
+import StudentReviews from "@/components/StudentReviews";
+import CommunitySection from "@/components/CommunitySection";
 
 export default function Home() {
   return (
-    <>
-      <Header />
-      <main className="container mx-auto px-4 py-8 bg-white">
-        <div className="space-y-12">
-          <CourseSection title="지금 진행중인 챌린지" courses={challenges} />
-          {/* <CourseSection title="이번 주 인기 강좌" courses={popularCourses} />
-            <CourseSection
-              title="에디터 추천 강좌"
-              courses={editorChoiceCourses}
-            />
-            <CourseSection title="원포인트 취미 강좌" courses={hobbyCourses} />
-            <CourseSection
-              title="지금 뜨는 자격증 강좌"
-              courses={certificationCourses}
-            /> */}
-        </div>
-      </main>
-    </>
+    <main className="min-h-screen bg-white">
+      <HeroSection />
+      {/* <CategoryIcons /> */}
+      <CourseSection title="지금 진행중인 챌린지" data={challenges} />
+      {/* <CourseSection title="지금 가장 주목받는 강의" data={courses} /> */}
+      <StudentReviews />
+      <CommunitySection />
+    </main>
   );
 }
