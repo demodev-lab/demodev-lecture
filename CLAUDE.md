@@ -90,8 +90,6 @@ The project implements a complete authentication system:
 - **Login Flow**: `/admin` → `/admin/login` → `/admin/dashboard` (on success)
 - **Protection**: Dashboard layout automatically redirects unauthenticated users to login
 - **Logout**: UserProfileDropdown component clears authentication and redirects to login
-- **Supabase Ready**: `utils/supabase.ts` configured for future integration
-- Environment variables expected: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 
 ### Client-Side Component Patterns
 
@@ -191,3 +189,37 @@ export function Component({ props }: ComponentProps) {
 7. **UI Library**: Uses shadcn/ui components with Radix UI primitives for accessibility
 8. **Layout Separation**: Login page (clean) vs Dashboard pages (with sidebar/header) via separate layouts
 9. **Authentication Pattern**: Dashboard layout handles auth checks, individual pages don't need auth logic
+
+## 🔍 **주요 문제점들**
+
+### 1. **package-lock.json vs pnpm-lock.yaml 충돌**
+
+- 프로젝트는 `pnpm`을 사용하고 있지만 `package-lock.json`도 존재
+- `package-lock.json`에는 아직 clerk 의존성이 남아있음
+- Vercel이 어떤 패키지 매니저를 사용할지 혼란스러워할 수 있음
+
+### 2. **캐시 문제**
+
+- Vercel에 이전 빌드 캐시가 남아있을 수 있음
+
+## 🛠️ **해결 방법**
+
+### 1. package-lock.json 삭제 (중요!)
+
+```bash
+rm package-lock.json
+```
+
+### 2. pnpm 의존성 재설치
+
+```bash
+pnpm install
+```
+
+### 3. CLAUDE.md에서 supabase 환경변수 언급 제거
+
+```markdown:CLAUDE.md
+<code_block_to_apply_changes_from>
+```
+
+### 4.
