@@ -9,34 +9,41 @@ This is a Next.js 15 web application for "대모산 개발단" (Demodev Group), 
 ## Commands
 
 ### Development
+
 - `npm run dev` - Start development server on http://localhost:3000
 - `npm run build` - Create production build
 - `npm run start` - Start production server
 - `npm run lint` - Run ESLint for code quality checks
 
 ### TypeScript
+
 - No separate TypeScript check command; TypeScript errors appear during development and build
 
 ## Architecture
 
 ### App Structure
+
 The project uses Next.js 13+ App Router with the following key areas:
 
 1. **app/** - Next.js app router pages and layouts
+
    - Routes are file-system based
    - Client components require "use client" directive
    - Server components are default
 
 2. **components/** - Reusable React components
+
    - `ui/` - Base UI components using shadcn/ui with Radix UI primitives and CVA for variants
    - `admin/` - Admin-specific components (Header, Sidebar, UserProfileDropdown, LectureModal)
    - Business components like CourseCard, Header, Footer
 
 3. **data/** - Static data and type definitions
+
    - Course data structure with interfaces for type safety
    - `courses.ts` exports Course interface and static data arrays
 
 4. **lib/** - Utility functions
+
    - `utils.ts` contains `cn()` helper for className merging
 
 5. **utils/** - Additional utility functions
@@ -46,7 +53,8 @@ The project uses Next.js 13+ App Router with the following key areas:
 
 The admin system uses a comprehensive multi-layer approach with proper authentication flow:
 
-1. **Authentication Flow**: 
+1. **Authentication Flow**:
+
    - `/admin` - Redirects to login page
    - `/admin/login` - Enhanced login page with form validation and loading states
    - Uses localStorage for authentication state management
@@ -54,12 +62,14 @@ The admin system uses a comprehensive multi-layer approach with proper authentic
    - Prepared for Supabase integration
 
 2. **Layout Structure**:
+
    - `/admin/layout.tsx` - Simple passthrough layout
    - `/admin/dashboard/layout.tsx` - Protected layout with sidebar/header + authentication check
    - Login page has no sidebar/header for clean authentication experience
    - Dashboard pages automatically include sidebar/header through layout
 
 3. **Dashboard Layer**: `/admin/dashboard` - Protected admin interface
+
    - Authentication verification in dashboard layout
    - Sidebar navigation with mobile responsive design
    - Statistics cards showing platform metrics
@@ -153,8 +163,9 @@ interface Course {
 ### Component Patterns
 
 Components follow this structure:
+
 ```tsx
-"use client" // Only if client-side features needed
+"use client"; // Only if client-side features needed
 
 interface ComponentProps {
   // Typed props
@@ -166,6 +177,7 @@ export function Component({ props }: ComponentProps) {
 ```
 
 ### Path Aliases
+
 - `@/*` maps to project root for clean imports
 
 ## Important Notes

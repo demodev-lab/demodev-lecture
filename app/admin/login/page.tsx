@@ -18,7 +18,7 @@ export default function AdminLoginPage() {
     setError("");
 
     try {
-      // 임시 하드코딩된 인증 (실제 환경에서는 Supabase 또는 다른 인증 시스템 사용)
+      // 임시 하드코딩된 인증 (실제 환경에서는 다른 인증 시스템 사용)
       if (email === "admin@demodev.com" && password === "admin123") {
         // 인증 상태를 localStorage에 저장 (실제 환경에서는 JWT 토큰 등 사용)
         localStorage.setItem("admin_authenticated", "true");
