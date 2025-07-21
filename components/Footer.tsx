@@ -57,12 +57,7 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a
-                  href="https://career.weolbu.com/?utm_source=weolbu_shop&utm_medium=bottom_keyword"
-                  target="_blank"
-                  className=""
-                  rel="noreferrer"
-                >
+                <a href="" target="_blank" className="" rel="noreferrer">
                   채용
                 </a>
               </li>
@@ -71,7 +66,7 @@ const Footer = () => {
             <ul className="flex flex-grow flex-col gap-3.5">
               <li>
                 <a
-                  href="https://blog.naver.com/weolbu"
+                  href=""
                   target="_blank"
                   className="flex items-center gap-1"
                   rel="noreferrer"
@@ -92,7 +87,7 @@ const Footer = () => {
               </li>
               <li>
                 <a
-                  href="https://www.youtube.com/channel/UCDSj40X9FFUAnx1nv7gQhcA"
+                  href="https://www.youtube.com/@%EB%8C%80%EB%AA%A8%EC%82%B0%EA%B0%9C%EB%B0%9C%EB%8B%A8"
                   target="_blank"
                   className="flex items-center gap-1"
                   rel="noreferrer"
@@ -113,7 +108,7 @@ const Footer = () => {
               </li>
               <li>
                 <a
-                  href="https://docs.google.com/forms/d/e/1FAIpQLScfpPlTQVkq1HG6qqnOvc2AJEFFu1mqrS61KamxMDR57mxpsA/viewform"
+                  href=""
                   target="_blank"
                   className="flex items-center gap-1"
                   rel="noreferrer"
@@ -139,7 +134,7 @@ const Footer = () => {
             <ul className="flex flex-grow flex-col gap-3.5">
               <li>
                 <a
-                  href="https://cafe.naver.com/wecando7"
+                  href=""
                   target="_blank"
                   className="flex items-center gap-1"
                   rel="noreferrer"
@@ -160,7 +155,7 @@ const Footer = () => {
               </li>
               <li>
                 <a
-                  href="https://www.instagram.com/weolbu_official/"
+                  href=""
                   target="_blank"
                   className="flex items-center gap-1"
                   rel="noreferrer"
@@ -184,12 +179,7 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a
-                  href="https://b2b.weolbu.com"
-                  target="_blank"
-                  className=""
-                  rel="noreferrer"
-                >
+                <a href="" target="_blank" className="" rel="noreferrer">
                   비즈니스/제휴 문의
                 </a>
               </li>
