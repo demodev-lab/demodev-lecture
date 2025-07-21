@@ -5,10 +5,6 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "build.weolbu.com",
-      },
-      {
-        protocol: "https",
         hostname: "img.youtube.com",
       },
     ],
