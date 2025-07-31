@@ -12,20 +12,20 @@ import {
   Clock,
   Users,
   Globe,
-  Award,
   CheckCircle,
   PlayCircle,
   Star,
 } from "lucide-react";
 
 interface LecturePageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
-export default function LecturePage({ params }: LecturePageProps) {
-  const lectureId = parseInt(params.id);
+export default async function LecturePage({ params }: LecturePageProps) {
+  const { id } = await params;
+  const lectureId = parseInt(id);
   const lecture = lectures.find((l) => l.id === lectureId);
 
   if (!lecture) {
@@ -296,7 +296,7 @@ export default function LecturePage({ params }: LecturePageProps) {
 
                   {/* Chapters List */}
                   <div className="space-y-1">
-                    {lecture.chapters.map((chapter, index) => (
+                    {lecture.chapters.map((chapter) => (
                       <div
                         key={chapter.id}
                         className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer group"
@@ -846,7 +846,8 @@ export async function generateStaticParams() {
 
 // Generate metadata for SEO
 export async function generateMetadata({ params }: LecturePageProps) {
-  const lectureId = parseInt(params.id);
+  const { id } = await params;
+  const lectureId = parseInt(id);
   const lecture = lectures.find((l) => l.id === lectureId);
 
   if (!lecture) {
