@@ -47,9 +47,7 @@ export default function CourseSection({
             <Link
               key={data.id}
               className="bg-white rounded-xl border border-gray-200 hover:shadow-lg transition-shadow cursor-pointer group"
-              href={data.url}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={`/lecture/${data.id}`}
             >
               {/* Course Image */}
               <div className="relative aspect-video rounded-t-xl overflow-hidden">
