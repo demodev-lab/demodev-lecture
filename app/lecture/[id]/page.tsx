@@ -1,9 +1,9 @@
+import { lectures } from "./lectures";
 import {
-  lectures,
   getLevelText,
   formatPrice,
   getDiscountRate,
-} from "./lectures";
+} from "@/lib/lecture-utils";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
