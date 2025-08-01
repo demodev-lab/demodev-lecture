@@ -478,3 +478,4 @@ export interface Chapter {
     }
   ];
   
+export const curriculum = lectures;
