@@ -10,7 +10,7 @@ export default function LearningOutcomesSection({ lecture }: LearningOutcomesSec
   return (
     <>
       {/* Course Description */}
-      <Card>
+      <Card id="lecture-description">
         <CardContent className="p-6">
           <h2 className="text-2xl font-semibold text-gray-900 mb-4">
             강의 소개

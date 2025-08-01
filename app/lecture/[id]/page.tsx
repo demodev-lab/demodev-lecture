@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 // Lecture Components
 import VideoHeroSection from "@/components/lecture/VideoHeroSection";
 import BestReviewsSection from "@/components/lecture/BestReviewsSection";
+import LectureNavigation from "@/components/lecture/LectureNavigation";
 import LectureMetaInfo from "@/components/lecture/LectureMetaInfo";
 import LearningOutcomesSection from "@/components/lecture/LearningOutcomesSection";
 import CurriculumSection from "@/components/lecture/CurriculumSection";
@@ -48,6 +49,7 @@ export default async function LecturePage({ params }: LecturePageProps) {
           <div className="lg:col-span-2 space-y-6">
             <VideoHeroSection lecture={lecture} />
             <BestReviewsSection />
+            <LectureNavigation lecture={lecture} />
             <LectureMetaInfo lecture={lecture} />
             <LearningOutcomesSection lecture={lecture} />
             <CurriculumSection lecture={lecture} />

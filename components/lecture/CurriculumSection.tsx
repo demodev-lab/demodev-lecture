@@ -7,7 +7,7 @@ interface CurriculumSectionProps {
 
 export default function CurriculumSection({ lecture }: CurriculumSectionProps) {
   return (
-    <Card>
+    <Card id="curriculum">
       <CardContent className="p-6">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-semibold text-gray-900">

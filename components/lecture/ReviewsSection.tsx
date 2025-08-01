@@ -8,7 +8,7 @@ interface ReviewsSectionProps {
 
 export default function ReviewsSection({ lecture }: ReviewsSectionProps) {
   return (
-    <Card>
+    <Card id="reviews">
       <CardContent className="p-6">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-semibold text-gray-900">
