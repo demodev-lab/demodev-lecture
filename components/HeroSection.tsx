@@ -1,8 +1,9 @@
 "use client";
 
-import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import Image from "next/image";
-import { useState, useEffect, useRef, useCallback } from "react";
+import Carousel, { ArrowProps } from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
+import { useEffect, useState } from "react";
 
 interface HeroSlide {
   id: number;
@@ -45,121 +46,130 @@ const slides: HeroSlide[] = [
   },
 ];
 
+// CarouselItem 컴포넌트의 props 타입 정의
+interface CarouselItemProps extends React.HTMLAttributes<HTMLDivElement> {
+  carouselState?: unknown;
+  rtl?: boolean;
+}
+
+// Custom Arrow Components to filter out unwanted props
+const CustomLeftArrow = ({ onClick, ...rest }: ArrowProps) => {
+  // carouselState와 rtl을 제거하고 나머지 props만 사용
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
+  const { carouselState, rtl, ...arrowProps } = rest as any;
+  return (
+    <button 
+      {...arrowProps}
+      onClick={onClick}
+      className="absolute left-2 sm:left-4 lg:left-6 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-20 bg-black/40 hover:bg-black/60 text-white rounded-lg transition-all duration-300 flex items-center justify-center group"
+    >
+      <svg className="w-5 h-5 sm:w-6 sm:h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+      </svg>
+    </button>
+  );
+};
+
+const CustomRightArrow = ({ onClick, ...rest }: ArrowProps) => {
+  // carouselState와 rtl을 제거하고 나머지 props만 사용
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
+  const { carouselState, rtl, ...arrowProps } = rest as any;
+  return (
+    <button 
+      {...arrowProps}
+      onClick={onClick}
+      className="absolute right-2 sm:right-4 lg:right-6 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-20 bg-black/40 hover:bg-black/60 text-white rounded-lg transition-all duration-300 flex items-center justify-center group"
+    >
+      <svg className="w-5 h-5 sm:w-6 sm:h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+      </svg>
+    </button>
+  );
+};
+
+// CarouselItem wrapper to filter out unwanted props
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const CarouselItem = ({ carouselState, rtl, ...props }: CarouselItemProps) => (
+  <div {...props} />
+);
+
 export default function HeroSection() {
-  const [currentSlide, setCurrentSlide] = useState(1);
-  const [isTransitionEnabled, setIsTransitionEnabled] = useState(true);
-  const [isPlaying, setIsPlaying] = useState(true);
-  const carouselRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
 
-  const extendedSlides = [slides[slides.length - 1], ...slides, slides[0]];
-
-  const nextSlide = useCallback(() => {
-    setCurrentSlide((prev) => prev + 1);
+  useEffect(() => {
+    setMounted(true);
   }, []);
 
-  // 자동 슬라이드 (개선: 수동 조작 시 타이머 초기화)
-  useEffect(() => {
-    if (isPlaying) {
-      const timer = setTimeout(nextSlide, 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [currentSlide, isPlaying, nextSlide]);
-
-  // '무한' 루프를 위한 트랜지션 및 슬라이드 인덱스 조정 로직
-  const handleTransitionEnd = (e: React.TransitionEvent) => {
-    if (e.propertyName !== "transform") return;
-
-    if (currentSlide === slides.length + 1) {
-      setIsTransitionEnabled(false); // 트랜지션 비활성화
-      setCurrentSlide(1); // 첫 번째 슬라이드로 점프
-    } else if (currentSlide === 0) {
-      setIsTransitionEnabled(false); // 트랜지션 비활성화
-      setCurrentSlide(slides.length); // 마지막 슬라이드로 점프
-    }
+  // 모든 브레이크포인트에서 동일한 설정을 사용하므로 간소화
+  const responsive = {
+    all: {
+      breakpoint: { max: 3000, min: 0 },
+      items: 1,
+      slidesToSlide: 1,
+    },
   };
 
-  // 점프 후 트랜지션을 다시 활성화하는 useEffect
-  useEffect(() => {
-    if (!isTransitionEnabled) {
-      // DOM이 업데이트되고(transform 적용) 난 후에 트랜지션을 다시 켜야 합니다.
-      // setTimeout을 사용해 다음 이벤트 루프에서 실행하도록 합니다.
-      const timer = setTimeout(() => {
-        setIsTransitionEnabled(true);
-      }, 50); // 짧은 지연
-      return () => clearTimeout(timer);
-    }
-  }, [isTransitionEnabled]);
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) => prev - 1);
-  };
-
-  const togglePlay = () => {
-    setIsPlaying(!isPlaying);
-  };
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <section className="relative">
       {/* Main Hero Carousel */}
-      <div className="relative h-[340px] overflow-hidden">
-        <div className="flex justify-center items-center h-full">
-          {/* 무한 순환 캐러셀 */}
-          <div
-            ref={carouselRef}
-            className="flex items-center gap-4"
-            style={{
-              transform: `translateX(calc(50% - 392px - ${
-                currentSlide * 784
-              }px))`,
-              width: `${extendedSlides.length * 784}px`,
-              transition: isTransitionEnabled
-                ? "transform 700ms ease-in-out"
-                : "none",
-            }}
-            onTransitionEnd={handleTransitionEnd}
+      <div className="relative h-[240px] sm:h-[280px] md:h-[320px] lg:h-[340px] overflow-hidden">
+        <div className="mx-auto px-4 sm:px-6 lg:px-8">
+          <Carousel
+            responsive={responsive}
+            infinite={true}
+            autoPlay={true}
+            autoPlaySpeed={4000}
+            keyBoardControl={true}
+            centerMode={true}
+            containerClass="py-6 sm:py-8"
+            itemClass="px-1 sm:px-2 carousel-item-padding"
+            arrows={true}
+            showDots={true}
+            swipeable={true}
+            draggable={true}
+            focusOnSelect={true}
+            customLeftArrow={<CustomLeftArrow />}
+            customRightArrow={<CustomRightArrow />}
+            dotListClass="!bottom-2 sm:!bottom-4"
           >
-            {/* 확장된 배열을 렌더링에 사용 */}
-            {extendedSlides.map((slide, index) => {
-              const isActive = index === currentSlide;
-
-              return (
+            {slides.map((slide) => (
+              <CarouselItem key={slide.id} className="px-1">
                 <div
-                  key={`slide-${index}-${slide.id}`}
                   role="group"
                   aria-roledescription="slide"
-                  className={`relative overflow-hidden rounded-lg transition-opacity duration-700 ease-in-out w-[760px] h-[280px] flex-shrink-0 ${
-                    isActive ? "opacity-100" : "opacity-60"
-                  }`}
+                  className="relative overflow-hidden rounded-lg h-[200px] sm:h-[240px] md:h-[280px] lg:h-[280px] carousel-slide"
                 >
-                  <a href={slide.href} className="block h-full w-full">
-                    {/* Background */}
-                    <div
-                      className="relative top-0 left-0 h-full w-full"
-                      style={{ backgroundColor: slide.backgroundColor }}
-                    />
+                    <a href={slide.href} className="block h-full w-full">
+                      {/* Background */}
+                      <div
+                        className="relative top-0 left-0 h-full w-full"
+                        style={{ backgroundColor: slide.backgroundColor }}
+                      />
 
-                    {/* Image Container */}
-                    <div className="absolute top-0 left-0 mx-auto my-0 flex h-full w-full justify-end p-0">
-                      <div className="relative h-full w-full">
-                        <Image
-                          src={slide.image}
-                          alt="banner"
-                          width={760}
-                          height={280}
-                          className="inline-block h-full w-full object-cover"
-                          priority={isActive}
-                        />
-                      </div>
+                      {/* Image Container */}
+                      <div className="absolute top-0 left-0 mx-auto my-0 flex h-full w-full justify-end p-0">
+                        <div className="relative h-full w-full">
+                          <Image
+                            src={slide.image}
+                            alt="banner"
+                            fill
+                            className="object-cover"
+                            priority
+                          />
+                        </div>
 
-                      {/* Content - 활성 슬라이드에만 표시 */}
-                      {isActive && (
-                        <div className="absolute bottom-[40px] left-[40px] z-[1] w-[calc(100%-80px)] transition-all duration-300 ease-in-out">
+                        {/* Content */}
+                        <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 md:bottom-8 md:left-8 lg:bottom-10 lg:left-10 z-[1] w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] md:w-[calc(100%-4rem)] lg:w-[calc(100%-5rem)]">
                           {slide.badge && (
-                            <div className="mb-2 text-sm font-normal break-keep text-white">
+                            <div className="mb-1 sm:mb-2 text-xs sm:text-sm font-normal break-keep text-white">
                               {slide.badge}
                             </div>
                           )}
-                          <div className="mb-2 text-[24px]/[30px] font-bold break-keep text-white">
+                          <div className="mb-1 sm:mb-2 text-lg sm:text-xl md:text-2xl lg:text-[24px]/[30px] font-bold break-keep text-white">
                             {slide.title.split("\n").map((line, i) => (
                               <span key={i}>
                                 {line}
@@ -169,53 +179,24 @@ export default function HeroSection() {
                               </span>
                             ))}
                           </div>
-                          <div className="text-sm/[18px] font-normal break-keep text-white">
+                          <div className="text-xs sm:text-sm md:text-base font-normal break-keep text-white">
                             {slide.subtitle}
                           </div>
                         </div>
-                      )}
-                    </div>
-                  </a>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Navigation Controls */}
-        <div className="absolute bottom-10 justify-center w-full flex items-center space-x-2">
-          <button
-            onClick={togglePlay}
-            className="p-2 bg-white/20 rounded-full text-white hover:bg-white/30 transition-colors"
-          >
-            {isPlaying ? (
-              <Pause className="w-4 h-4" />
-            ) : (
-              <Play className="w-4 h-4" />
-            )}
-          </button>
-          <button
-            onClick={prevSlide}
-            className="p-2 bg-white/20 rounded-full text-white hover:bg-white/30 transition-colors"
-          >
-            <ChevronLeft className="w-4 h-4" />
-          </button>
-          <span className="text-white text-sm">
-            {currentSlide === 0
-              ? slides.length
-              : currentSlide === slides.length + 1
-              ? 1
-              : currentSlide}
-            /{slides.length}
-          </span>
-          <button
-            onClick={nextSlide}
-            className="p-2 bg-white/20 rounded-full text-white hover:bg-white/30 transition-colors"
-          >
-            <ChevronRight className="w-4 h-4" />
-          </button>
+                      </div>
+                    </a>
+                  </div>
+                </CarouselItem>
+            ))}
+          </Carousel>
         </div>
       </div>
     </section>
   );
 }
+
+/* 
+  Note: Additional carousel styling is handled through a CSS module or Tailwind's @layer directive
+  to avoid global style pollution. The react-multi-carousel library requires some CSS overrides
+  that can't be achieved with utility classes alone.
+*/

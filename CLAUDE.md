@@ -10,10 +10,18 @@ This is a Next.js 15 web application for "대모산 개발단" (Demodev Group), 
 
 ### Development
 
-- `npm run dev` - Start development server on http://localhost:3000
-- `npm run build` - Create production build
-- `npm run start` - Start production server
-- `npm run lint` - Run ESLint for code quality checks
+**IMPORTANT**: This project uses `pnpm` as the package manager. Do not use `npm` commands.
+
+- `pnpm dev` - Start development server on http://localhost:3000
+- `pnpm build` - Create production build
+- `pnpm start` - Start production server
+- `pnpm lint` - Run ESLint for code quality checks
+
+### Package Management
+
+- `pnpm install` - Install dependencies
+- `pnpm add <package>` - Add a new dependency
+- `pnpm remove <package>` - Remove a dependency
 
 ### TypeScript
 
@@ -30,24 +38,29 @@ The project uses Next.js 13+ App Router with the following key areas:
    - Routes are file-system based
    - Client components require "use client" directive
    - Server components are default
+   - `/curriculum` - Course listing page with sidebar navigation
 
 2. **components/** - Reusable React components
 
    - `ui/` - Base UI components using shadcn/ui with Radix UI primitives and CVA for variants
    - `admin/` - Admin-specific components (Header, Sidebar, UserProfileDropdown, LectureModal)
-   - Business components like CourseCard, Header, Footer
+   - `curriculum/` - Components for the course listing page (LecturesHero, LecturesGrid, LecturesSidebar, LectureCard)
+   - Business components like CourseCard, Header, Footer, HeroSection (now using react-multi-carousel)
+   - ConsoleEasterEgg - Developer console easter egg component
 
 3. **data/** - Static data and type definitions
 
    - Course data structure with interfaces for type safety
    - `courses.ts` exports Course interface and static data arrays
+   - `challenges.ts` contains challenge-related data
 
 4. **lib/** - Utility functions
 
    - `utils.ts` contains `cn()` helper for className merging
+   - `lecture-utils.ts` contains lecture-related utilities
 
 5. **utils/** - Additional utility functions
-   - `supabase.ts` - Supabase client configuration (requires environment variables)
+   - `console-easter-egg.ts` - Console easter egg implementation showing DEMODEV ASCII art
 
 ### Admin System Architecture
 
@@ -127,6 +140,22 @@ The project uses shadcn/ui components built on Radix UI primitives:
 - **Dark Mode**: Configured via Tailwind's class-based dark mode
 - **Icons**: Lucide React icons throughout the application
 
+### Carousel Implementation
+
+The project uses `react-multi-carousel` for carousel functionality:
+
+- **HeroSection**: Main homepage carousel with responsive breakpoints
+- Replaced `react-slick` with `react-multi-carousel` for better performance and React 19 compatibility
+- Features center mode, autoplay, and responsive design
+
+### Developer Experience Features
+
+**Console Easter Egg**: When opening developer tools, users see:
+- DEMODEV ASCII art in purple theme
+- Welcome message and company information
+- Hidden commands: `demodev.team()`, `demodev.courses()`, `demodev.secret()`
+- Implemented via ConsoleEasterEgg component in the root layout
+
 ### Data Structure
 
 Core data model centered around Course interface:
@@ -157,6 +186,7 @@ interface Course {
 5. **Routing**: File-based routing with Next.js App Router
 6. **Authentication**: Prepared for Supabase, currently using placeholder implementation
 7. **Admin Interface**: Comprehensive admin system with reusable components
+8. **Carousel**: react-multi-carousel for better performance and compatibility
 
 ### Component Patterns
 
@@ -180,46 +210,15 @@ export function Component({ props }: ComponentProps) {
 
 ## Important Notes
 
-1. **No Testing Framework**: Currently no tests or testing setup
-2. **Admin Authentication**: Complete authentication system with localStorage, ready for Supabase upgrade
-3. **External Integration**: Courses link to external platform (latpeed.com)
-4. **Korean Language**: Content is primarily in Korean - ensure proper UTF-8 encoding when editing files
-5. **Development State**: Admin system is fully functional with complete authentication flow
-6. **Hydration**: Client components use mounted state pattern to prevent hydration mismatches
-7. **UI Library**: Uses shadcn/ui components with Radix UI primitives for accessibility
-8. **Layout Separation**: Login page (clean) vs Dashboard pages (with sidebar/header) via separate layouts
-9. **Authentication Pattern**: Dashboard layout handles auth checks, individual pages don't need auth logic
-
-## 🔍 **주요 문제점들**
-
-### 1. **package-lock.json vs pnpm-lock.yaml 충돌**
-
-- 프로젝트는 `pnpm`을 사용하고 있지만 `package-lock.json`도 존재
-- `package-lock.json`에는 아직 clerk 의존성이 남아있음
-- Vercel이 어떤 패키지 매니저를 사용할지 혼란스러워할 수 있음
-
-### 2. **캐시 문제**
-
-- Vercel에 이전 빌드 캐시가 남아있을 수 있음
-
-## 🛠️ **해결 방법**
-
-### 1. package-lock.json 삭제 (중요!)
-
-```bash
-rm package-lock.json
-```
-
-### 2. pnpm 의존성 재설치
-
-```bash
-pnpm install
-```
-
-### 3. CLAUDE.md에서 supabase 환경변수 언급 제거
-
-```markdown:CLAUDE.md
-<code_block_to_apply_changes_from>
-```
-
-### 4.
+1. **Package Manager**: Uses `pnpm` - remove `package-lock.json` if present to avoid conflicts
+2. **No Testing Framework**: Currently no tests or testing setup
+3. **Admin Authentication**: Complete authentication system with localStorage, ready for Supabase upgrade
+4. **External Integration**: Courses link to external platform (latpeed.com)
+5. **Korean Language**: Content is primarily in Korean - ensure proper UTF-8 encoding when editing files
+6. **Development State**: Admin system is fully functional with complete authentication flow
+7. **Hydration**: Client components use mounted state pattern to prevent hydration mismatches
+8. **UI Library**: Uses shadcn/ui components with Radix UI primitives for accessibility
+9. **Layout Separation**: Login page (clean) vs Dashboard pages (with sidebar/header) via separate layouts
+10. **Authentication Pattern**: Dashboard layout handles auth checks, individual pages don't need auth logic
+11. **Carousel Library**: Uses react-multi-carousel instead of react-slick for React 19 compatibility
+12. **Developer Tools**: Console easter egg shows DEMODEV branding when developer tools are opened

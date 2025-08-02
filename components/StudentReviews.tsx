@@ -30,11 +30,11 @@ const reviews = [
 export default function StudentReviews() {
   return (
     <div className="w-full overflow-hidden bg-[#f1f2f4]">
-      <div className="mx-auto my-0 flex justify-between w-[1200px] px-2.5 py-10">
+      <div className="mx-auto my-0 flex flex-col sm:flex-row justify-between max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-10 gap-6 sm:gap-8">
         {/* Left Section - Title and Description */}
-        <div className="w-[283px] min-w-[283px]">
-          <div className="font-bold text-[#1c2a4b] text-2xl/8">수강생 후기</div>
-          <div className="mt-2 text-base/[22px] font-normal text-[#1c2a4b]">
+        <div className="w-full sm:w-auto sm:min-w-[200px] lg:min-w-[283px]">
+          <div className="font-bold text-[#1c2a4b] text-xl sm:text-2xl leading-8">수강생 후기</div>
+          <div className="mt-2 text-sm sm:text-base leading-5 sm:leading-[22px] font-normal text-[#1c2a4b]">
             나도 할 수 있을까 고민이 된다면
             <br />
             수강생들의 성공 경험을 들어보세요.
@@ -43,13 +43,13 @@ export default function StudentReviews() {
 
         {/* Right Section - Review Cards */}
         <div
-          className="relative max-w-[883px]"
+          className="relative w-full sm:max-w-[calc(100%-240px)] lg:max-w-[883px]"
           role="region"
           aria-roledescription="carousel"
         >
           <div className="overflow-hidden">
             <div
-              className="flex relative -ml-4"
+              className="flex relative -ml-2 sm:-ml-4"
               style={{ transform: "translate3d(0px, 0px, 0px)" }}
             >
               {reviews.map((review) => (
@@ -57,16 +57,16 @@ export default function StudentReviews() {
                   key={review.id}
                   role="group"
                   aria-roledescription="slide"
-                  className="min-w-0 shrink-0 grow-0 basis-1/3 pl-4"
+                  className="min-w-0 shrink-0 grow-0 basis-full sm:basis-1/2 lg:basis-1/3 pl-2 sm:pl-4"
                 >
-                  <div className="bg-white rounded-lg p-6 shadow-sm h-full flex flex-col">
-                    <h3 className="font-bold text-[#1c2a4b] text-lg mb-3">
+                  <div className="bg-white rounded-lg p-4 sm:p-5 lg:p-6 shadow-sm h-full flex flex-col">
+                    <h3 className="font-bold text-[#1c2a4b] text-base sm:text-lg mb-2 sm:mb-3">
                       {review.title}
                     </h3>
-                    <p className="text-[#666] text-sm leading-relaxed mb-4 line-clamp-4 flex-1">
+                    <p className="text-[#666] text-xs sm:text-sm leading-relaxed mb-3 sm:mb-4 line-clamp-3 sm:line-clamp-4 flex-1">
                       {review.content}
                     </p>
-                    <div className="flex items-center justify-between text-sm mt-auto pb-2">
+                    <div className="flex items-center justify-between text-xs sm:text-sm mt-auto pb-1 sm:pb-2">
                       <span className="font-medium text-[#1c2a4b]">
                         {review.name}
                       </span>

@@ -30,19 +30,19 @@ export default function CourseSection({
   className = "",
 }: CourseSectionProps) {
   return (
-    <section className={`py-12 bg-white ${className}`}>
-      <div className="max-w-7xl mx-auto px-4">
+    <section className={`py-8 sm:py-10 md:py-12 bg-white ${className}`}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="flex items-center justify-between mb-8">
-          <h2 className="text-2xl font-bold text-gray-900">{title}</h2>
+        <div className="flex items-center justify-between mb-6 sm:mb-8">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900">{title}</h2>
           <button className="flex items-center text-blue-600 hover:text-blue-700 font-medium">
             더보기
-            <ChevronRight className="w-4 h-4 ml-1" />
+            <ChevronRight className="w-4 h-4 ml-0.5 sm:ml-1" />
           </button>
         </div>
 
         {/* Course Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6">
           {data.map((data) => (
             <Link
               key={data.id}
@@ -59,9 +59,9 @@ export default function CourseSection({
                 />
 
                 {/* Badge */}
-                <div className="absolute top-3 left-3">
+                <div className="absolute top-2 left-2 sm:top-3 sm:left-3">
                   <span
-                    className={`px-2 py-1 text-xs font-medium rounded ${
+                    className={`px-1.5 py-0.5 sm:px-2 sm:py-1 text-[10px] sm:text-xs font-medium rounded ${
                       data.badge === "BEST"
                         ? "bg-red-500 text-white"
                         : data.badge === "NEW"
@@ -77,45 +77,45 @@ export default function CourseSection({
 
                 {/* Favorite Icon - button을 div로 변경 */}
                 <div
-                  className="absolute top-3 right-3 p-1.5 bg-white/80 rounded-full hover:bg-white transition-colors cursor-pointer"
+                  className="absolute top-2 right-2 sm:top-3 sm:right-3 p-1 sm:p-1.5 bg-white/80 rounded-full hover:bg-white transition-colors cursor-pointer"
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
                     // 좋아요 기능 구현
                   }}
                 >
-                  <Heart className="w-4 h-4 text-gray-600" />
+                  <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-600" />
                 </div>
               </div>
 
               {/* Course Info */}
-              <div className="p-4">
-                <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 leading-tight">
+              <div className="p-3 sm:p-4">
+                <h3 className="font-semibold text-sm sm:text-base text-gray-900 mb-1.5 sm:mb-2 line-clamp-2 leading-tight">
                   {data.title}
                 </h3>
 
                 {/* Description */}
                 {data.description && (
-                  <p className="text-sm text-gray-600 mb-3 line-clamp-2 leading-relaxed">
+                  <p className="text-xs sm:text-sm text-gray-600 mb-2 sm:mb-3 line-clamp-2 leading-relaxed">
                     {data.description}
                   </p>
                 )}
 
                 {/* Rating */}
                 {data.rating && (
-                  <div className="flex items-center mb-2">
-                    <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                    <span className="text-sm font-medium text-gray-900 ml-1">
+                  <div className="flex items-center mb-1.5 sm:mb-2">
+                    <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-yellow-400 fill-current" />
+                    <span className="text-xs sm:text-sm font-medium text-gray-900 ml-0.5 sm:ml-1">
                       {data.rating}
                     </span>
-                    <span className="text-sm text-gray-500 ml-1">
+                    <span className="text-xs sm:text-sm text-gray-500 ml-0.5 sm:ml-1">
                       ({data.reviews?.toLocaleString()})
                     </span>
                   </div>
                 )}
 
                 {/* Category */}
-                <div className="text-sm text-gray-500 mb-3">
+                <div className="text-xs sm:text-sm text-gray-500">
                   {data.category}
                 </div>
               </div>

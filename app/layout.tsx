@@ -4,6 +4,7 @@ import "./globals.css";
 import ClientBody from "./ClientBody";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
+import ConsoleEasterEgg from "@/components/ConsoleEasterEgg";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,6 +40,7 @@ export default function RootLayout({
           <ClientBody>{children}</ClientBody>
         </main>
         <Footer />
+        <ConsoleEasterEgg />
       </body>
     </html>
   );
