@@ -2,11 +2,11 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <div className="relative z-10 bg-black py-10 text-[#eeeeee]">
-      <div className="mx-auto flex max-w-[1200px] flex-col gap-3.5 px-2.5">
-        <div className="flex w-full justify-between text-sm font-normal">
-          <div className="flex flex-grow leading-[22px]">
-            <ul className="flex flex-grow flex-col gap-3.5">
+    <div className="relative z-10 bg-black py-8 sm:py-10 text-[#eeeeee]">
+      <div className="mx-auto flex max-w-7xl flex-col gap-3 sm:gap-3.5 px-4 sm:px-6 lg:px-8">
+        <div className="flex w-full flex-col sm:flex-row justify-between text-xs sm:text-sm font-normal gap-8 sm:gap-4">
+          <div className="grid grid-cols-2 sm:flex sm:flex-grow gap-6 sm:gap-8 lg:gap-12 leading-5 sm:leading-[22px]">
+            <ul className="flex flex-col gap-3 sm:gap-3.5">
               <li>
                 <a
                   data-testid="wb-link-next-link"
@@ -37,7 +37,7 @@ const Footer = () => {
               </li>
             </ul>
 
-            <ul className="flex flex-grow flex-col gap-3.5">
+            <ul className="flex flex-col gap-3 sm:gap-3.5">
               <li>
                 <a
                   data-testid="wb-link-next-link"
@@ -63,7 +63,7 @@ const Footer = () => {
               </li>
             </ul>
 
-            <ul className="flex flex-grow flex-col gap-3.5">
+            <ul className="flex flex-col gap-3 sm:gap-3.5">
               <li>
                 <a
                   href=""
@@ -131,7 +131,7 @@ const Footer = () => {
               </li>
             </ul>
 
-            <ul className="flex flex-grow flex-col gap-3.5">
+            <ul className="flex flex-col gap-3 sm:gap-3.5">
               <li>
                 <a
                   href=""
@@ -186,21 +186,21 @@ const Footer = () => {
             </ul>
           </div>
 
-          <div className="flex flex-shrink-0 flex-col gap-3.5">
-            <button className="h-[42px] w-full rounded-lg border border-[#222] bg-[#222] px-3 text-sm font-semibold text-[#fff]">
+          <div className="flex flex-shrink-0 flex-col gap-3 sm:gap-3.5 w-full sm:w-auto">
+            <button className="h-10 sm:h-[42px] w-full sm:w-48 rounded-lg border border-[#222] bg-[#222] px-3 text-xs sm:text-sm font-semibold text-[#fff]">
               문의하기
             </button>
-            <div className="flex items-center justify-center gap-2 text-xs text-[#666]">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-[10px] sm:text-xs text-[#666]">
               <div className="text-[#eee]">평일 10:00 - 18:00</div>
-              <div>점심시간 12 - 13시</div>
-              <hr className="inline-block h-3 w-[1px] border-none bg-[#666]" />
+              <div className="hidden sm:block">점심시간 12 - 13시</div>
+              <hr className="hidden sm:inline-block h-3 w-[1px] border-none bg-[#666]" />
               <div>주말 및 공휴일 제외</div>
             </div>
           </div>
         </div>
 
-        <div className="mt-16 flex flex-col border-t border-[#222] pt-4 text-xs text-[#666]">
-          <div className="flex items-center gap-2">
+        <div className="mt-12 sm:mt-16 flex flex-col border-t border-[#222] pt-3 sm:pt-4 text-[10px] sm:text-xs text-[#666]">
+          <div className="flex items-center gap-1 sm:gap-2">
             <div>대모산 개발단</div>
           </div>
         </div>
