@@ -1,4 +1,3 @@
-// 목업 데이터 추후 삭제 필요
 export interface Chapter {
   id: number;
   title: string;
@@ -490,3 +489,5 @@ export const lectures: Lecture[] = [
     supportedDevices: ["PC", "모바일", "태블릿"],
   },
 ];
+
+export const curriculum = lectures;
