@@ -1,8 +1,9 @@
 "use client";
 
-import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import Image from "next/image";
-import { useState, useEffect, useRef, useCallback } from "react";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
+import { useEffect, useState } from "react";
 
 interface HeroSlide {
   id: number;
@@ -46,90 +47,61 @@ const slides: HeroSlide[] = [
 ];
 
 export default function HeroSection() {
-  const [currentSlide, setCurrentSlide] = useState(1);
-  const [isTransitionEnabled, setIsTransitionEnabled] = useState(true);
-  const [isPlaying, setIsPlaying] = useState(true);
-  const carouselRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
 
-  const extendedSlides = [slides[slides.length - 1], ...slides, slides[0]];
-
-  const nextSlide = useCallback(() => {
-    setCurrentSlide((prev) => prev + 1);
+  useEffect(() => {
+    setMounted(true);
   }, []);
 
-  // 자동 슬라이드 (개선: 수동 조작 시 타이머 초기화)
-  useEffect(() => {
-    if (isPlaying) {
-      const timer = setTimeout(nextSlide, 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [currentSlide, isPlaying, nextSlide]);
-
-  // '무한' 루프를 위한 트랜지션 및 슬라이드 인덱스 조정 로직
-  const handleTransitionEnd = (e: React.TransitionEvent) => {
-    if (e.propertyName !== "transform") return;
-
-    if (currentSlide === slides.length + 1) {
-      setIsTransitionEnabled(false); // 트랜지션 비활성화
-      setCurrentSlide(1); // 첫 번째 슬라이드로 점프
-    } else if (currentSlide === 0) {
-      setIsTransitionEnabled(false); // 트랜지션 비활성화
-      setCurrentSlide(slides.length); // 마지막 슬라이드로 점프
-    }
+  const responsive = {
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 1,
+      slidesToSlide: 1,
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 1,
+      slidesToSlide: 1,
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 1,
+      slidesToSlide: 1,
+    },
   };
 
-  // 점프 후 트랜지션을 다시 활성화하는 useEffect
-  useEffect(() => {
-    if (!isTransitionEnabled) {
-      // DOM이 업데이트되고(transform 적용) 난 후에 트랜지션을 다시 켜야 합니다.
-      // setTimeout을 사용해 다음 이벤트 루프에서 실행하도록 합니다.
-      const timer = setTimeout(() => {
-        setIsTransitionEnabled(true);
-      }, 50); // 짧은 지연
-      return () => clearTimeout(timer);
-    }
-  }, [isTransitionEnabled]);
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) => prev - 1);
-  };
-
-  const togglePlay = () => {
-    setIsPlaying(!isPlaying);
-  };
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <section className="relative">
       {/* Main Hero Carousel */}
-      <div className="relative h-[340px] overflow-hidden">
-        <div className="flex justify-center items-center h-full">
-          {/* 무한 순환 캐러셀 */}
-          <div
-            ref={carouselRef}
-            className="flex items-center gap-4"
-            style={{
-              transform: `translateX(calc(50% - 392px - ${
-                currentSlide * 784
-              }px))`,
-              width: `${extendedSlides.length * 784}px`,
-              transition: isTransitionEnabled
-                ? "transform 700ms ease-in-out"
-                : "none",
-            }}
-            onTransitionEnd={handleTransitionEnd}
+      <div className="relative h-[240px] sm:h-[280px] md:h-[320px] lg:h-[340px] overflow-hidden">
+        <div className="hero-carousel-wrapper">
+          <Carousel
+            responsive={responsive}
+            infinite={true}
+            autoPlay={true}
+            autoPlaySpeed={3000}
+            keyBoardControl={true}
+            centerMode={true}
+            containerClass="carousel-container"
+            itemClass="carousel-item"
+            dotListClass="custom-dot-list-style"
+            arrows={true}
+            showDots={true}
+            swipeable={true}
+            draggable={false}
+            focusOnSelect={false}
           >
-            {/* 확장된 배열을 렌더링에 사용 */}
-            {extendedSlides.map((slide, index) => {
-              const isActive = index === currentSlide;
-
-              return (
+            {slides.map((slide) => (
+              <div key={slide.id} className="carousel-slide px-1">
                 <div
-                  key={`slide-${index}-${slide.id}`}
                   role="group"
                   aria-roledescription="slide"
-                  className={`relative overflow-hidden rounded-lg transition-opacity duration-700 ease-in-out w-[760px] h-[280px] flex-shrink-0 ${
-                    isActive ? "opacity-100" : "opacity-60"
-                  }`}
+                  className="relative overflow-hidden rounded-lg h-[200px] sm:h-[240px] md:h-[280px] lg:h-[280px]"
                 >
                   <a href={slide.href} className="block h-full w-full">
                     {/* Background */}
@@ -144,78 +116,133 @@ export default function HeroSection() {
                         <Image
                           src={slide.image}
                           alt="banner"
-                          width={760}
-                          height={280}
-                          className="inline-block h-full w-full object-cover"
-                          priority={isActive}
+                          fill
+                          className="object-cover scale-[1]"
+                          priority
                         />
                       </div>
 
-                      {/* Content - 활성 슬라이드에만 표시 */}
-                      {isActive && (
-                        <div className="absolute bottom-[40px] left-[40px] z-[1] w-[calc(100%-80px)] transition-all duration-300 ease-in-out">
-                          {slide.badge && (
-                            <div className="mb-2 text-sm font-normal break-keep text-white">
-                              {slide.badge}
-                            </div>
-                          )}
-                          <div className="mb-2 text-[24px]/[30px] font-bold break-keep text-white">
-                            {slide.title.split("\n").map((line, i) => (
-                              <span key={i}>
-                                {line}
-                                {i < slide.title.split("\n").length - 1 && (
-                                  <br />
-                                )}
-                              </span>
-                            ))}
+                      {/* Content */}
+                      <div className="absolute bottom-[20px] left-[20px] sm:bottom-[30px] sm:left-[30px] md:bottom-[40px] md:left-[40px] z-[1] w-[calc(100%-40px)] sm:w-[calc(100%-60px)] md:w-[calc(100%-80px)]">
+                        {slide.badge && (
+                          <div className="mb-2 text-sm font-normal break-keep text-white">
+                            {slide.badge}
                           </div>
-                          <div className="text-sm/[18px] font-normal break-keep text-white">
-                            {slide.subtitle}
-                          </div>
+                        )}
+                        <div className="mb-2 text-[18px]/[24px] sm:text-[20px]/[26px] md:text-[24px]/[30px] font-bold break-keep text-white">
+                          {slide.title.split("\n").map((line, i) => (
+                            <span key={i}>
+                              {line}
+                              {i < slide.title.split("\n").length - 1 && (
+                                <br />
+                              )}
+                            </span>
+                          ))}
                         </div>
-                      )}
+                        <div className="text-xs/[16px] sm:text-sm/[18px] font-normal break-keep text-white">
+                          {slide.subtitle}
+                        </div>
+                      </div>
                     </div>
                   </a>
                 </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Navigation Controls */}
-        <div className="absolute bottom-10 justify-center w-full flex items-center space-x-2">
-          <button
-            onClick={togglePlay}
-            className="p-2 bg-white/20 rounded-full text-white hover:bg-white/30 transition-colors"
-          >
-            {isPlaying ? (
-              <Pause className="w-4 h-4" />
-            ) : (
-              <Play className="w-4 h-4" />
-            )}
-          </button>
-          <button
-            onClick={prevSlide}
-            className="p-2 bg-white/20 rounded-full text-white hover:bg-white/30 transition-colors"
-          >
-            <ChevronLeft className="w-4 h-4" />
-          </button>
-          <span className="text-white text-sm">
-            {currentSlide === 0
-              ? slides.length
-              : currentSlide === slides.length + 1
-              ? 1
-              : currentSlide}
-            /{slides.length}
-          </span>
-          <button
-            onClick={nextSlide}
-            className="p-2 bg-white/20 rounded-full text-white hover:bg-white/30 transition-colors"
-          >
-            <ChevronRight className="w-4 h-4" />
-          </button>
+              </div>
+            ))}
+          </Carousel>
         </div>
       </div>
+
+      <style jsx global>{`
+        /* React Multi Carousel Custom Styles */
+        .hero-carousel-wrapper {
+          margin: 0 auto;
+          padding: 0 20px;
+        }
+        
+        .hero-carousel-wrapper .carousel-container {
+          padding: 30px 0;
+        }
+        
+        .hero-carousel-wrapper .carousel-item {
+          opacity: 0.4;
+          transition: all 0.3s ease;
+          transform: scale(0.85);
+        }
+        
+        .hero-carousel-wrapper .react-multi-carousel-item--active {
+          opacity: 1;
+          transform: scale(1);
+        }
+        
+        /* Dots */
+        .hero-carousel-wrapper .react-multi-carousel-dot-list {
+          bottom: -30px;
+          position: relative;
+        }
+        
+        .hero-carousel-wrapper .react-multi-carousel-dot button {
+          background: rgba(255, 255, 255, 0.5);
+          border: none;
+          width: 10px;
+          height: 10px;
+          margin: 0 4px;
+        }
+        
+        .hero-carousel-wrapper .react-multi-carousel-dot--active button {
+          background: rgba(255, 255, 255, 1);
+        }
+        
+        /* Arrows */
+        .hero-carousel-wrapper .react-multiple-carousel__arrow {
+          background: rgba(0, 0, 0, 0.4);
+          min-width: 60px;
+          min-height: 80px;
+          border-radius: 8px;
+          transition: all 0.3s ease;
+          opacity: 0.7;
+        }
+        
+        .hero-carousel-wrapper .react-multiple-carousel__arrow:hover {
+          background: rgba(0, 0, 0, 0.6);
+          opacity: 1;
+        }
+        
+        .hero-carousel-wrapper .react-multiple-carousel__arrow::before {
+          color: #fff;
+          font-size: 24px;
+          font-weight: bold;
+        }
+        
+        .hero-carousel-wrapper .react-multiple-carousel__arrow--left {
+          left: 20px;
+          padding-right: 15px;
+        }
+        
+        .hero-carousel-wrapper .react-multiple-carousel__arrow--right {
+          right: 20px;
+          padding-left: 15px;
+        }
+        
+        /* Center mode adjustment */
+        .hero-carousel-wrapper .react-multi-carousel-track {
+          display: flex !important;
+          align-items: center;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+          .hero-carousel-wrapper .carousel-item {
+            opacity: 1;
+            transform: scale(1);
+          }
+          
+          .hero-carousel-wrapper .react-multiple-carousel__arrow {
+            min-width: 50px;
+            min-height: 70px;
+            opacity: 0.8;
+          }
+        }
+      `}</style>
     </section>
   );
 }
