@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Calendar, Clock, Heart, BookOpen, Award, Users } from "lucide-react";
+import { Heart, BookOpen, Award } from "lucide-react";
 
 // 더미 데이터
 const dummyProfileData = {

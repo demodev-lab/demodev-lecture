@@ -20,9 +20,13 @@ export default function MyPage() {
           {/* 메인 컨텐츠 */}
           <main className="flex-1">
             {/* 탭 네비게이션 */}
-            <div className="bg-white rounded-lg shadow-sm mb-6">
+            <div className="bg-white rounded-lg shadow-sm mb-6" role="tablist">
               <div className="flex border-b">
                 <button
+                  role="tab"
+                  aria-selected={activeTab === "dashboard"}
+                  aria-controls="dashboard-panel"
+                  id="dashboard-tab"
                   onClick={() => setActiveTab("dashboard")}
                   className={`px-3 sm:px-4 md:px-6 py-2 sm:py-3 font-medium text-xs sm:text-sm transition-colors ${
                     activeTab === "dashboard"
@@ -33,6 +37,10 @@ export default function MyPage() {
                   내 강의실
                 </button>
                 <button
+                  role="tab"
+                  aria-selected={activeTab === "profile"}
+                  aria-controls="profile-panel"
+                  id="profile-tab"
                   onClick={() => setActiveTab("profile")}
                   className={`px-3 sm:px-4 md:px-6 py-2 sm:py-3 font-medium text-xs sm:text-sm transition-colors ${
                     activeTab === "profile"
@@ -46,7 +54,13 @@ export default function MyPage() {
             </div>
 
             {/* 탭 컨텐츠 */}
-            {activeTab === "dashboard" ? <MyPageDashboard /> : <MyPageProfile />}
+            <div
+              role="tabpanel"
+              id={activeTab === "dashboard" ? "dashboard-panel" : "profile-panel"}
+              aria-labelledby={activeTab === "dashboard" ? "dashboard-tab" : "profile-tab"}
+            >
+              {activeTab === "dashboard" ? <MyPageDashboard /> : <MyPageProfile />}
+            </div>
           </main>
         </div>
       </div>

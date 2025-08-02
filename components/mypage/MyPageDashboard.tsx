@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { Flame, BarChart3, BookOpen, Users, FileText, ChevronRight } from "lucide-react";
+import { Flame, BarChart3, BookOpen, FileText } from "lucide-react";
 
 // 더미 데이터
 const dummyLearningData = {

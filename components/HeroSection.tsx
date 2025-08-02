@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Carousel from "react-multi-carousel";
+import Carousel, { ArrowProps } from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { useEffect, useState } from "react";
 
@@ -46,9 +46,17 @@ const slides: HeroSlide[] = [
   },
 ];
 
+// CarouselItem 컴포넌트의 props 타입 정의
+interface CarouselItemProps extends React.HTMLAttributes<HTMLDivElement> {
+  carouselState?: unknown;
+  rtl?: boolean;
+}
+
 // Custom Arrow Components to filter out unwanted props
-const CustomLeftArrow = ({ onClick, ...rest }: any) => {
-  const { carouselState, rtl, ...arrowProps } = rest;
+const CustomLeftArrow = ({ onClick, ...rest }: ArrowProps) => {
+  // carouselState와 rtl을 제거하고 나머지 props만 사용
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
+  const { carouselState, rtl, ...arrowProps } = rest as any;
   return (
     <button 
       {...arrowProps}
@@ -62,8 +70,10 @@ const CustomLeftArrow = ({ onClick, ...rest }: any) => {
   );
 };
 
-const CustomRightArrow = ({ onClick, ...rest }: any) => {
-  const { carouselState, rtl, ...arrowProps } = rest;
+const CustomRightArrow = ({ onClick, ...rest }: ArrowProps) => {
+  // carouselState와 rtl을 제거하고 나머지 props만 사용
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
+  const { carouselState, rtl, ...arrowProps } = rest as any;
   return (
     <button 
       {...arrowProps}
@@ -78,7 +88,8 @@ const CustomRightArrow = ({ onClick, ...rest }: any) => {
 };
 
 // CarouselItem wrapper to filter out unwanted props
-const CarouselItem = ({ carouselState, rtl, ...props }: any) => (
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const CarouselItem = ({ carouselState, rtl, ...props }: CarouselItemProps) => (
   <div {...props} />
 );
 
