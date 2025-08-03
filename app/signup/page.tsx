@@ -49,7 +49,7 @@ export default function SignupPage() {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="휴대폰 번호를 입력하세요."
-                className="flex-1 px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="flex-1 px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
               />
               <button
                 onClick={handleSendVerification}
@@ -71,7 +71,7 @@ export default function SignupPage() {
                 onChange={(e) => setVerificationCode(e.target.value)}
                 placeholder="인증번호를 입력하세요."
                 disabled={!showVerification}
-                className="flex-1 px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-400"
+                className="flex-1 px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-400"
               />
               <button
                 onClick={handleVerify}

@@ -62,6 +62,7 @@ const CustomLeftArrow = ({ onClick, ...rest }: ArrowProps) => {
       {...arrowProps}
       onClick={onClick}
       className="absolute left-2 sm:left-4 lg:left-6 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-20 text-black rounded-lg transition-all duration-300 flex items-center justify-center group"
+      aria-label="이전 슬라이드"
     >
       <svg className="w-5 h-5 sm:w-6 sm:h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -79,6 +80,7 @@ const CustomRightArrow = ({ onClick, ...rest }: ArrowProps) => {
       {...arrowProps}
       onClick={onClick}
       className="absolute right-2 sm:right-4 lg:right-6 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-20  text-black rounded-lg transition-all duration-300 flex items-center justify-center group"
+      aria-label="다음 슬라이드"
     >
       <svg className="w-5 h-5 sm:w-6 sm:h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

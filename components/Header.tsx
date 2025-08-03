@@ -53,7 +53,7 @@ export default function Header() {
             <div className="hidden md:flex">
               <Link
                 href="/"
-                className="cursor-pointer py-1 px-2 sm:px-3 text-base sm:text-lg md:text-xl font-bold no-underline text-blue-600"
+                className="cursor-pointer py-1 px-2 sm:px-3 text-base sm:text-lg md:text-xl font-bold no-underline text-brand"
               >
                 클래스
               </Link>
@@ -77,6 +77,7 @@ export default function Header() {
                 <input
                   className="h-full w-36 sm:w-48 md:w-64 lg:w-80 xl:w-96 border border-solid border-gray-200 bg-gray-100 px-10 sm:px-11 py-0 font-medium placeholder-gray-400 rounded-lg text-xs sm:text-sm focus:border-blue-500 focus:bg-white focus:outline-none transition-all duration-200"
                   placeholder="검색어를 입력하세요"
+                  aria-label="검색어 입력"
                 />
               </span>
             </div>
@@ -113,7 +114,7 @@ export default function Header() {
                   <div className="h-3 md:h-4 w-[1px] bg-neutral-200 mx-0.5"></div>
                   <button
                     onClick={() => setShowAuthModal(true)}
-                    className="h-10 md:h-[42px] cursor-pointer border-none bg-transparent px-2 md:px-3 font-semibold text-purple-600 text-xs md:text-sm hover:bg-gray-100 rounded-md transition-colors"
+                    className="h-10 md:h-[42px] cursor-pointer border-none bg-transparent px-2 md:px-3 font-semibold text-brand-500 text-xs md:text-sm hover:bg-gray-100 rounded-md transition-colors"
                   >
                     회원가입
                   </button>
@@ -122,7 +123,7 @@ export default function Header() {
             </div>
 
             {/* 모바일 햄버거 메뉴 */}
-            <button className="sm:hidden p-2">
+            <button className="sm:hidden p-2" aria-label="메뉴 열기">
               <Menu className="w-5 h-5" />
             </button>
           </div>
@@ -214,7 +215,7 @@ export default function Header() {
           <div className="flex items-center gap-4 overflow-x-auto">
             <Link
               href="/"
-              className="whitespace-nowrap text-sm font-semibold text-[#1f5af2] px-2"
+              className="whitespace-nowrap text-sm font-semibold  px-2"
             >
               클래스
             </Link>

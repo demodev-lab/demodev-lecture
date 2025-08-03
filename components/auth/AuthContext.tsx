@@ -6,7 +6,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   userEmail: string | null;
   userName: string | null;
-  login: (email: string, name?: string) => void;
+  login: (email: string, name?: string, stayLoggedIn?: boolean) => void;
   logout: () => void;
 }
 
@@ -37,9 +37,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  const login = (email: string, name?: string) => {
+  const login = (email: string, name?: string, stayLoggedIn: boolean = false) => {
     localStorage.setItem("user_authenticated", "true");
     localStorage.setItem("user_email", email);
+    localStorage.setItem("stay_logged_in", stayLoggedIn.toString());
     if (name) {
       localStorage.setItem("user_name", name);
     }

@@ -13,7 +13,7 @@ export default function BestReviewsSection() {
           <Card className="border-0 shadow-lg">
             <CardContent className="p-6">
               <div className="flex items-center mb-4">
-                <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mr-3">
+                <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-brand-500 rounded-full flex items-center justify-center mr-3">
                   <span className="text-white font-bold">우</span>
                 </div>
                 <div>

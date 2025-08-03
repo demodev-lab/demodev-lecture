@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Mail, Lock, User, Eye, EyeOff } from "lucide-react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useAuth } from "./AuthContext";
 
@@ -33,12 +32,10 @@ export default function AuthForm({ mode, onModeChange, onSuccess }: AuthFormProp
 
     try {
       if (mode === "login") {
-        // 임시 로그인 처리
+        // TODO: 실제 로그인 API 연동 필요
+        // 현재는 test@demodev.com / test123 을 임시 인증 정보로 사용
         if (email === "test@demodev.com" && password === "test123") {
-          if (stayLoggedIn) {
-            localStorage.setItem("stay_logged_in", "true");
-          }
-          login(email);
+          login(email, undefined, stayLoggedIn);
           onSuccess();
         } else {
           setError("이메일 또는 비밀번호가 올바르지 않습니다.");
@@ -57,7 +54,8 @@ export default function AuthForm({ mode, onModeChange, onSuccess }: AuthFormProp
         login(email, name);
         onSuccess();
       }
-    } catch {
+    } catch (error) {
+      console.error("Authentication error:", error);
       setError("오류가 발생했습니다. 다시 시도해주세요.");
     } finally {
       setLoading(false);
@@ -95,6 +93,7 @@ export default function AuthForm({ mode, onModeChange, onSuccess }: AuthFormProp
             type="button"
             onClick={() => handleOAuthLogin("naver")}
             className="w-12 h-12 bg-[#03C75A] hover:bg-[#02B550] rounded-full flex items-center justify-center transition-colors"
+            aria-label="네이버 로그인"
           >
             <span className="text-white font-bold text-lg">N</span>
           </button>
@@ -104,6 +103,7 @@ export default function AuthForm({ mode, onModeChange, onSuccess }: AuthFormProp
             type="button"
             onClick={() => handleOAuthLogin("google")}
             className="w-12 h-12 bg-white hover:bg-gray-50 border border-gray-300 rounded-full flex items-center justify-center transition-colors"
+            aria-label="구글 로그인"
           >
             <svg className="w-6 h-6" viewBox="0 0 24 24">
               <path
@@ -130,6 +130,7 @@ export default function AuthForm({ mode, onModeChange, onSuccess }: AuthFormProp
             type="button"
             onClick={() => handleOAuthLogin("apple")}
             className="w-12 h-12 bg-black hover:bg-gray-900 rounded-full flex items-center justify-center transition-colors"
+            aria-label="애플 로그인"
           >
             <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
               <path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
@@ -167,7 +168,7 @@ export default function AuthForm({ mode, onModeChange, onSuccess }: AuthFormProp
                 required={mode === "signup"}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="block w-full rounded-lg border border-gray-300 py-3 pr-3 pl-10 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                className="block w-full rounded-lg border border-gray-300 py-3 pr-3 pl-10 text-gray-900 placeholder-gray-500 focus:border-brand-500 focus:ring-2 focus:ring-brand-500 focus:outline-none"
                 placeholder="이름"
               />
             </div>
@@ -190,7 +191,7 @@ export default function AuthForm({ mode, onModeChange, onSuccess }: AuthFormProp
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="block w-full rounded-lg border border-gray-300 py-3 pr-3 pl-10 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-2 focus:ring-purple-500 focus:outline-none"
+              className="block w-full rounded-lg border border-gray-300 py-3 pr-3 pl-10 text-gray-900 placeholder-gray-500 focus:border-brand-500 focus:ring-2 focus:ring-brand-500 focus:outline-none"
               placeholder="이메일 또는 아이디"
             />
           </div>
@@ -212,13 +213,14 @@ export default function AuthForm({ mode, onModeChange, onSuccess }: AuthFormProp
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="block w-full rounded-lg border border-gray-300 py-3 pr-10 pl-10 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-2 focus:ring-purple-500 focus:outline-none"
+              className="block w-full rounded-lg border border-gray-300 py-3 pr-10 pl-10 text-gray-900 placeholder-gray-500 focus:border-brand-500 focus:ring-2 focus:ring-brand-500 focus:outline-none"
               placeholder="비밀번호"
             />
             <button
               type="button"
               className="absolute inset-y-0 right-0 flex items-center pr-3"
               onClick={() => setShowPassword(!showPassword)}
+              aria-label={showPassword ? "비밀번호 숨기기" : "비밀번호 보기"}
             >
               {showPassword ? (
                 <EyeOff className="h-5 w-5 text-gray-400" />
@@ -246,13 +248,14 @@ export default function AuthForm({ mode, onModeChange, onSuccess }: AuthFormProp
                 required={mode === "signup"}
                 value={passwordConfirm}
                 onChange={(e) => setPasswordConfirm(e.target.value)}
-                className="block w-full rounded-lg border border-gray-300 py-3 pr-10 pl-10 text-gray-900 placeholder-gray-500 focus:border-purple-500 focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                className="block w-full rounded-lg border border-gray-300 py-3 pr-10 pl-10 text-gray-900 placeholder-gray-500 focus:border-brand-500 focus:ring-2 focus:ring-brand-500 focus:outline-none"
                 placeholder="비밀번호 확인"
               />
               <button
                 type="button"
                 className="absolute inset-y-0 right-0 flex items-center pr-3"
                 onClick={() => setShowPasswordConfirm(!showPasswordConfirm)}
+                aria-label={showPasswordConfirm ? "비밀번호 확인 숨기기" : "비밀번호 확인 보기"}
               >
                 {showPasswordConfirm ? (
                   <EyeOff className="h-5 w-5 text-gray-400" />
@@ -274,7 +277,7 @@ export default function AuthForm({ mode, onModeChange, onSuccess }: AuthFormProp
             type="checkbox"
             checked={stayLoggedIn}
             onChange={(e) => setStayLoggedIn(e.target.checked)}
-            className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
+            className="h-4 w-4 text-brand-500 focus:ring-brand-500 border-gray-300 rounded"
           />
           <label htmlFor="stay-logged-in" className="ml-2 block text-sm text-gray-900">
             로그인 상태 유지
@@ -289,7 +292,7 @@ export default function AuthForm({ mode, onModeChange, onSuccess }: AuthFormProp
               type="checkbox"
               checked={agreeTerms}
               onChange={(e) => setAgreeTerms(e.target.checked)}
-              className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
+              className="h-4 w-4 text-brand-500 focus:ring-brand-500 border-gray-300 rounded"
             />
             <label htmlFor="agree-terms" className="ml-2 block text-sm text-gray-900">
               이용약관 및 개인정보처리방침에 동의합니다
@@ -309,7 +312,7 @@ export default function AuthForm({ mode, onModeChange, onSuccess }: AuthFormProp
       <button
         type="submit"
         disabled={loading || !email || !password || (mode === "signup" && (!name || !passwordConfirm || !agreeTerms))}
-        className="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:outline-none"
+        className="w-full bg-brand-500 hover:bg-brand-600 text-white font-medium py-3 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 focus:outline-none"
       >
         {loading ? (
           <span className="flex items-center justify-center">
@@ -346,7 +349,7 @@ export default function AuthForm({ mode, onModeChange, onSuccess }: AuthFormProp
           <div className="text-sm text-gray-600">
             <button
               type="button"
-              className="hover:text-purple-600 transition-colors"
+              className="hover:text-brand-500 transition-colors"
               onClick={() => {
                 onSuccess(); // 모달 닫기
                 router.push("/find");
@@ -357,7 +360,7 @@ export default function AuthForm({ mode, onModeChange, onSuccess }: AuthFormProp
             <span className="mx-2">|</span>
             <button
               type="button"
-              className="hover:text-purple-600 transition-colors"
+              className="hover:text-brand-500 transition-colors"
               onClick={() => {
                 onSuccess(); // 모달 닫기
                 router.push("/find/pw");
@@ -374,7 +377,7 @@ export default function AuthForm({ mode, onModeChange, onSuccess }: AuthFormProp
           </span>{" "}
           <button
             type="button"
-            className="text-purple-600 hover:text-purple-700 font-medium transition-colors"
+            className="text-brand-500 hover:text-brand-600 font-medium transition-colors"
             onClick={() => {
               if (mode === "login") {
                 onSuccess(); // 모달 닫기

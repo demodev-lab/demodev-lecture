@@ -28,7 +28,7 @@ const categories = [
   {
     name: "몰라대고",
     icon: "📊",
-    bgColor: "bg-purple-500",
+    bgColor: "bg-brand-500",
     textColor: "text-white",
   },
   {

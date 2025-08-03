@@ -39,7 +39,7 @@ export default function LectureMetaInfo({ lecture }: LectureMetaInfoProps) {
 
         {/* Instructor Info */}
         <div id="instructor" className="flex items-center mt-6 pt-6 border-t">
-          <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mr-4 flex items-center justify-center">
+          <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-brand-500 rounded-full mr-4 flex items-center justify-center">
             <span className="text-lg font-semibold text-white">
               {lecture.instructor.name[0]}
             </span>

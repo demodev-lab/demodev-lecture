@@ -48,7 +48,7 @@ export default function FindPasswordPage() {
           </Link>
           <Link
             href="/find/pw"
-            className="flex-1 py-4 text-center font-medium text-purple-600 border-b-2 border-purple-600"
+            className="flex-1 py-4 text-center font-medium text-brand-500 border-b-2 border-brand-500"
           >
             비밀번호 찾기
           </Link>
@@ -64,7 +64,7 @@ export default function FindPasswordPage() {
               value={id}
               onChange={(e) => setId(e.target.value)}
               placeholder="아이디를 입력하세요."
-              className="w-full px-4 py-3 bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              className="w-full px-4 py-3 bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
             />
           </div>
 
@@ -76,7 +76,7 @@ export default function FindPasswordPage() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="이름을 입력하세요."
-              className="w-full px-4 py-3 bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              className="w-full px-4 py-3 bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
             />
           </div>
 
@@ -89,7 +89,7 @@ export default function FindPasswordPage() {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="휴대폰 번호를 입력하세요."
-                className="flex-1 px-4 py-3 bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="flex-1 px-4 py-3 bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
               />
               <button
                 onClick={handleSendVerification}
@@ -113,7 +113,7 @@ export default function FindPasswordPage() {
                   value={verificationCode}
                   onChange={(e) => setVerificationCode(e.target.value)}
                   placeholder="인증번호를 입력하세요."
-                  className="flex-1 px-4 py-3 bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="flex-1 px-4 py-3 bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                 />
                 <button
                   onClick={handleVerify}
@@ -131,7 +131,7 @@ export default function FindPasswordPage() {
             <button
               onClick={handleVerify}
               disabled={!showVerification || !verificationCode || loading}
-              className="w-full py-3 bg-purple-600 text-white font-medium rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-3 bg-brand-500 text-white font-medium rounded-lg hover:bg-brand-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "처리중..." : "비밀번호 찾기"}
             </button>

@@ -48,6 +48,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 transition-colors"
+          aria-label="닫기"
         >
           <X className="w-5 h-5" />
         </button>

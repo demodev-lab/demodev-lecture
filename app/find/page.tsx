@@ -14,15 +14,19 @@ export default function FindIdPage() {
 
   const handleSendVerification = () => {
     if (name && phone) {
-      // 인증번호 발송 로직
+      setLoading(true);
+      // TODO: 실제 인증번호 발송 API 연동 필요
       setShowVerification(true);
       alert("인증번호가 발송되었습니다.");
+      setLoading(false);
     }
   };
 
   const handleVerify = () => {
+    // TODO: 실제 인증 API 연동 필요
+    // 현재는 '123456'을 임시 인증번호로 사용
     if (verificationCode === "123456") {
-      // 임시 인증 성공
+      // TODO: 실제 사용자 아이디 조회 API 연동 필요
       alert("인증이 완료되었습니다.\n아이디: test@demodev.com");
       router.push("/");
     } else {
@@ -37,7 +41,7 @@ export default function FindIdPage() {
         <div className="flex border-b border-gray-200 mb-8">
           <Link
             href="/find"
-            className="flex-1 py-4 text-center font-medium text-purple-600 border-b-2 border-purple-600"
+            className="flex-1 py-4 text-center font-medium text-brand-500 border-b-2 border-brand-500"
           >
             아이디(계정) 찾기
           </Link>
@@ -59,7 +63,7 @@ export default function FindIdPage() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="이름을 입력하세요."
-              className="w-full px-4 py-3 bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              className="w-full px-4 py-3 bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
             />
           </div>
 
@@ -75,7 +79,7 @@ export default function FindIdPage() {
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder="휴대폰 번호를 입력하세요."
-                  className="flex-1 px-4 py-3 bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="flex-1 px-4 py-3 bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                 />
                 <button
                   onClick={handleSendVerification}
@@ -100,7 +104,7 @@ export default function FindIdPage() {
                   value={verificationCode}
                   onChange={(e) => setVerificationCode(e.target.value)}
                   placeholder="인증번호를 입력하세요."
-                  className="flex-1 px-4 py-3 bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="flex-1 px-4 py-3 bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                 />
                 <button
                   onClick={handleVerify}
