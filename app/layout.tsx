@@ -5,6 +5,7 @@ import ClientBody from "./ClientBody";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import ConsoleEasterEgg from "@/components/ConsoleEasterEgg";
+import { AuthProvider } from "@/components/auth/AuthContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,12 +36,14 @@ export default function RootLayout({
         suppressHydrationWarning
         className="antialiased flex flex-col min-h-screen"
       >
-        <Header />
-        <main className="flex-1">
-          <ClientBody>{children}</ClientBody>
-        </main>
-        <Footer />
-        <ConsoleEasterEgg />
+        <AuthProvider>
+          <Header />
+          <main className="flex-1">
+            <ClientBody>{children}</ClientBody>
+          </main>
+          <Footer />
+          <ConsoleEasterEgg />
+        </AuthProvider>
       </body>
     </html>
   );
