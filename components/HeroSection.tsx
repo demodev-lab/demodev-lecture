@@ -159,6 +159,7 @@ export default function HeroSection() {
                             src={slide.image}
                             alt="banner"
                             fill
+                            sizes="(max-width: 640px) 90vw, (max-width: 1024px) 80vw, 70vw"
                             className="object-cover"
                             priority
                           />

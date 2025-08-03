@@ -45,7 +45,11 @@ export default function Header() {
                 alt="logo"
                 width={140}
                 height={40}
-                className="h-8 w-24 sm:h-10 sm:w-32 md:w-36 mr-3 sm:mr-4 md:mr-6 object-contain"
+                className="mr-3 sm:mr-4 md:mr-6 object-contain"
+                style={{
+                  width: "auto",
+                  height: "32px",
+                }}
               />
             </Link>
 
