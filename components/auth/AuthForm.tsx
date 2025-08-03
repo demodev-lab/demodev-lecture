@@ -33,6 +33,7 @@ export default function AuthForm({ mode, onModeChange, onSuccess }: AuthFormProp
     try {
       if (mode === "login") {
         // TODO: 실제 로그인 API 연동 필요
+        // ⚠️ WARNING: 하드코딩된 인증 정보 - 프로덕션에서 절대 사용 금지!
         // 현재는 test@demodev.com / test123 을 임시 인증 정보로 사용
         if (email === "test@demodev.com" && password === "test123") {
           login(email, undefined, stayLoggedIn);
