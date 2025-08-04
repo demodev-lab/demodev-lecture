@@ -81,42 +81,31 @@ export default function MyPageDashboard() {
         </div>
       </div>
 
-      {/* 학습 통계 */}
-      <div className="grid grid-cols-3 gap-2 sm:gap-3 md:gap-4">
-        <div className="bg-white rounded-lg shadow-sm p-3 sm:p-4 md:p-6">
-          <div className="flex items-center justify-between mb-1 sm:mb-2">
-            <h4 className="text-xs sm:text-sm font-medium text-gray-700">작성글</h4>
-            <FileText className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 text-gray-400" />
+      {/* 탭 네비게이션 및 콘텐츠 */}
+      <div className="bg-white rounded-lg shadow-sm">
+        {/* 탭 헤더 */}
+        <div className="border-b border-gray-200">
+          <div className="flex">
+            <button className="px-6 py-4 text-sm font-medium text-gray-900 border-b-2 border-gray-900">
+              강의
+            </button>
+            <button className="px-6 py-4 text-sm font-medium text-gray-500 hover:text-gray-700">
+              과제 관리
+            </button>
+            <button className="px-6 py-4 text-sm font-medium text-gray-500 hover:text-gray-700">
+              조편성
+            </button>
           </div>
-          <p className="text-lg sm:text-xl md:text-2xl font-bold">{dummyLearningData.stats.studying}</p>
-          <p className="text-[10px] sm:text-xs text-gray-500 mt-0.5 sm:mt-1">전체 작성글 수</p>
         </div>
 
-        <div className="bg-white rounded-lg shadow-sm p-3 sm:p-4 md:p-6">
-          <div className="flex items-center justify-between mb-1 sm:mb-2">
-            <h4 className="text-xs sm:text-sm font-medium text-gray-700">댓글단 글</h4>
-            <BarChart3 className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 text-gray-400" />
+        {/* 빈 상태 메시지 */}
+        <div className="p-8">
+          <div className="bg-gray-50 rounded-lg p-8 text-center">
+            <p className="text-gray-500 text-base">
+              아직 수강한 강의가 없어요.
+            </p>
           </div>
-          <p className="text-lg sm:text-xl md:text-2xl font-bold">{dummyLearningData.stats.completed}</p>
-          <p className="text-[10px] sm:text-xs text-gray-500 mt-0.5 sm:mt-1">참여한 글 수</p>
         </div>
-
-        <div className="bg-white rounded-lg shadow-sm p-3 sm:p-4 md:p-6">
-          <div className="flex items-center justify-between mb-1 sm:mb-2">
-            <h4 className="text-xs sm:text-sm font-medium text-gray-700">지정한 글</h4>
-            <BookOpen className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 text-gray-400" />
-          </div>
-          <p className="text-lg sm:text-xl md:text-2xl font-bold">{dummyLearningData.stats.liked}</p>
-          <p className="text-[10px] sm:text-xs text-gray-500 mt-0.5 sm:mt-1">북마크한 글 수</p>
-        </div>
-      </div>
-
-      {/* 빈 상태 메시지 */}
-      <div className="bg-white rounded-lg shadow-sm p-6 sm:p-8 text-center">
-        <p className="text-sm sm:text-base text-gray-500">작성글이 없습니다.</p>
-        <button className="mt-3 sm:mt-4 px-4 sm:px-6 py-1.5 sm:py-2 bg-blue-600 text-white rounded-md text-xs sm:text-sm font-medium hover:bg-blue-700 transition-colors">
-          지금 가장 인기글 보러가기
-        </button>
       </div>
     </div>
   );
