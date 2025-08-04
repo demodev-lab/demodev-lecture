@@ -1,0 +1,138 @@
+"use client";
+
+import { 
+  User, 
+  BookOpen, 
+  MessageCircle, 
+  Award, 
+  FileText, 
+  Star, 
+  ShoppingCart,
+  HelpCircle,
+  Settings,
+  ChevronRight
+} from "lucide-react";
+import Image from "next/image";
+
+interface MenuItem {
+  label: string;
+  icon?: React.ReactNode;
+  href?: string;
+  count?: number;
+}
+
+interface MenuSection {
+  title: string;
+  items: MenuItem[];
+}
+
+export default function MyPageSidebar() {
+  // 임시 사용자 데이터
+  const userData = {
+    name: "고성현",
+    level: "Lv.999999",
+    levelTitle: "수강동급",
+    profileImage: "/Frame_3.png", // 프로필 이미지
+    coupons: 0,
+    points: 0,
+    credits: 0,
+  };
+
+  const menuSections: MenuSection[] = [
+    {
+      title: "강의 관련",
+      items: [
+        { label: "관심 클래스", icon: <BookOpen className="w-4 h-4" /> },
+        { label: "강의 상담", icon: <MessageCircle className="w-4 h-4" /> },
+        { label: "아너스 혜택", icon: <Award className="w-4 h-4" /> },
+        { label: "수료증", icon: <FileText className="w-4 h-4" /> },
+        { label: "후기 관리", icon: <Star className="w-4 h-4" /> },
+        { label: "구매 내역", icon: <ShoppingCart className="w-4 h-4" /> },
+      ],
+    },
+    {
+      title: "고객 지원",
+      items: [
+        { label: "1:1 문의", icon: <HelpCircle className="w-4 h-4" /> },
+        { label: "자주 묻는 질문", icon: <MessageCircle className="w-4 h-4" /> },
+      ],
+    },
+    {
+      title: "계정 관리",
+      items: [
+        { label: "회원정보관리", icon: <Settings className="w-4 h-4" /> },
+      ],
+    },
+  ];
+
+  return (
+    <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
+      {/* 프로필 섹션 */}
+      <div className="text-center mb-4 sm:mb-6">
+        <div className="relative inline-block mb-3 sm:mb-4">
+          {userData.profileImage ? (
+            <Image
+              src={userData.profileImage}
+              alt="프로필"
+              width={80}
+              height={80}
+              className="rounded-full w-16 h-16 sm:w-20 sm:h-20 object-cover"
+            />
+          ) : (
+            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gray-800 rounded-full flex items-center justify-center">
+              <User className="w-8 h-8 sm:w-10 sm:h-10 text-gray-400" />
+            </div>
+          )}
+          <button className="absolute bottom-0 right-0 w-5 h-5 sm:w-6 sm:h-6 bg-white border border-gray-300 rounded-full flex items-center justify-center">
+            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+            </svg>
+          </button>
+        </div>
+        <h2 className="font-bold text-base sm:text-lg">{userData.name}</h2>
+        <p className="text-xs sm:text-sm text-gray-500">{userData.levelTitle} <span className="text-blue-600">{userData.level}</span></p>
+      </div>
+
+      {/* 통계 섹션 */}
+      <div className="grid grid-cols-3 gap-2 mb-4 sm:mb-6 pb-4 sm:pb-6 border-b">
+        <div className="text-center">
+          <p className="text-[10px] sm:text-xs text-gray-500">내 쿠폰</p>
+          <p className="font-semibold text-sm sm:text-base text-blue-600">{userData.coupons}장</p>
+        </div>
+        <div className="text-center">
+          <p className="text-[10px] sm:text-xs text-gray-500">쌓음권</p>
+          <p className="font-semibold text-sm sm:text-base text-blue-600">{userData.credits}원</p>
+        </div>
+        <div className="text-center">
+          <p className="text-[10px] sm:text-xs text-gray-500">포인트</p>
+          <p className="font-semibold text-sm sm:text-base text-blue-600">{userData.points}원</p>
+        </div>
+      </div>
+
+      {/* 메뉴 섹션 - 모바일에서는 숨김, 태블릿부터 표시 */}
+      <nav className="hidden lg:block">
+        {menuSections.map((section, index) => (
+          <div key={index} className={`${index > 0 ? 'mt-4 sm:mt-6 pt-4 sm:pt-6 border-t' : ''}`}>
+            <h3 className="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wider mb-2 sm:mb-3">{section.title}</h3>
+            <ul className="space-y-1">
+              {section.items.map((item, itemIndex) => (
+                <li key={itemIndex}>
+                  <a
+                    href="#"
+                    className="flex items-center justify-between px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm text-gray-700 hover:bg-gray-50 rounded-md transition-colors"
+                  >
+                    <div className="flex items-center gap-2 sm:gap-3">
+                      {item.icon}
+                      <span>{item.label}</span>
+                    </div>
+                    <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400" />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </nav>
+    </div>
+  );
+}
