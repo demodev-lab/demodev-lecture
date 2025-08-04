@@ -33,8 +33,8 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4 py-12">
+      <div className="w-full max-w-md bg-gray-50 rounded-lg border border-brand-300 p-8 shadow-sm">
         {/* 제목 */}
         <h1 className="text-3xl font-bold text-center mb-12">회원가입</h1>
 
