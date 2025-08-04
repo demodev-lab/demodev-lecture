@@ -23,7 +23,7 @@ export default function HeroSection() {
           {/* Adobe Suite Icons */}
           <div className="flex-1 flex justify-center items-center space-x-4">
             {/* Premiere Pro */}
-            <div className="w-24 h-24 bg-purple-800 rounded-xl shadow-lg flex items-center justify-center transform rotate-6">
+            <div className="w-24 h-24 bg-brand-700 rounded-xl shadow-lg flex items-center justify-center transform rotate-6">
               <span className="text-white font-bold text-2xl">Pr</span>
             </div>
 
@@ -53,6 +53,7 @@ export default function HeroSection() {
         variant="ghost"
         size="sm"
         className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white hover:bg-white/20"
+        aria-label="이전 슬라이드"
       >
         <ChevronLeft className="w-6 h-6" />
       </Button>
@@ -61,6 +62,7 @@ export default function HeroSection() {
         variant="ghost"
         size="sm"
         className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white hover:bg-white/20"
+        aria-label="다음 슬라이드"
       >
         <ChevronRight className="w-6 h-6" />
       </Button>

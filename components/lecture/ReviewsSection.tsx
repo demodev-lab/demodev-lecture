@@ -123,7 +123,7 @@ export default function ReviewsSection({ lecture }: ReviewsSectionProps) {
           {/* Sample Review 1 */}
           <div className="border-b pb-6 last:border-b-0">
             <div className="flex items-start space-x-4">
-              <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
+              <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-brand-500 rounded-full flex items-center justify-center">
                 <span className="text-white font-bold text-sm">우</span>
               </div>
               <div className="flex-1">

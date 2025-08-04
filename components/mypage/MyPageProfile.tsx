@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { Heart, BookOpen, Award } from "lucide-react";
+import { useAuth } from "@/components/auth/AuthContext";
+import { useRouter } from "next/navigation";
 
 // 더미 데이터
 const dummyProfileData = {
@@ -22,11 +24,18 @@ interface Tab {
 
 export default function MyPageProfile() {
   const [activeTab, setActiveTab] = useState("studying");
+  const { logout } = useAuth();
+  const router = useRouter();
+
+  const handleLogout = () => {
+    logout();
+    router.push("/");
+  };
 
   const tabs: Tab[] = [
-    { id: "studying", label: "작성글", count: dummyProfileData.courses.studying },
-    { id: "completed", label: "댓글단 글", count: dummyProfileData.courses.completed },
-    { id: "liked", label: "지정한 글", count: dummyProfileData.courses.liked },
+    { id: "studying", label: "수강 중", count: dummyProfileData.courses.studying },
+    { id: "completed", label: "수강 완료", count: dummyProfileData.courses.completed },
+    { id: "liked", label: "찜한 강의", count: dummyProfileData.courses.liked },
   ];
 
   return (
@@ -66,7 +75,10 @@ export default function MyPageProfile() {
           <button className="w-full px-3 sm:px-4 py-1.5 sm:py-2 text-left text-sm sm:text-base text-gray-700 hover:bg-gray-50 rounded-md transition-colors">
             이메일 변경
           </button>
-          <button className="w-full px-3 sm:px-4 py-1.5 sm:py-2 text-left text-sm sm:text-base text-red-600 hover:bg-red-50 rounded-md transition-colors">
+          <button 
+            onClick={handleLogout}
+            className="w-full px-3 sm:px-4 py-1.5 sm:py-2 text-left text-sm sm:text-base text-red-600 hover:bg-red-50 rounded-md transition-colors"
+          >
             로그아웃
           </button>
         </div>

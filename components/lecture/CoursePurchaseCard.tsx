@@ -104,7 +104,7 @@ export default function CoursePurchaseCard({ lecture }: CoursePurchaseCardProps)
         {/* Action Buttons */}
         <div className="space-y-3">
           <div className="flex items-center space-x-3">
-            <button className="p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+            <button className="p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors" aria-label="관심 강의로 추가">
               <svg
                 className="w-5 h-5 text-gray-600"
                 fill="currentColor"

@@ -83,7 +83,7 @@ export default function MyPageSidebar() {
               <User className="w-8 h-8 sm:w-10 sm:h-10 text-gray-400" />
             </div>
           )}
-          <button className="absolute bottom-0 right-0 w-5 h-5 sm:w-6 sm:h-6 bg-white border border-gray-300 rounded-full flex items-center justify-center">
+          <button className="absolute bottom-0 right-0 w-5 h-5 sm:w-6 sm:h-6 bg-white border border-gray-300 rounded-full flex items-center justify-center" aria-label="프로필 수정">
             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
             </svg>

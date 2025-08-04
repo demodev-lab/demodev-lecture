@@ -4,11 +4,17 @@ import { Search, Menu } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import AuthModal from "./auth/AuthModal";
+import { useAuth } from "./auth/AuthContext";
 
 export default function Header() {
+  const { isAuthenticated, logout } = useAuth();
+  const router = useRouter();
   // 헤더 높이 동적으로 계산
   const headerRef = useRef<HTMLDivElement>(null);
   const [headerHeight, setHeaderHeight] = useState(0);
+  const [showAuthModal, setShowAuthModal] = useState(false);
 
   useEffect(() => {
     function updateHeaderHeight() {
@@ -39,7 +45,11 @@ export default function Header() {
                 alt="logo"
                 width={140}
                 height={40}
-                className="h-8 w-24 sm:h-10 sm:w-32 md:w-36 mr-3 sm:mr-4 md:mr-6 object-contain"
+                className="mr-3 sm:mr-4 md:mr-6 object-contain"
+                style={{
+                  width: "auto",
+                  height: "32px",
+                }}
               />
             </Link>
 
@@ -47,7 +57,7 @@ export default function Header() {
             <div className="hidden md:flex">
               <Link
                 href="/"
-                className="cursor-pointer py-1 px-2 sm:px-3 text-base sm:text-lg md:text-xl font-bold no-underline text-blue-600"
+                className="cursor-pointer py-1 px-2 sm:px-3 text-base sm:text-lg md:text-xl font-bold no-underline text-brand"
               >
                 클래스
               </Link>
@@ -71,30 +81,53 @@ export default function Header() {
                 <input
                   className="h-full w-36 sm:w-48 md:w-64 lg:w-80 xl:w-96 border border-solid border-gray-200 bg-gray-100 px-10 sm:px-11 py-0 font-medium placeholder-gray-400 rounded-lg text-xs sm:text-sm focus:border-blue-500 focus:bg-white focus:outline-none transition-all duration-200"
                   placeholder="검색어를 입력하세요"
+                  aria-label="검색어 입력"
                 />
               </span>
             </div>
 
             {/* Auth Buttons - 모바일에서는 숨기거나 간소화 */}
             <div className="hidden sm:flex items-center gap-1 md:gap-2">
-              <Link
-                href="/mypage"
-                className="h-10 md:h-[42px] flex items-center cursor-pointer border-none bg-transparent px-2 md:px-3 font-semibold text-[#222222] text-xs md:text-sm hover:bg-gray-100 rounded-md transition-colors"
-              >
-                마이페이지
-              </Link>
-              <div className="h-3 md:h-4 w-[1px] bg-neutral-200 mx-0.5"></div>
-              <button className="h-10 md:h-[42px] cursor-pointer border-none bg-transparent px-2 md:px-3 font-semibold text-[#222222] text-xs md:text-sm hover:bg-gray-100 rounded-md transition-colors">
-                로그인
-              </button>
-              <div className="h-3 md:h-4 w-[1px] bg-neutral-200 mx-0.5"></div>
-              <button className="h-10 md:h-[42px] cursor-pointer border-none bg-transparent px-2 md:px-3 font-semibold text-[#1f5af2] text-xs md:text-sm hover:bg-gray-100 rounded-md transition-colors">
-                회원가입
-              </button>
+              {isAuthenticated ? (
+                <>
+                  <Link
+                    href="/mypage"
+                    className="h-10 md:h-[42px] flex items-center cursor-pointer border-none bg-transparent px-2 md:px-3 font-semibold text-[#222222] text-xs md:text-sm hover:bg-gray-100 rounded-md transition-colors"
+                  >
+                    마이페이지
+                  </Link>
+                  <div className="h-3 md:h-4 w-[1px] bg-neutral-200 mx-0.5"></div>
+                  <button
+                    onClick={() => {
+                      logout();
+                      router.push("/");
+                    }}
+                    className="h-10 md:h-[42px] cursor-pointer border-none bg-transparent px-2 md:px-3 font-semibold text-[#222222] text-xs md:text-sm hover:bg-gray-100 rounded-md transition-colors"
+                  >
+                    로그아웃
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    onClick={() => setShowAuthModal(true)}
+                    className="h-10 md:h-[42px] cursor-pointer border-none bg-transparent px-2 md:px-3 font-semibold text-[#222222] text-xs md:text-sm hover:bg-gray-100 rounded-md transition-colors"
+                  >
+                    로그인
+                  </button>
+                  <div className="h-3 md:h-4 w-[1px] bg-neutral-200 mx-0.5"></div>
+                  <button
+                    onClick={() => setShowAuthModal(true)}
+                    className="h-10 md:h-[42px] cursor-pointer border-none bg-transparent px-2 md:px-3 font-semibold text-brand-500 text-xs md:text-sm hover:bg-gray-100 rounded-md transition-colors"
+                  >
+                    회원가입
+                  </button>
+                </>
+              )}
             </div>
 
             {/* 모바일 햄버거 메뉴 */}
-            <button className="sm:hidden p-2">
+            <button className="sm:hidden p-2" aria-label="메뉴 열기">
               <Menu className="w-5 h-5" />
             </button>
           </div>
@@ -186,7 +219,7 @@ export default function Header() {
           <div className="flex items-center gap-4 overflow-x-auto">
             <Link
               href="/"
-              className="whitespace-nowrap text-sm font-semibold text-[#1f5af2] px-2"
+              className="whitespace-nowrap text-sm font-semibold  px-2"
             >
               클래스
             </Link>
@@ -218,6 +251,12 @@ export default function Header() {
         style={{
           height: headerHeight ? `${headerHeight}px` : undefined,
         }}
+      />
+
+      {/* Auth Modal */}
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
       />
     </>
   );

@@ -10,18 +10,18 @@ This is a Next.js 15 web application for "대모산 개발단" (Demodev Group), 
 
 ### Development
 
-**IMPORTANT**: This project uses `pnpm` as the package manager. Do not use `npm` commands.
+**IMPORTANT**: This project uses `npm` as the package manager.
 
-- `pnpm dev` - Start development server on http://localhost:3000
-- `pnpm build` - Create production build
-- `pnpm start` - Start production server
-- `pnpm lint` - Run ESLint for code quality checks
+- `npm run dev` - Start development server on http://localhost:3000
+- `npm run build` - Create production build
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint for code quality checks
 
 ### Package Management
 
-- `pnpm install` - Install dependencies
-- `pnpm add <package>` - Add a new dependency
-- `pnpm remove <package>` - Remove a dependency
+- `npm install` - Install dependencies
+- `npm install <package>` - Add a new dependency
+- `npm uninstall <package>` - Remove a dependency
 
 ### TypeScript
 
@@ -210,7 +210,7 @@ export function Component({ props }: ComponentProps) {
 
 ## Important Notes
 
-1. **Package Manager**: Uses `pnpm` - remove `package-lock.json` if present to avoid conflicts
+1. **Package Manager**: Uses `npm` as the package manager
 2. **No Testing Framework**: Currently no tests or testing setup
 3. **Admin Authentication**: Complete authentication system with localStorage, ready for Supabase upgrade
 4. **External Integration**: Courses link to external platform (latpeed.com)

@@ -86,25 +86,31 @@
     -webkit-line-clamp: 2;
     line-clamp: 2;
   }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fadeIn {
+    animation: fadeIn 0.2s ease-out;
+  }
 }
 
 /* Hero Carousel Styles */
 @layer components {
   .carousel-item-padding .carousel-slide {
-    @apply opacity-40 scale-[0.85];
+    @apply opacity-40 scale-[0.7];
   }
   
   .react-multi-carousel-item--active .carousel-slide {
     @apply opacity-100 scale-100;
-  }
-  
-  /* Dot styles */
-  .react-multi-carousel-dot button {
-    @apply w-2 h-2 bg-white/50 border-0 rounded-full mx-1 transition-all duration-300;
-  }
-  
-  .react-multi-carousel-dot--active button {
-    @apply bg-white;
   }
   
   /* Track alignment */

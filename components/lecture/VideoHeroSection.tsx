@@ -14,6 +14,7 @@ export default function VideoHeroSection({ lecture }: VideoHeroSectionProps) {
           src={lecture.image}
           alt={lecture.title}
           fill
+          sizes="100vw"
           className="object-cover opacity-80"
         />
         <div className="absolute inset-0 bg-black bg-opacity-40" />
