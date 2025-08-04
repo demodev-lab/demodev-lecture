@@ -104,23 +104,7 @@ export default function LecturesSidebar() {
   };
 
   return (
-    <aside
-      className="
-        w-full
-        md:w-64
-        bg-white
-        min-h-screen
-        fixed
-        md:static
-        z-20
-        top-0
-        left-0
-        transition-all
-        duration-300
-        flex-shrink-0
-      "
-      style={{ maxWidth: "100vw" }}
-    >
+    <aside className="w-full bg-white border-r border-gray-100 min-h-screen">
       <div className="px-6 py-8">
         <div className="space-y-0">
           {sections.map((section, idx) => (

@@ -1,4 +1,3 @@
-import { Badge } from "@/components/ui/badge";
 import { Star, Heart } from "lucide-react";
 import Image from "next/image";
 import { Lecture } from "@/app/lecture/[id]/lectures";
@@ -9,7 +8,7 @@ interface LectureCardProps {
 
 export default function LectureCard({ lecture }: LectureCardProps) {
   return (
-    <div className="bg-white rounded-lg overflow-hidden shadow-sm">
+    <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200">
       {/* Thumbnail */}
       <div className="aspect-video relative bg-gray-200 overflow-hidden">
         <Image
@@ -20,32 +19,33 @@ export default function LectureCard({ lecture }: LectureCardProps) {
           className="object-cover"
         />
         {/* Heart Icon */}
-        <div className="absolute top-3 right-3">
-          <Heart className="h-6 w-6 text-white" />
+        <div className="absolute top-4 right-4">
+          <Heart className="h-7 w-7 text-white fill-white opacity-80 hover:opacity-100 transition-opacity cursor-pointer" />
         </div>
-        
-        {/* Badges */}
-        <div className="absolute bottom-3 left-3 flex space-x-2">
-          <Badge className="bg-black text-white text-xs font-bold">
-            ORIGINAL
-          </Badge>
-        </div>
+        {/* No badges */}
       </div>
 
       {/* Content */}
-      <div className="p-4">
+      <div className="p-5">
         {/* Title */}
-        <h3 className="font-medium text-gray-900 mb-2 text-sm leading-tight">
+        <h3 className="font-semibold text-gray-900 mb-3 text-base leading-snug line-clamp-2">
           {lecture.title}
         </h3>
 
         {/* Rating */}
         <div className="flex items-center mb-2">
-          <Star className="h-4 w-4 text-yellow-400 fill-current" />
-          <span className="ml-1 text-sm font-medium">{lecture.rating || '4.9'}</span>
-          <span className="ml-1 text-sm text-gray-500">
-            ({lecture.reviews || 483}) {lecture.category}
+          <Star className="h-5 w-5 text-yellow-400 fill-current" />
+          <span className="ml-2 text-base font-semibold text-gray-900">
+            {lecture.rating || '4.9'}
           </span>
+          <span className="ml-1 text-sm text-gray-500">
+            ({lecture.reviews || 483})
+          </span>
+        </div>
+
+        {/* Instructor and Category */}
+        <div className="text-sm text-gray-600">
+          {lecture.instructor.name} • {lecture.category}
         </div>
       </div>
     </div>

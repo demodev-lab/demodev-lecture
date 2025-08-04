@@ -18,22 +18,26 @@ export default function LecturesHero() {
             </div>
           </div>
           
-          {/* 오른쪽 이미지 영역 (실제 이미지가 없으므로 placeholder) */}
-          <div className="flex-shrink-0 ml-8">
-            <div className="flex space-x-4">
-              <div className="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-                <span className="text-2xl">💻</span>
+          {/* 오른쪽 인물 이미지 영역 */}
+          <div className="flex-shrink-0 ml-8 flex items-center">
+            <div className="flex space-x-4 mr-8">
+              {/* 세 명의 인물을 나타내는 placeholder */}
+              <div className="w-16 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                <span className="text-2xl">👨‍💼</span>
               </div>
-              <div className="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-                <span className="text-2xl">🚀</span>
+              <div className="w-16 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                <span className="text-2xl">👩‍💼</span>
               </div>
-              <div className="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-                <span className="text-2xl">👩‍💻</span>
+              <div className="w-16 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                <span className="text-2xl">👨‍💼</span>
               </div>
             </div>
-            <div className="mt-4 text-center">
-              <div className="bg-black text-white px-6 py-3 rounded-lg font-semibold">
-                지금 무료로 시작하기 →
+            <div className="text-center">
+              <div className="bg-black text-white px-6 py-3 rounded-lg font-semibold text-sm">
+                7.30(수) 오전11시
+              </div>
+              <div className="text-sm mt-1">
+                선착순 접수 →
               </div>
             </div>
           </div>
