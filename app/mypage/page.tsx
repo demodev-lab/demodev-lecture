@@ -14,45 +14,11 @@ export default function MyPage() {
         <div className="flex flex-col lg:flex-row gap-4 lg:gap-6">
           {/* 좌측 사이드바 - 모바일에서는 상단에 위치 */}
           <aside className="w-full lg:w-64 flex-shrink-0">
-            <MyPageSidebar />
+            <MyPageSidebar activeTab={activeTab} onTabChange={setActiveTab} />
           </aside>
 
           {/* 메인 컨텐츠 */}
           <main className="flex-1">
-            {/* 탭 네비게이션 */}
-            <div className="bg-white rounded-lg shadow-sm mb-6" role="tablist">
-              <div className="flex border-b">
-                <button
-                  role="tab"
-                  aria-selected={activeTab === "dashboard"}
-                  aria-controls="dashboard-panel"
-                  id="dashboard-tab"
-                  onClick={() => setActiveTab("dashboard")}
-                  className={`px-3 sm:px-4 md:px-6 py-2 sm:py-3 font-medium text-xs sm:text-sm transition-colors ${
-                    activeTab === "dashboard"
-                      ? "text-blue-600 border-b-2 border-blue-600"
-                      : "text-gray-500 hover:text-gray-700"
-                  }`}
-                >
-                  내 강의실
-                </button>
-                <button
-                  role="tab"
-                  aria-selected={activeTab === "profile"}
-                  aria-controls="profile-panel"
-                  id="profile-tab"
-                  onClick={() => setActiveTab("profile")}
-                  className={`px-3 sm:px-4 md:px-6 py-2 sm:py-3 font-medium text-xs sm:text-sm transition-colors ${
-                    activeTab === "profile"
-                      ? "text-blue-600 border-b-2 border-blue-600"
-                      : "text-gray-500 hover:text-gray-700"
-                  }`}
-                >
-                  프로필
-                </button>
-              </div>
-            </div>
-
             {/* 탭 컨텐츠 */}
             <div
               role="tabpanel"
