@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import AuthModal from "./auth/AuthModal";
 import { useAuth } from "./auth/AuthContext";
+import CategoryDropdown from "./CategoryDropdown";
 
 export default function Header() {
   const { isAuthenticated, logout } = useAuth();
@@ -15,6 +16,7 @@ export default function Header() {
   const headerRef = useRef<HTMLDivElement>(null);
   const [headerHeight, setHeaderHeight] = useState(0);
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
 
   useEffect(() => {
     function updateHeaderHeight() {
@@ -137,9 +139,19 @@ export default function Header() {
         <div className="hidden lg:block mx-auto h-10 w-full max-w-7xl gap-4 md:gap-6 px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center gap-4 md:gap-6">
             {/* Category Button */}
-            <div className="text-md flex h-10 cursor-pointer items-center border-b-2 border-b-transparent font-semibold shrink-0 pb-4">
-              <Menu className="w-5 h-5 mr-1" />
-              카테고리
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
+                className="text-md flex h-10 cursor-pointer items-center border-b-2 border-b-transparent font-semibold shrink-0 pb-4 hover:text-brand-500 transition-colors"
+              >
+                <Menu className="w-5 h-5 mr-1" />
+                카테고리
+              </button>
+              
+              <CategoryDropdown
+                isOpen={showCategoryDropdown}
+                onClose={() => setShowCategoryDropdown(false)}
+              />
             </div>
 
             {/* Navigation Menu */}

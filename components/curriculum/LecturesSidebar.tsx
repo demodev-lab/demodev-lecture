@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const sections = [
   {
@@ -37,25 +38,40 @@ function SectionToggle({
   items,
   open,
   onClick,
+  onItemClick,
+  onCategoryClick,
+  selectedCategory,
+  selectedSubcategory,
 }: {
   title: string;
   items: string[];
   open: boolean;
   onClick: () => void;
+  onItemClick: (category: string, subcategory: string) => void;
+  onCategoryClick: (category: string) => void;
+  selectedCategory: string | null;
+  selectedSubcategory: string | null;
 }) {
+  const isSelectedCategory = selectedCategory === title;
+
   return (
     <div className="border-b border-gray-100 last:border-b-0">
-      <button
-        className="w-full flex items-center justify-between py-4 px-0 text-left focus:outline-none group"
-        onClick={onClick}
-        aria-expanded={open}
-      >
-        <span className={`text-lg font-medium transition-colors ${
-          open ? "text-blue-600" : "text-gray-800"
-        }`}>
-          {title}
-        </span>
-        <span className="text-gray-400 group-hover:text-gray-600 transition-colors">
+      <div className="flex items-center">
+        <button
+          className="flex-1 flex items-center py-4 px-0 text-left focus:outline-none group"
+          onClick={() => onCategoryClick(title)}
+        >
+          <span className={`text-lg font-medium transition-colors ${
+            isSelectedCategory ? "text-brand-500" : "text-gray-800 hover:text-brand-500"
+          }`}>
+            {title}
+          </span>
+        </button>
+        <button
+          className="p-2 text-gray-400 hover:text-gray-600 transition-colors"
+          onClick={onClick}
+          aria-expanded={open}
+        >
           <svg
             width="20"
             height="20"
@@ -71,28 +87,44 @@ function SectionToggle({
               strokeLinejoin="round"
             />
           </svg>
-        </span>
-      </button>
+        </button>
+      </div>
       <div
         className={`overflow-hidden transition-all duration-300 ease-in-out ${
           open ? "max-h-96 pb-4" : "max-h-0"
         }`}
       >
         <ul className="space-y-2 pl-0">
-          {items.map((item) => (
-            <li key={item}>
-              <span className="block text-gray-600 text-base py-2 hover:text-gray-800 transition-colors duration-150 cursor-pointer">
-                {item}
-              </span>
-            </li>
-          ))}
+          {items.map((item) => {
+            const isSelected = selectedCategory === title && selectedSubcategory === item;
+            return (
+              <li key={item}>
+                <button
+                  onClick={() => onItemClick(title, item)}
+                  className={`block w-full text-left text-base py-2 transition-colors duration-150 ${
+                    isSelected 
+                      ? "text-brand-500 font-medium" 
+                      : "text-gray-600 hover:text-brand-500"
+                  }`}
+                >
+                  {item}
+                </button>
+              </li>
+            );
+          })}
         </ul>
       </div>
     </div>
   );
 }
 
-export default function LecturesSidebar() {
+interface LecturesSidebarProps {
+  selectedCategory?: string | null;
+  selectedSubcategory?: string | null;
+}
+
+export default function LecturesSidebar({ selectedCategory, selectedSubcategory }: LecturesSidebarProps) {
+  const router = useRouter();
   const [openSections, setOpenSections] = useState(
     sections.map((_, idx) => idx === 1) // 두 번째 섹션만 열어둠 (이미지와 같이)
   );
@@ -101,6 +133,19 @@ export default function LecturesSidebar() {
     setOpenSections((prev) =>
       prev.map((open, i) => (i === idx ? !open : open))
     );
+  };
+
+  const handleCategoryClick = (category: string) => {
+    const params = new URLSearchParams();
+    params.set('category', category);
+    router.push(`/curriculum?${params.toString()}`);
+  };
+
+  const handleItemClick = (category: string, subcategory: string) => {
+    const params = new URLSearchParams();
+    params.set('category', category);
+    params.set('subcategory', subcategory);
+    router.push(`/curriculum?${params.toString()}`);
   };
 
   return (
@@ -114,6 +159,10 @@ export default function LecturesSidebar() {
               items={section.items}
               open={openSections[idx]}
               onClick={() => handleToggle(idx)}
+              onItemClick={handleItemClick}
+              onCategoryClick={handleCategoryClick}
+              selectedCategory={selectedCategory || null}
+              selectedSubcategory={selectedSubcategory || null}
             />
           ))}
         </div>
