@@ -2,8 +2,6 @@
 
 import React, { useState } from "react";
 import { Flame, BarChart3, BookOpen, FileText, Users, ClipboardList } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 
 // 더미 데이터
 const dummyLearningData = {
@@ -90,9 +88,9 @@ export default function MyPageDashboard() {
               팔로워 {dummyLearningData.stats.studying} · 팔로잉 {dummyLearningData.stats.completed} · 획득 뱃지 {dummyLearningData.stats.liked}
             </p>
           </div>
-          <Button className="w-full sm:w-auto" variant="default" size="sm">
+          <button className="w-full sm:w-auto px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition-colors">
             후기 쓰기
-          </Button>
+          </button>
         </div>
 
         {/* 주간 학습 진행도 */}
@@ -150,7 +148,9 @@ export default function MyPageDashboard() {
                 {tab.icon}
                 {tab.label}
                 {tab.id === "lecture" && (
-                  <Badge variant="secondary" className="ml-2">{dummyLearningData.stats.studying}</Badge>
+                  <span className="ml-2 bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-full">
+                    {dummyLearningData.stats.studying}
+                  </span>
                 )}
               </button>
             ))}
@@ -159,7 +159,7 @@ export default function MyPageDashboard() {
 
         {/* 빈 상태 메시지 */}
         <div className="p-8 flex items-center justify-center min-h-[220px]">
-          <div className="bg-gray-50 rounded-xl p-8 w-full max-w-md mx-auto flex flex-col items-center shadow-inner">
+          <div className="bg-gray-50 rounded-xl p-8 w-full max-w-md mx-auto flex flex-col items-center">
             {emptyStates[activeTab].icon}
             <p className="text-gray-700 text-base font-semibold mb-1">{emptyStates[activeTab].message}</p>
             {emptyStates[activeTab].sub && (

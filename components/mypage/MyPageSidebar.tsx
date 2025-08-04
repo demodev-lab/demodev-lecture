@@ -10,8 +10,7 @@ import {
   ShoppingCart,
   HelpCircle,
   Settings,
-  ChevronRight,
-  LayoutGrid
+  ChevronRight
 } from "lucide-react";
 import Image from "next/image";
 
@@ -27,12 +26,7 @@ interface MenuSection {
   items: MenuItem[];
 }
 
-interface MyPageSidebarProps {
-  activeTab?: "dashboard" | "profile";
-  onTabChange?: (tab: "dashboard" | "profile") => void;
-}
-
-export default function MyPageSidebar({ activeTab, onTabChange }: MyPageSidebarProps) {
+export default function MyPageSidebar() {
   // 임시 사용자 데이터
   const userData = {
     name: "고성현",
@@ -114,36 +108,6 @@ export default function MyPageSidebar({ activeTab, onTabChange }: MyPageSidebarP
           <p className="font-semibold text-sm sm:text-base text-blue-600">{userData.points}원</p>
         </div>
       </div>
-
-      {/* 탭 네비게이션 */}
-      {onTabChange && (
-        <div className="mb-4 sm:mb-6 pb-4 sm:pb-6 border-b">
-          <div className="space-y-2">
-            <button
-              onClick={() => onTabChange("dashboard")}
-              className={`w-full flex items-center px-3 py-3 rounded-lg text-sm font-medium transition-colors ${
-                activeTab === "dashboard"
-                  ? "bg-blue-50 text-blue-600 border border-blue-200"
-                  : "text-gray-700 hover:bg-gray-50"
-              }`}
-            >
-              <LayoutGrid className="w-4 h-4 mr-3" />
-              내 강의실
-            </button>
-            <button
-              onClick={() => onTabChange("profile")}
-              className={`w-full flex items-center px-3 py-3 rounded-lg text-sm font-medium transition-colors ${
-                activeTab === "profile"
-                  ? "bg-blue-50 text-blue-600 border border-blue-200"
-                  : "text-gray-700 hover:bg-gray-50"
-              }`}
-            >
-              <User className="w-4 h-4 mr-3" />
-              프로필
-            </button>
-          </div>
-        </div>
-      )}
 
       {/* 메뉴 섹션 - 모바일에서는 숨김, 태블릿부터 표시 */}
       <nav className="hidden lg:block">
