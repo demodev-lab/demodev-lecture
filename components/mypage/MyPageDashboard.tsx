@@ -1,6 +1,9 @@
 "use client";
 
-import { Flame, BarChart3, BookOpen, FileText } from "lucide-react";
+import React, { useState } from "react";
+import { Flame, BarChart3, BookOpen, FileText, Users, ClipboardList } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 // 더미 데이터
 const dummyLearningData = {
@@ -27,7 +30,52 @@ const dummyLearningData = {
   }
 };
 
+const tabs = [
+  {
+    id: "lecture",
+    label: "강의",
+    icon: <BookOpen className="w-4 h-4 mr-1" />,
+  },
+  {
+    id: "assignment",
+    label: "과제 관리",
+    icon: <ClipboardList className="w-4 h-4 mr-1" />,
+  },
+  {
+    id: "group",
+    label: "조편성",
+    icon: <Users className="w-4 h-4 mr-1" />,
+  },
+];
+
+type EmptyState = {
+  icon: React.ReactNode;
+  message: string;
+  sub?: string;
+};
+
 export default function MyPageDashboard() {
+  const [activeTab, setActiveTab] = useState("lecture");
+
+  // 빈 상태 메시지 탭별 내용
+  const emptyStates: Record<string, EmptyState> = {
+    lecture: {
+      icon: <BookOpen className="w-8 h-8 text-blue-500 mx-auto mb-3" />,
+      message: "아직 수강한 강의가 없어요.",
+      sub: "원하는 강의를 찾아 수강을 시작해보세요!",
+    },
+    assignment: {
+      icon: <ClipboardList className="w-8 h-8 text-green-500 mx-auto mb-3" />,
+      message: "아직 제출할 과제가 없어요.",
+      sub: "과제가 등록되면 이곳에서 확인할 수 있어요.",
+    },
+    group: {
+      icon: <Users className="w-8 h-8 text-purple-500 mx-auto mb-3" />,
+      message: "아직 조편성이 이루어지지 않았어요.",
+      sub: "조가 편성되면 이곳에서 확인할 수 있어요.",
+    },
+  };
+
   return (
     <div className="space-y-6">
       {/* 학습 현황 카드 */}
@@ -35,16 +83,16 @@ export default function MyPageDashboard() {
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 sm:mb-6 gap-3 sm:gap-0">
           <div>
             <h3 className="text-base sm:text-lg font-bold">
-              {dummyLearningData.levelName} 
+              {dummyLearningData.levelName}
               <span className="ml-1 sm:ml-2 text-blue-600">Lv.{dummyLearningData.level}</span>
             </h3>
             <p className="text-xs sm:text-sm text-gray-500 mt-1">
               팔로워 {dummyLearningData.stats.studying} · 팔로잉 {dummyLearningData.stats.completed} · 획득 뱃지 {dummyLearningData.stats.liked}
             </p>
           </div>
-          <button className="px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-600 text-white rounded-md text-xs sm:text-sm font-medium hover:bg-blue-700 transition-colors w-full sm:w-auto">
+          <Button className="w-full sm:w-auto" variant="default" size="sm">
             후기 쓰기
-          </button>
+          </Button>
         </div>
 
         {/* 주간 학습 진행도 */}
@@ -67,11 +115,11 @@ export default function MyPageDashboard() {
                 <div className="relative">
                   <div className="h-20 sm:h-24 md:h-32 bg-gray-100 rounded-lg mx-1 sm:mx-2">
                     {/* 진행도 바 */}
-                    <div 
+                    <div
                       className={`absolute bottom-0 left-0 right-0 rounded-lg transition-all ${
-                        stage.completed ? 'bg-blue-500' : 'bg-gray-200'
+                        stage.completed ? "bg-blue-500" : "bg-gray-200"
                       }`}
-                      style={{ height: stage.completed ? '100%' : '10%' }}
+                      style={{ height: stage.completed ? "100%" : "10%" }}
                     />
                   </div>
                 </div>
@@ -84,26 +132,39 @@ export default function MyPageDashboard() {
       {/* 탭 네비게이션 및 콘텐츠 */}
       <div className="bg-white rounded-lg shadow-sm">
         {/* 탭 헤더 */}
-        <div className="border-b border-gray-200">
-          <div className="flex">
-            <button className="px-6 py-4 text-sm font-medium text-gray-900 border-b-2 border-gray-900">
-              강의
-            </button>
-            <button className="px-6 py-4 text-sm font-medium text-gray-500 hover:text-gray-700">
-              과제 관리
-            </button>
-            <button className="px-6 py-4 text-sm font-medium text-gray-500 hover:text-gray-700">
-              조편성
-            </button>
+        <div className="border-b border-gray-100 px-4 pt-2">
+          <div className="flex gap-2">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                className={`flex items-center px-4 py-2 rounded-t-lg text-sm font-medium transition-colors
+                  ${
+                    activeTab === tab.id
+                      ? "bg-gray-50 text-blue-600 border-b-2 border-blue-600 shadow-sm"
+                      : "text-gray-500 hover:text-blue-600 hover:bg-gray-50"
+                  }
+                `}
+                onClick={() => setActiveTab(tab.id)}
+                type="button"
+              >
+                {tab.icon}
+                {tab.label}
+                {tab.id === "lecture" && (
+                  <Badge variant="secondary" className="ml-2">{dummyLearningData.stats.studying}</Badge>
+                )}
+              </button>
+            ))}
           </div>
         </div>
 
         {/* 빈 상태 메시지 */}
-        <div className="p-8">
-          <div className="bg-gray-50 rounded-lg p-8 text-center">
-            <p className="text-gray-500 text-base">
-              아직 수강한 강의가 없어요.
-            </p>
+        <div className="p-8 flex items-center justify-center min-h-[220px]">
+          <div className="bg-gray-50 rounded-xl p-8 w-full max-w-md mx-auto flex flex-col items-center shadow-inner">
+            {emptyStates[activeTab].icon}
+            <p className="text-gray-700 text-base font-semibold mb-1">{emptyStates[activeTab].message}</p>
+            {emptyStates[activeTab].sub && (
+              <p className="text-gray-400 text-sm">{emptyStates[activeTab].sub}</p>
+            )}
           </div>
         </div>
       </div>
