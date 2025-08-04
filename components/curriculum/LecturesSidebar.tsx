@@ -1,64 +1,123 @@
-export default function LecturesSidebar() {
+"use client";
 
+import React, { useState } from "react";
+
+const sections = [
+  {
+    title: "오리지널",
+    items: ["바이브 빌더스"],
+  },
+  {
+    title: "바이브 코딩",
+    items: ["프롬프트 엔지니어링", "컨텍스트 엔지니어링", "AI 도구 활용"],
+  },
+  {
+    title: "앱/웹",
+    items: [
+      "앱 바이브 코딩 입문",
+      "웹 바이브 코딩 입문",
+      "앱 수익화",
+      "웹 수익화",
+    ],
+  },
+  {
+    title: "자동화",
+    items: [
+      "n8n",
+      "Make",
+      "PyTorch",
+      "크롤링",
+      "AI 업무 자동화",
+    ],
+  },
+];
+
+function SectionToggle({
+  title,
+  items,
+  open,
+  onClick,
+}: {
+  title: string;
+  items: string[];
+  open: boolean;
+  onClick: () => void;
+}) {
   return (
-    <div className="w-64 bg-white border-r border-gray-200 min-h-screen">
-      <div className="p-6">
-        {/* 프론트엔드 섹션 */}
-        <div className="mb-8">
-          <div className="py-2">
-            <h3 className="text-lg font-semibold text-blue-600">프론트엔드</h3>
-          </div>
-          <ul className="mt-2 space-y-2 pl-4">
-            <li><span className="text-gray-600">React</span></li>
-            <li><span className="text-gray-600">Vue.js</span></li>
-            <li><span className="text-gray-600">Next.js</span></li>
-            <li><span className="text-gray-600">TypeScript</span></li>
-            <li><span className="text-gray-600">UI/UX</span></li>
-          </ul>
-        </div>
-
-        {/* 백엔드 섹션 */}
-        <div className="mb-8">
-          <div className="py-2">
-            <h3 className="text-lg font-semibold">백엔드</h3>
-          </div>
-          <ul className="mt-2 space-y-2 pl-4">
-            <li><span className="text-gray-600">Node.js</span></li>
-            <li><span className="text-gray-600">Spring Boot</span></li>
-            <li><span className="text-gray-600">Django</span></li>
-            <li><span className="text-gray-600">Go</span></li>
-            <li><span className="text-gray-600">Database</span></li>
-          </ul>
-        </div>
-
-        {/* AI/머신러닝 섹션 */}
-        <div className="mb-8">
-          <div className="py-2">
-            <h3 className="text-lg font-semibold">AI/머신러닝</h3>
-          </div>
-          <ul className="mt-2 space-y-2 pl-4">
-            <li><span className="text-gray-600">Python</span></li>
-            <li><span className="text-gray-600">TensorFlow</span></li>
-            <li><span className="text-gray-600">PyTorch</span></li>
-            <li><span className="text-gray-600">데이터 분석</span></li>
-            <li><span className="text-gray-600">챗봇/LLM</span></li>
-          </ul>
-        </div>
-
-        {/* DevOps/클라우드 섹션 */}
-        <div className="mb-8">
-          <div className="py-2">
-            <h3 className="text-lg font-semibold">DevOps/클라우드</h3>
-          </div>
-          <ul className="mt-2 space-y-2 pl-4">
-            <li><span className="text-gray-600">AWS</span></li>
-            <li><span className="text-gray-600">Docker</span></li>
-            <li><span className="text-gray-600">Kubernetes</span></li>
-            <li><span className="text-gray-600">CI/CD</span></li>
-            <li><span className="text-gray-600">클라우드 아키텍처</span></li>
-          </ul>
-        </div>
+    <div className="border-b border-gray-100 last:border-b-0">
+      <button
+        className="w-full flex items-center justify-between py-4 px-0 text-left focus:outline-none group"
+        onClick={onClick}
+        aria-expanded={open}
+      >
+        <span className={`text-lg font-medium transition-colors ${
+          open ? "text-blue-600" : "text-gray-800"
+        }`}>
+          {title}
+        </span>
+        <span className="text-gray-400 group-hover:text-gray-600 transition-colors">
+          <svg
+            width="20"
+            height="20"
+            fill="none"
+            viewBox="0 0 24 24"
+            className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+          >
+            <path
+              d="M6 9l6 6 6-6"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </span>
+      </button>
+      <div
+        className={`overflow-hidden transition-all duration-300 ease-in-out ${
+          open ? "max-h-96 pb-4" : "max-h-0"
+        }`}
+      >
+        <ul className="space-y-2 pl-0">
+          {items.map((item) => (
+            <li key={item}>
+              <span className="block text-gray-600 text-base py-2 hover:text-gray-800 transition-colors duration-150 cursor-pointer">
+                {item}
+              </span>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
+  );
+}
+
+export default function LecturesSidebar() {
+  const [openSections, setOpenSections] = useState(
+    sections.map((_, idx) => idx === 1) // 두 번째 섹션만 열어둠 (이미지와 같이)
+  );
+
+  const handleToggle = (idx: number) => {
+    setOpenSections((prev) =>
+      prev.map((open, i) => (i === idx ? !open : open))
+    );
+  };
+
+  return (
+    <aside className="w-full bg-white border-r border-gray-100 min-h-screen">
+      <div className="px-6 py-8">
+        <div className="space-y-0">
+          {sections.map((section, idx) => (
+            <SectionToggle
+              key={section.title}
+              title={section.title}
+              items={section.items}
+              open={openSections[idx]}
+              onClick={() => handleToggle(idx)}
+            />
+          ))}
+        </div>
+      </div>
+    </aside>
   );
 }

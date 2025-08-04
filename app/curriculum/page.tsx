@@ -5,19 +5,21 @@ import LecturesSidebar from "@/components/curriculum/LecturesSidebar";
 
 export default function LecturesPage() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <LecturesHero />
 
       {/* Main Content with Sidebar */}
-      <div className="flex">
+      <div className="flex max-w-7xl mx-auto">
         {/* Left Sidebar */}
-        <LecturesSidebar />
+        <div className="w-64 flex-shrink-0">
+          <LecturesSidebar />
+        </div>
 
         {/* Main Content Area */}
-        <div className="flex-1 p-6">
+        <div className="flex-1 px-8 py-6">
           {/* Section Title and Filter */}
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center justify-between mb-8">
             <h2 className="text-2xl font-bold text-gray-900">오리지널</h2>
             <div className="flex items-center space-x-4">
               <select className="text-sm border border-gray-300 rounded-md px-3 py-2 bg-white focus:outline-none focus:ring-1 focus:ring-blue-500">
