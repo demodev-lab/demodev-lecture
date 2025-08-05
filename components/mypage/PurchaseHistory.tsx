@@ -260,7 +260,7 @@ export default function PurchaseHistory() {
   return (
     <div className="space-y-6">
       {/* 헤더 섹션 */}
-      <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
+      <div className="bg-white rounded-lg shadow-sm  border border-gray-200 p-4 sm:p-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900">구매 내역</h2>
           
@@ -389,23 +389,27 @@ export default function PurchaseHistory() {
 
                 {/* 가격 정보 테이블 */}
                 <div className="border-t pt-4">
-                  <div className="grid grid-cols-2 gap-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">상품가격</span>
-                      <span className="text-gray-900">{purchase.pricing.originalPrice.toLocaleString()}원</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">쿠폰</span>
-                      <span className="text-gray-900">{purchase.pricing.couponDiscount.toLocaleString()}원</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">상품권</span>
-                      <span className="text-gray-900">{purchase.pricing.voucherDiscount.toLocaleString()}원</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">포인트</span>
-                      <span className="text-gray-900">{purchase.pricing.pointsUsed.toLocaleString()}원</span>
-                    </div>
+                  <div className="w-full overflow-x-auto">
+                    <table className="w-full text-sm">
+                      <tbody>
+                        <tr>
+                          <th className="text-left text-gray-600 font-normal py-1 pr-4 w-24">상품가격</th>
+                          <td className="text-right text-gray-900 py-1">{purchase.pricing.originalPrice.toLocaleString()}원</td>
+                        </tr>
+                        <tr>
+                          <th className="text-left text-gray-600 font-normal py-1 pr-4">쿠폰</th>
+                          <td className="text-right text-gray-900 py-1">{purchase.pricing.couponDiscount.toLocaleString()}원</td>
+                        </tr>
+                        <tr>
+                          <th className="text-left text-gray-600 font-normal py-1 pr-4">상품권</th>
+                          <td className="text-right text-gray-900 py-1">{purchase.pricing.voucherDiscount.toLocaleString()}원</td>
+                        </tr>
+                        <tr>
+                          <th className="text-left text-gray-600 font-normal py-1 pr-4">포인트</th>
+                          <td className="text-right text-gray-900 py-1">{purchase.pricing.pointsUsed.toLocaleString()}원</td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                   
                   {/* 총 결제금액 */}

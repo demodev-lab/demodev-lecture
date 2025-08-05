@@ -37,9 +37,8 @@ const DatePicker: React.FC<DatePickerProps> = ({
 
   const dayNames = ["월", "화", "수", "목", "금", "토", "일"];
 
-  // 이번 달의 첫째 날과 마지막 날
+  // 이번 달의 첫째 날
   const firstDay = new Date(year, month, 1);
-  const lastDay = new Date(year, month + 1, 0);
   
   // 달력 시작일 (월요일부터 시작하도록 조정)
   const startDate = new Date(firstDay);
