@@ -1,6 +1,7 @@
 "use client";
 
-import { Flame, BarChart3, BookOpen, FileText } from "lucide-react";
+import React, { useState } from "react";
+import { Flame, BookOpen, Users, ClipboardList } from "lucide-react";
 
 // 더미 데이터
 const dummyLearningData = {
@@ -27,7 +28,52 @@ const dummyLearningData = {
   }
 };
 
+const tabs = [
+  {
+    id: "lecture",
+    label: "강의",
+    icon: <BookOpen className="w-4 h-4 mr-1" />,
+  },
+  {
+    id: "assignment",
+    label: "과제 관리",
+    icon: <ClipboardList className="w-4 h-4 mr-1" />,
+  },
+  {
+    id: "group",
+    label: "조편성",
+    icon: <Users className="w-4 h-4 mr-1" />,
+  },
+];
+
+type EmptyState = {
+  icon: React.ReactNode;
+  message: string;
+  sub?: string;
+};
+
 export default function MyPageDashboard() {
+  const [activeTab, setActiveTab] = useState("lecture");
+
+  // 빈 상태 메시지 탭별 내용
+  const emptyStates: Record<string, EmptyState> = {
+    lecture: {
+      icon: <BookOpen className="w-8 h-8 text-blue-500 mx-auto mb-3" />,
+      message: "아직 수강한 강의가 없어요.",
+      sub: "원하는 강의를 찾아 수강을 시작해보세요!",
+    },
+    assignment: {
+      icon: <ClipboardList className="w-8 h-8 text-green-500 mx-auto mb-3" />,
+      message: "아직 제출할 과제가 없어요.",
+      sub: "과제가 등록되면 이곳에서 확인할 수 있어요.",
+    },
+    group: {
+      icon: <Users className="w-8 h-8 text-purple-500 mx-auto mb-3" />,
+      message: "아직 조편성이 이루어지지 않았어요.",
+      sub: "조가 편성되면 이곳에서 확인할 수 있어요.",
+    },
+  };
+
   return (
     <div className="space-y-6">
       {/* 학습 현황 카드 */}
@@ -35,14 +81,14 @@ export default function MyPageDashboard() {
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 sm:mb-6 gap-3 sm:gap-0">
           <div>
             <h3 className="text-base sm:text-lg font-bold">
-              {dummyLearningData.levelName} 
+              {dummyLearningData.levelName}
               <span className="ml-1 sm:ml-2 text-blue-600">Lv.{dummyLearningData.level}</span>
             </h3>
             <p className="text-xs sm:text-sm text-gray-500 mt-1">
               팔로워 {dummyLearningData.stats.studying} · 팔로잉 {dummyLearningData.stats.completed} · 획득 뱃지 {dummyLearningData.stats.liked}
             </p>
           </div>
-          <button className="px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-600 text-white rounded-md text-xs sm:text-sm font-medium hover:bg-blue-700 transition-colors w-full sm:w-auto">
+          <button className="w-full sm:w-auto px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition-colors">
             후기 쓰기
           </button>
         </div>
@@ -67,11 +113,11 @@ export default function MyPageDashboard() {
                 <div className="relative">
                   <div className="h-20 sm:h-24 md:h-32 bg-gray-100 rounded-lg mx-1 sm:mx-2">
                     {/* 진행도 바 */}
-                    <div 
+                    <div
                       className={`absolute bottom-0 left-0 right-0 rounded-lg transition-all ${
-                        stage.completed ? 'bg-blue-500' : 'bg-gray-200'
+                        stage.completed ? "bg-blue-500" : "bg-gray-200"
                       }`}
-                      style={{ height: stage.completed ? '100%' : '10%' }}
+                      style={{ height: stage.completed ? "100%" : "10%" }}
                     />
                   </div>
                 </div>
@@ -81,42 +127,46 @@ export default function MyPageDashboard() {
         </div>
       </div>
 
-      {/* 학습 통계 */}
-      <div className="grid grid-cols-3 gap-2 sm:gap-3 md:gap-4">
-        <div className="bg-white rounded-lg shadow-sm p-3 sm:p-4 md:p-6">
-          <div className="flex items-center justify-between mb-1 sm:mb-2">
-            <h4 className="text-xs sm:text-sm font-medium text-gray-700">작성글</h4>
-            <FileText className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 text-gray-400" />
+      {/* 탭 네비게이션 및 콘텐츠 */}
+      <div className="bg-white rounded-lg shadow-sm">
+        {/* 탭 헤더 */}
+        <div className="border-b border-gray-100 px-4 pt-2">
+          <div className="flex gap-2">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                className={`flex items-center px-4 py-2 rounded-t-lg text-sm font-medium transition-colors
+                  ${
+                    activeTab === tab.id
+                      ? "bg-gray-50 text-blue-600 border-b-2 border-blue-600 shadow-sm"
+                      : "text-gray-500 hover:text-blue-600 hover:bg-gray-50"
+                  }
+                `}
+                onClick={() => setActiveTab(tab.id)}
+                type="button"
+              >
+                {tab.icon}
+                {tab.label}
+                {tab.id === "lecture" && (
+                  <span className="ml-2 bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-full">
+                    {dummyLearningData.stats.studying}
+                  </span>
+                )}
+              </button>
+            ))}
           </div>
-          <p className="text-lg sm:text-xl md:text-2xl font-bold">{dummyLearningData.stats.studying}</p>
-          <p className="text-[10px] sm:text-xs text-gray-500 mt-0.5 sm:mt-1">전체 작성글 수</p>
         </div>
 
-        <div className="bg-white rounded-lg shadow-sm p-3 sm:p-4 md:p-6">
-          <div className="flex items-center justify-between mb-1 sm:mb-2">
-            <h4 className="text-xs sm:text-sm font-medium text-gray-700">댓글단 글</h4>
-            <BarChart3 className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 text-gray-400" />
+        {/* 빈 상태 메시지 */}
+        <div className="p-8 flex items-center justify-center min-h-[220px]">
+          <div className="bg-gray-50 rounded-xl p-8 w-full max-w-md mx-auto flex flex-col items-center">
+            {emptyStates[activeTab].icon}
+            <p className="text-gray-700 text-base font-semibold mb-1">{emptyStates[activeTab].message}</p>
+            {emptyStates[activeTab].sub && (
+              <p className="text-gray-400 text-sm">{emptyStates[activeTab].sub}</p>
+            )}
           </div>
-          <p className="text-lg sm:text-xl md:text-2xl font-bold">{dummyLearningData.stats.completed}</p>
-          <p className="text-[10px] sm:text-xs text-gray-500 mt-0.5 sm:mt-1">참여한 글 수</p>
         </div>
-
-        <div className="bg-white rounded-lg shadow-sm p-3 sm:p-4 md:p-6">
-          <div className="flex items-center justify-between mb-1 sm:mb-2">
-            <h4 className="text-xs sm:text-sm font-medium text-gray-700">지정한 글</h4>
-            <BookOpen className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 text-gray-400" />
-          </div>
-          <p className="text-lg sm:text-xl md:text-2xl font-bold">{dummyLearningData.stats.liked}</p>
-          <p className="text-[10px] sm:text-xs text-gray-500 mt-0.5 sm:mt-1">북마크한 글 수</p>
-        </div>
-      </div>
-
-      {/* 빈 상태 메시지 */}
-      <div className="bg-white rounded-lg shadow-sm p-6 sm:p-8 text-center">
-        <p className="text-sm sm:text-base text-gray-500">작성글이 없습니다.</p>
-        <button className="mt-3 sm:mt-4 px-4 sm:px-6 py-1.5 sm:py-2 bg-blue-600 text-white rounded-md text-xs sm:text-sm font-medium hover:bg-blue-700 transition-colors">
-          지금 가장 인기글 보러가기
-        </button>
       </div>
     </div>
   );

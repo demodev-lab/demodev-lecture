@@ -1,5 +1,4 @@
 "use client";
-
 import { 
   User, 
   BookOpen, 
@@ -10,7 +9,8 @@ import {
   ShoppingCart,
   HelpCircle,
   Settings,
-  ChevronRight
+  ChevronRight,
+  LayoutGrid
 } from "lucide-react";
 import Image from "next/image";
 
@@ -20,13 +20,17 @@ interface MenuItem {
   href?: string;
   count?: number;
 }
-
 interface MenuSection {
   title: string;
   items: MenuItem[];
 }
 
-export default function MyPageSidebar() {
+interface MyPageSidebarProps {
+  activeTab?: "dashboard" | "profile";
+  onTabChange?: (tab: "dashboard" | "profile") => void;
+}
+
+export default function MyPageSidebar({ activeTab, onTabChange }: MyPageSidebarProps) {
   // 임시 사용자 데이터
   const userData = {
     name: "고성현",
@@ -37,7 +41,6 @@ export default function MyPageSidebar() {
     points: 0,
     credits: 0,
   };
-
   const menuSections: MenuSection[] = [
     {
       title: "강의 관련",
@@ -64,7 +67,6 @@ export default function MyPageSidebar() {
       ],
     },
   ];
-
   return (
     <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
       {/* 프로필 섹션 */}
@@ -92,7 +94,6 @@ export default function MyPageSidebar() {
         <h2 className="font-bold text-base sm:text-lg">{userData.name}</h2>
         <p className="text-xs sm:text-sm text-gray-500">{userData.levelTitle} <span className="text-blue-600">{userData.level}</span></p>
       </div>
-
       {/* 통계 섹션 */}
       <div className="grid grid-cols-3 gap-2 mb-4 sm:mb-6 pb-4 sm:pb-6 border-b">
         <div className="text-center">
@@ -108,6 +109,36 @@ export default function MyPageSidebar() {
           <p className="font-semibold text-sm sm:text-base text-blue-600">{userData.points}원</p>
         </div>
       </div>
+
+      {/* 탭 네비게이션 */}
+      {onTabChange && (
+        <div className="mb-4 sm:mb-6 pb-4 sm:pb-6 border-b">
+          <div className="space-y-2">
+            <button
+              onClick={() => onTabChange("dashboard")}
+              className={`w-full flex items-center px-3 py-3 rounded-lg text-sm font-medium transition-colors ${
+                activeTab === "dashboard"
+                  ? "bg-blue-50 text-blue-600 border border-blue-200"
+                  : "text-gray-700 hover:bg-gray-50"
+              }`}
+            >
+              <LayoutGrid className="w-4 h-4 mr-3" />
+              내 강의실
+            </button>
+            <button
+              onClick={() => onTabChange("profile")}
+              className={`w-full flex items-center px-3 py-3 rounded-lg text-sm font-medium transition-colors ${
+                activeTab === "profile"
+                  ? "bg-blue-50 text-blue-600 border border-blue-200"
+                  : "text-gray-700 hover:bg-gray-50"
+              }`}
+            >
+              <User className="w-4 h-4 mr-3" />
+              프로필
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* 메뉴 섹션 - 모바일에서는 숨김, 태블릿부터 표시 */}
       <nav className="hidden lg:block">
