@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Calendar, ChevronDown, RefreshCw } from "lucide-react";
 import { Purchase, PurchaseStatus } from "@/types/purchase";
+import DatePicker, { DateRange } from "./DatePicker";
 
 // 더미 구매 데이터
 const dummyPurchases: Purchase[] = [
@@ -118,10 +119,33 @@ const getStatusBadge = (status: string) => {
 export default function PurchaseHistory() {
   const [selectedStatus, setSelectedStatus] = useState<PurchaseStatus>("all");
   const [isStatusDropdownOpen, setIsStatusDropdownOpen] = useState(false);
+  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+  const [selectedDateRange, setSelectedDateRange] = useState<DateRange>({
+    startDate: null,
+    endDate: null,
+  });
 
-  const filteredPurchases = dummyPurchases.filter(
-    (purchase) => selectedStatus === "all" || purchase.status === selectedStatus
-  );
+  const filteredPurchases = dummyPurchases.filter((purchase) => {
+    // 상태 필터
+    const statusMatch = selectedStatus === "all" || purchase.status === selectedStatus;
+    
+    // 날짜 범위 필터
+    let dateMatch = true;
+    if (selectedDateRange.startDate) {
+      const purchaseDate = new Date(purchase.paymentDate);
+      const startDate = selectedDateRange.startDate;
+      const endDate = selectedDateRange.endDate || selectedDateRange.startDate;
+      
+      // 시간 정보를 제거하고 날짜만 비교
+      const purchaseDateOnly = new Date(purchaseDate.getFullYear(), purchaseDate.getMonth(), purchaseDate.getDate());
+      const startDateOnly = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+      const endDateOnly = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
+      
+      dateMatch = purchaseDateOnly >= startDateOnly && purchaseDateOnly <= endDateOnly;
+    }
+    
+    return statusMatch && dateMatch;
+  });
 
   return (
     <div className="space-y-6">
@@ -133,10 +157,20 @@ export default function PurchaseHistory() {
           {/* 필터 섹션 */}
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
             {/* 날짜 필터 */}
-            <div className="flex items-center gap-2 px-3 py-2 border border-gray-300 rounded-md bg-white hover:bg-gray-50 cursor-pointer">
+            <button
+              onClick={() => setIsDatePickerOpen(true)}
+              className="flex items-center gap-2 px-3 py-2 border border-gray-300 rounded-md bg-white hover:bg-gray-50 cursor-pointer transition-colors"
+            >
               <Calendar className="w-4 h-4 text-gray-500" />
-              <span className="text-sm text-gray-700">결제일시</span>
-            </div>
+              <span className="text-sm text-gray-700">
+                {selectedDateRange.startDate 
+                  ? selectedDateRange.endDate 
+                    ? `${selectedDateRange.startDate.getFullYear()}-${String(selectedDateRange.startDate.getMonth() + 1).padStart(2, '0')}-${String(selectedDateRange.startDate.getDate()).padStart(2, '0')} ~ ${selectedDateRange.endDate.getFullYear()}-${String(selectedDateRange.endDate.getMonth() + 1).padStart(2, '0')}-${String(selectedDateRange.endDate.getDate()).padStart(2, '0')}`
+                    : `${selectedDateRange.startDate.getFullYear()}-${String(selectedDateRange.startDate.getMonth() + 1).padStart(2, '0')}-${String(selectedDateRange.startDate.getDate()).padStart(2, '0')}`
+                  : "결제일시"
+                }
+              </span>
+            </button>
             
             {/* 상태 필터 드롭다운 */}
             <div className="relative">
@@ -255,6 +289,14 @@ export default function PurchaseHistory() {
           ))
         )}
       </div>
+
+      {/* 날짜 선택 달력 */}
+      <DatePicker
+        isOpen={isDatePickerOpen}
+        onClose={() => setIsDatePickerOpen(false)}
+        onDateRangeSelect={(range) => setSelectedDateRange(range)}
+        selectedRange={selectedDateRange}
+      />
     </div>
   );
 }
