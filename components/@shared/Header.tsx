@@ -5,9 +5,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import AuthModal from "./auth/AuthModal";
-import { useAuth } from "./auth/AuthContext";
-import CategoryDropdown from "./CategoryDropdown";
+import AuthModal from "../auth/AuthModal";
+import { useAuth } from "../auth/AuthContext";
+import CategoryDropdown from "../main/CategoryDropdown";
 
 export default function Header() {
   const { isAuthenticated, logout } = useAuth();

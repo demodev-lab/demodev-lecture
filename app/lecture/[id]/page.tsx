@@ -2,15 +2,15 @@ import { lectures } from "./lectures";
 import { notFound } from "next/navigation";
 
 // Lecture Components
-import VideoHeroSection from "@/components/lecture/VideoHeroSection";
-import BestReviewsSection from "@/components/lecture/BestReviewsSection";
-import LectureNavigation from "@/components/lecture/LectureNavigation";
-import LectureMetaInfo from "@/components/lecture/LectureMetaInfo";
-import LearningOutcomesSection from "@/components/lecture/LearningOutcomesSection";
-import CurriculumSection from "@/components/lecture/CurriculumSection";
-import ReviewsSection from "@/components/lecture/ReviewsSection";
-import CoursePurchaseCard from "@/components/lecture/CoursePurchaseCard";
-import CourseInfoCard from "@/components/lecture/CourseInfoCard";
+import VideoHeroSection from "@/components/lecture/herosection/VideoHeroSection";
+import BestReviewsSection from "@/components/lecture/herosection/BestReviewsSection";
+import LectureNavigation from "@/components/lecture/infosection/LectureNavigation";
+import LectureMetaInfo from "@/components/lecture/infosection/LectureMetaInfo";
+import LearningOutcomesSection from "@/components/lecture/infosection/LearningOutcomesSection";
+import CurriculumSection from "@/components/lecture/infosection/CurriculumSection";
+import ReviewsSection from "@/components/lecture/infosection/ReviewsSection";
+import CoursePurchaseCard from "@/components/lecture/rightsection/CoursePurchaseCard";
+import CourseInfoCard from "@/components/lecture/rightsection/CourseInfoCard";
 
 interface LecturePageProps {
   params: Promise<{

@@ -106,7 +106,7 @@
 /* Hero Carousel Styles */
 @layer components {
   .carousel-item-padding .carousel-slide {
-    @apply opacity-40 scale-[0.7];
+    @apply opacity-40 scale-[0.9];
   }
   
   .react-multi-carousel-item--active .carousel-slide {
