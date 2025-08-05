@@ -6,6 +6,7 @@ import Footer from "@/components/@shared/Footer";
 import Header from "@/components/@shared/Header";
 import ConsoleEasterEgg from "@/components/@shared/ConsoleEasterEgg";
 import { AuthProvider } from "@/components/auth/AuthContext";
+import ParticlesBackground from "@/components/ui/ParticlesBackground";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,8 +35,9 @@ export default function RootLayout({
     <html lang="ko" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body
         suppressHydrationWarning
-        className="antialiased flex flex-col min-h-screen"
+        className="antialiased flex flex-col min-h-screen relative bg-transparent"
       >
+        <ParticlesBackground />
         <AuthProvider>
           <Header />
           <main className="flex-1">

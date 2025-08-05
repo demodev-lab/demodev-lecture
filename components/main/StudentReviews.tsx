@@ -29,7 +29,7 @@ const reviews = [
 
 export default function StudentReviews() {
   return (
-    <div className="w-full overflow-hidden bg-[#f1f2f4]">
+    <div className="w-full overflow-hidden bg-brand-50">
       <div className="mx-auto my-0 flex flex-col sm:flex-row justify-between max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-10 gap-6 sm:gap-8">
         {/* Left Section - Title and Description */}
         <div className="w-full sm:w-auto sm:min-w-[200px] lg:min-w-[283px]">
@@ -59,7 +59,7 @@ export default function StudentReviews() {
                   aria-roledescription="slide"
                   className="min-w-0 shrink-0 grow-0 basis-full sm:basis-1/2 lg:basis-1/3 pl-2 sm:pl-4"
                 >
-                  <div className="bg-white rounded-lg p-4 sm:p-5 lg:p-6 shadow-sm h-full flex flex-col">
+                  <div className="bg-white/90 backdrop-blur-sm rounded-lg p-4 sm:p-5 lg:p-6 shadow-sm h-full flex flex-col">
                     <h3 className="font-bold text-[#1c2a4b] text-base sm:text-lg mb-2 sm:mb-3">
                       {review.title}
                     </h3>

@@ -21,27 +21,45 @@ const slides: HeroSlide[] = [
     id: 1,
     title: "",
     subtitle: "",
-    image: "/hero_1.png",
+    image: "/carousel/Frame_1.png",
     textColor: "white",
-    backgroundColor: "rgb(59, 130, 246)",
+    backgroundColor: "#6659F4",
     href: "#",
   },
   {
     id: 2,
     title: "",
     subtitle: "",
-    image: "/hero_2.png",
+    image: "/carousel/Frame_2_1.png",
     textColor: "white",
-    backgroundColor: "rgb(37, 99, 235)",
+    backgroundColor: "#5142E8",
     href: "#",
   },
   {
     id: 3,
     title: "",
     subtitle: "",
-    image: "/hero_3.png",
+    image: "/carousel/Frame_3_1.png",
     textColor: "white",
-    backgroundColor: "rgb(29, 78, 216)",
+    backgroundColor: "#432FD3",
+    href: "#",
+  },
+  {
+    id: 4,
+    title: "",
+    subtitle: "",
+    image: "/carousel/Frame_4.png",
+    textColor: "white",
+    backgroundColor: "#3A28B1",
+    href: "#",
+  },
+  {
+    id: 5,
+    title: "",
+    subtitle: "",
+    image: "/carousel/Frame_5.png",
+    textColor: "white",
+    backgroundColor: "#312292",
     href: "#",
   },
 ];
@@ -61,11 +79,11 @@ const CustomLeftArrow = ({ onClick, ...rest }: ArrowProps) => {
     <button 
       {...arrowProps}
       onClick={onClick}
-      className="absolute left-2 sm:left-4 lg:left-6 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-20 text-black rounded-lg transition-all duration-300 flex items-center justify-center group"
+      className="absolute left-2 sm:left-4 lg:left-6 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-20 text-brand-700 rounded-lg transition-all duration-300 flex items-center justify-center group"
       aria-label="이전 슬라이드"
     >
       <svg className="w-5 h-5 sm:w-6 sm:h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={5} d="M15 19l-7-7 7-7" />
       </svg>
     </button>
   );
@@ -79,11 +97,11 @@ const CustomRightArrow = ({ onClick, ...rest }: ArrowProps) => {
     <button 
       {...arrowProps}
       onClick={onClick}
-      className="absolute right-2 sm:right-4 lg:right-6 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-20  text-black rounded-lg transition-all duration-300 flex items-center justify-center group"
+      className="absolute right-2 sm:right-4 lg:right-6 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-20  text-brand-700 rounded-lg transition-all duration-300 flex items-center justify-center group"
       aria-label="다음 슬라이드"
     >
       <svg className="w-5 h-5 sm:w-6 sm:h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={5} d="M9 5l7 7-7 7" />
       </svg>
     </button>
   );
