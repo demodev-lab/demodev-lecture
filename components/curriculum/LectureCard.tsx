@@ -1,12 +1,15 @@
 import { Star, Heart } from "lucide-react";
 import Image from "next/image";
 import { Lecture } from "@/app/lecture/[id]/lectures";
+import { useFavoriteLectures } from "@/contexts/FavoriteLecturesContext";
 
 interface LectureCardProps {
   lecture: Lecture;
 }
 
 export default function LectureCard({ lecture }: LectureCardProps) {
+  const { isFavorite, toggleFavorite } = useFavoriteLectures();
+  
   return (
     <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200">
       {/* Thumbnail */}
@@ -19,8 +22,19 @@ export default function LectureCard({ lecture }: LectureCardProps) {
           className="object-cover"
         />
         {/* Heart Icon */}
-        <div className="absolute top-4 right-4">
-          <Heart className="h-7 w-7 text-white fill-white opacity-80 hover:opacity-100 transition-opacity cursor-pointer" />
+        <div 
+          className="absolute top-4 right-4"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleFavorite(lecture);
+          }}
+        >
+          <Heart className={`h-7 w-7 transition-opacity cursor-pointer ${
+            isFavorite(lecture.id) 
+              ? "text-red-500 fill-current opacity-100" 
+              : "text-white fill-white opacity-80 hover:opacity-100"
+          }`} />
         </div>
         {/* No badges */}
       </div>

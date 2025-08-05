@@ -4,8 +4,9 @@ import MyPageSidebar from "@/components/mypage/MyPageSidebar";
 import MyPageDashboard from "@/components/mypage/MyPageDashboard";
 import MyPageProfile from "@/components/mypage/MyPageProfile";
 import PurchaseHistory from "@/components/mypage/PurchaseHistory";
+import FavoriteLectures from "@/components/mypage/FavoriteLectures";
 export default function MyPage() {
-  const [activeTab, setActiveTab] = useState<"dashboard" | "profile" | "purchase">("dashboard");
+  const [activeTab, setActiveTab] = useState<"dashboard" | "profile" | "purchase" | "favorites">("dashboard");
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
@@ -26,6 +27,7 @@ export default function MyPage() {
               {activeTab === "dashboard" && <MyPageDashboard />}
               {activeTab === "profile" && <MyPageProfile />}
               {activeTab === "purchase" && <PurchaseHistory />}
+              {activeTab === "favorites" && <FavoriteLectures />}
             </div>
           </main>
         </div>
