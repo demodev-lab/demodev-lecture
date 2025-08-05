@@ -62,6 +62,7 @@ module.exports = {
           800: '#3A28B1',
           900: '#312292',
         },
+        bronze: '#CD7F32',
       },
       borderRadius: {
         lg: 'var(--radius)',

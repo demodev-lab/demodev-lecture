@@ -3,8 +3,9 @@ import { useState } from "react";
 import MyPageSidebar from "@/components/mypage/MyPageSidebar";
 import MyPageDashboard from "@/components/mypage/MyPageDashboard";
 import MyPageProfile from "@/components/mypage/MyPageProfile";
+import PurchaseHistory from "@/components/mypage/PurchaseHistory";
 export default function MyPage() {
-  const [activeTab, setActiveTab] = useState<"dashboard" | "profile">("dashboard");
+  const [activeTab, setActiveTab] = useState<"dashboard" | "profile" | "purchase">("dashboard");
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
@@ -19,10 +20,12 @@ export default function MyPage() {
             {/* 탭 컨텐츠 */}
             <div
               role="tabpanel"
-              id={activeTab === "dashboard" ? "dashboard-panel" : "profile-panel"}
-              aria-labelledby={activeTab === "dashboard" ? "dashboard-tab" : "profile-tab"}
+              id={`${activeTab}-panel`}
+              aria-labelledby={`${activeTab}-tab`}
             >
-              {activeTab === "dashboard" ? <MyPageDashboard /> : <MyPageProfile />}
+              {activeTab === "dashboard" && <MyPageDashboard />}
+              {activeTab === "profile" && <MyPageProfile />}
+              {activeTab === "purchase" && <PurchaseHistory />}
             </div>
           </main>
         </div>
