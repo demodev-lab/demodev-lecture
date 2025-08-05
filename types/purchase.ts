@@ -2,7 +2,7 @@ export interface Purchase {
   id: string;
   paymentNumber: string;
   paymentDate: string;
-  status: "completed" | "pending" | "cancelled" | "refunded";
+  status: "order_pending_unpayable" | "order_pending_payable" | "order_cancelled" | "completed" | "payment_cancelled" | "refund_pending" | "refunded";
   lecture: {
     id: number;
     title: string;
@@ -21,7 +21,7 @@ export interface Purchase {
   refundable: boolean;
 }
 
-export type PurchaseStatus = "all" | "completed" | "pending" | "cancelled" | "refunded";
+export type PurchaseStatus = "all" | "order_pending_unpayable" | "order_pending_payable" | "order_cancelled" | "completed" | "payment_cancelled" | "refund_pending" | "refunded";
 
 export interface PurchaseFilter {
   status: PurchaseStatus;
