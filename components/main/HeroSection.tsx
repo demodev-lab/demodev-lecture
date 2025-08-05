@@ -143,7 +143,7 @@ export default function HeroSection() {
                 <div
                   role="group"
                   aria-roledescription="slide"
-                  className="relative overflow-hidden rounded-lg h-[200px] sm:h-[240px] md:h-[280px] lg:h-[280px] carousel-slide"
+                  className="relative overflow-auto rounded-lg h-[200px] sm:h-[240px] md:h-[280px] lg:h-[280px] carousel-slide"
                 >
                     <a href={slide.href} className="block h-full w-full">
                       {/* Background */}
@@ -162,6 +162,7 @@ export default function HeroSection() {
                             sizes="(max-width: 640px) 90vw, (max-width: 1024px) 80vw, 70vw"
                             className="object-cover"
                             priority
+                            quality={100}
                           />
                         </div>
 

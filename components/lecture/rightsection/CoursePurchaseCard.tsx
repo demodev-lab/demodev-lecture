@@ -1,7 +1,10 @@
+"use client";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Star } from "lucide-react";
 import { Lecture } from "@/app/lecture/[id]/lectures";
 import { formatPrice, getDiscountRate } from "@/lib/lecture-utils";
+import { useRouter } from "next/navigation";
 
 interface CoursePurchaseCardProps {
   lecture: Lecture;
@@ -9,6 +12,11 @@ interface CoursePurchaseCardProps {
 
 export default function CoursePurchaseCard({ lecture }: CoursePurchaseCardProps) {
   const discountRate = getDiscountRate(lecture.price);
+  const router = useRouter();
+
+  const handlePurchaseClick = () => {
+    router.push(`/payment?lectureId=${lecture.id}`);
+  };
 
   return (
     <Card className="border-0 shadow-lg">
@@ -117,7 +125,7 @@ export default function CoursePurchaseCard({ lecture }: CoursePurchaseCardProps)
                 />
               </svg>
             </button>
-            <button className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-lg transition-colors">
+            <button onClick={handlePurchaseClick} className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-lg transition-colors">
               강의 구매하기
             </button>
           </div>

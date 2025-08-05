@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ClientBody from "./ClientBody";
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
-import ConsoleEasterEgg from "@/components/ConsoleEasterEgg";
+import Footer from "@/components/@shared/Footer";
+import Header from "@/components/@shared/Header";
+import ConsoleEasterEgg from "@/components/@shared/ConsoleEasterEgg";
 import { AuthProvider } from "@/components/auth/AuthContext";
 
 const geistSans = Geist({
