@@ -199,9 +199,9 @@ const DatePicker: React.FC<DatePickerProps> = ({
                         : "hover:bg-gray-100 cursor-pointer"
                       }
                       ${isStart || isEnd
-                        ? "bg-gray-800 text-white hover:bg-gray-700 rounded-full z-10" 
+                        ? "bg-blue-500 text-white hover:bg-blue-700 rounded-full z-10" 
                         : isInRange
-                        ? "bg-gray-200 text-gray-900"
+                        ? "bg-blue-300 text-white"
                         : ""
                       }
                       ${isStart && !isEnd ? "rounded-l-full rounded-r-none" : ""}
