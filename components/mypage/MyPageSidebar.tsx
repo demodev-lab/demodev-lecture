@@ -19,6 +19,7 @@ interface MenuItem {
   icon?: React.ReactNode;
   href?: string;
   count?: number;
+  onClick?: () => void;
 }
 interface MenuSection {
   title: string;
@@ -26,8 +27,8 @@ interface MenuSection {
 }
 
 interface MyPageSidebarProps {
-  activeTab?: "dashboard" | "profile";
-  onTabChange?: (tab: "dashboard" | "profile") => void;
+  activeTab?: "dashboard" | "profile" | "purchase";
+  onTabChange?: (tab: "dashboard" | "profile" | "purchase") => void;
 }
 
 export default function MyPageSidebar({ activeTab, onTabChange }: MyPageSidebarProps) {
@@ -50,7 +51,11 @@ export default function MyPageSidebar({ activeTab, onTabChange }: MyPageSidebarP
         { label: "아너스 혜택", icon: <Award className="w-4 h-4" /> },
         { label: "수료증", icon: <FileText className="w-4 h-4" /> },
         { label: "후기 관리", icon: <Star className="w-4 h-4" /> },
-        { label: "구매 내역", icon: <ShoppingCart className="w-4 h-4" /> },
+        { 
+          label: "구매 내역", 
+          icon: <ShoppingCart className="w-4 h-4" />,
+          onClick: () => onTabChange?.("purchase")
+        },
       ],
     },
     {
@@ -148,16 +153,29 @@ export default function MyPageSidebar({ activeTab, onTabChange }: MyPageSidebarP
             <ul className="space-y-1">
               {section.items.map((item, itemIndex) => (
                 <li key={itemIndex}>
-                  <a
-                    href="#"
-                    className="flex items-center justify-between px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm text-gray-700 hover:bg-gray-50 rounded-md transition-colors"
-                  >
-                    <div className="flex items-center gap-2 sm:gap-3">
-                      {item.icon}
-                      <span>{item.label}</span>
-                    </div>
-                    <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400" />
-                  </a>
+                  {item.onClick ? (
+                    <button
+                      onClick={item.onClick}
+                      className="w-full flex items-center justify-between px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm text-gray-700 hover:bg-gray-50 rounded-md transition-colors"
+                    >
+                      <div className="flex items-center gap-2 sm:gap-3">
+                        {item.icon}
+                        <span>{item.label}</span>
+                      </div>
+                      <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400" />
+                    </button>
+                  ) : (
+                    <a
+                      href="#"
+                      className="flex items-center justify-between px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm text-gray-700 hover:bg-gray-50 rounded-md transition-colors"
+                    >
+                      <div className="flex items-center gap-2 sm:gap-3">
+                        {item.icon}
+                        <span>{item.label}</span>
+                      </div>
+                      <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400" />
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>
