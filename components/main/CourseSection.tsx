@@ -32,7 +32,7 @@ export default function CourseSection({
 }: CourseSectionProps) {
   const { isFavorite, toggleFavorite } = useFavoriteLectures();
   return (
-    <section className={`py-8 sm:py-10 md:py-12 bg-white ${className}`}>
+    <section className={`py-8 sm:py-10 md:py-12 bg-transparent ${className}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="flex items-center justify-between mb-6 sm:mb-8">
@@ -48,7 +48,7 @@ export default function CourseSection({
           {data.map((data) => (
             <Link
               key={data.id}
-              className="bg-white rounded-xl border border-gray-200 hover:shadow-lg transition-shadow cursor-pointer group"
+              className="bg-white/95 backdrop-blur-sm rounded-xl border border-gray-200 hover:shadow-lg transition-shadow cursor-pointer group"
               href={`/lecture/${data.id}`}
             >
               {/* Course Image */}

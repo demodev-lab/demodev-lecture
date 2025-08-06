@@ -98,30 +98,65 @@
     }
   }
 
+  .particles-background {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+  }
+
   .animate-fadeIn {
     animation: fadeIn 0.2s ease-out;
+  }
+
+  .particles-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
   }
 }
 
 /* Hero Carousel Styles */
 @layer components {
   .carousel-item-padding .carousel-slide {
-    @apply opacity-40 scale-[0.9];
+    @apply opacity-40;
   }
   
   .react-multi-carousel-item--active .carousel-slide {
     @apply opacity-100 scale-100;
   }
+}
+
+@layer components {
+  /* Carousel container */
+  .carousel-container {
+    padding-top: 24px;
+    padding-bottom: 24px;
+    margin: 0 -20%;
+  }
+  
+  /* Carousel item padding */
+  .carousel-item-padding {
+    padding: 0 8px;
+  }
+  
+
   
   /* Track alignment */
-  .react-multi-carousel-track {
-    @apply !flex !items-center;
+  .carousel-slide-track {
+    display: flex !important;
+    align-items: center !important;
   }
+  
+  
   
   /* Mobile adjustments */
   @media (max-width: 640px) {
-    .carousel-item-padding .carousel-slide {
-      @apply opacity-100 scale-100;
+    .carousel-container {
+      margin: 0;
     }
   }
 }

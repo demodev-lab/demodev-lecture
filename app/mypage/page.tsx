@@ -1,12 +1,22 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import MyPageSidebar from "@/components/mypage/MyPageSidebar";
 import MyPageDashboard from "@/components/mypage/MyPageDashboard";
 import MyPageProfile from "@/components/mypage/MyPageProfile";
 import PurchaseHistory from "@/components/mypage/PurchaseHistory";
 import FavoriteLectures from "@/components/mypage/FavoriteLectures";
-export default function MyPage() {
+
+function MyPageContent() {
+  const searchParams = useSearchParams();
+  const tabParam = searchParams.get("tab");
   const [activeTab, setActiveTab] = useState<"dashboard" | "profile" | "purchase" | "favorites">("dashboard");
+  
+  useEffect(() => {
+    if (tabParam === "purchase" || tabParam === "profile" || tabParam === "dashboard" || tabParam === "favorites") {
+      setActiveTab(tabParam);
+    }
+  }, [tabParam]);
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
@@ -33,5 +43,19 @@ export default function MyPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function MyPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 py-12">
+        <div className="max-w-4xl mx-auto px-4">
+          <p className="text-gray-600">로딩 중...</p>
+        </div>
+      </div>
+    }>
+      <MyPageContent />
+    </Suspense>
   );
 }

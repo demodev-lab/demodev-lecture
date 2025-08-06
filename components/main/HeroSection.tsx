@@ -21,27 +21,45 @@ const slides: HeroSlide[] = [
     id: 1,
     title: "",
     subtitle: "",
-    image: "/hero_1.png",
+    image: "/carousel/Frame_1.png",
     textColor: "white",
-    backgroundColor: "rgb(59, 130, 246)",
+    backgroundColor: "#6659F4",
     href: "#",
   },
   {
     id: 2,
     title: "",
     subtitle: "",
-    image: "/hero_2.png",
+    image: "/carousel/Frame_2_1.png",
     textColor: "white",
-    backgroundColor: "rgb(37, 99, 235)",
+    backgroundColor: "#5142E8",
     href: "#",
   },
   {
     id: 3,
     title: "",
     subtitle: "",
-    image: "/hero_3.png",
+    image: "/carousel/Frame_3_1.png",
     textColor: "white",
-    backgroundColor: "rgb(29, 78, 216)",
+    backgroundColor: "#432FD3",
+    href: "#",
+  },
+  {
+    id: 4,
+    title: "",
+    subtitle: "",
+    image: "/carousel/Frame_4.png",
+    textColor: "white",
+    backgroundColor: "#3A28B1",
+    href: "#",
+  },
+  {
+    id: 5,
+    title: "",
+    subtitle: "",
+    image: "/carousel/Frame_5.png",
+    textColor: "white",
+    backgroundColor: "#312292",
     href: "#",
   },
 ];
@@ -61,11 +79,11 @@ const CustomLeftArrow = ({ onClick, ...rest }: ArrowProps) => {
     <button 
       {...arrowProps}
       onClick={onClick}
-      className="absolute left-2 sm:left-4 lg:left-6 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-20 text-black rounded-lg transition-all duration-300 flex items-center justify-center group"
+      className="absolute left-2 sm:left-4 lg:left-6 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-20 text-brand-700 rounded-lg transition-all duration-300 flex items-center justify-center group"
       aria-label="이전 슬라이드"
     >
       <svg className="w-5 h-5 sm:w-6 sm:h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={5} d="M15 19l-7-7 7-7" />
       </svg>
     </button>
   );
@@ -79,11 +97,11 @@ const CustomRightArrow = ({ onClick, ...rest }: ArrowProps) => {
     <button 
       {...arrowProps}
       onClick={onClick}
-      className="absolute right-2 sm:right-4 lg:right-6 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-20  text-black rounded-lg transition-all duration-300 flex items-center justify-center group"
+      className="absolute right-2 sm:right-4 lg:right-6 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-20  text-brand-700 rounded-lg transition-all duration-300 flex items-center justify-center group"
       aria-label="다음 슬라이드"
     >
       <svg className="w-5 h-5 sm:w-6 sm:h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={5} d="M9 5l7 7-7 7" />
       </svg>
     </button>
   );
@@ -118,7 +136,7 @@ export default function HeroSection() {
   return (
     <section className="relative">
       {/* Main Hero Carousel */}
-      <div className="relative h-[240px] sm:h-[280px] md:h-[320px] lg:h-[340px] overflow-hidden">
+      <div className="relative h-[428px] overflow-hidden">
         <div className="mx-auto px-4 sm:px-6 lg:px-8">
           <Carousel
             responsive={responsive}
@@ -128,7 +146,7 @@ export default function HeroSection() {
             keyBoardControl={true}
             centerMode={true}
             containerClass="py-6 sm:py-8"
-            itemClass="px-1 sm:px-2 carousel-item-padding"
+            itemClass="px-0.5 carousel-item-padding"
             arrows={true}
             showDots={false}
             swipeable={true}
@@ -139,58 +157,25 @@ export default function HeroSection() {
             dotListClass="!bottom-2 sm:!bottom-4"
           >
             {slides.map((slide) => (
-              <CarouselItem key={slide.id} className="px-1">
+              <CarouselItem key={slide.id} className="px-1 rounded-lg">
                 <div
                   role="group"
                   aria-roledescription="slide"
-                  className="relative overflow-auto rounded-lg h-[200px] sm:h-[240px] md:h-[280px] lg:h-[280px] carousel-slide"
+                  className="relative overflow-hidden h-[428px] carousel-slide"
                 >
-                    <a href={slide.href} className="block h-full w-full">
-                      {/* Background */}
-                      <div
-                        className="relative top-0 left-0 h-full w-full"
-                        style={{ backgroundColor: slide.backgroundColor }}
-                      />
-
-                      {/* Image Container */}
-                      <div className="absolute top-0 left-0 mx-auto my-0 flex h-full w-full justify-end p-0">
-                        <div className="relative h-full w-full">
-                          <Image
-                            src={slide.image}
-                            alt="banner"
-                            fill
-                            sizes="(max-width: 640px) 90vw, (max-width: 1024px) 80vw, 70vw"
-                            className="object-cover"
-                            priority
-                            quality={100}
-                          />
-                        </div>
-
-                        {/* Content */}
-                        <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 md:bottom-8 md:left-8 lg:bottom-10 lg:left-10 z-[1] w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] md:w-[calc(100%-4rem)] lg:w-[calc(100%-5rem)]">
-                          {slide.badge && (
-                            <div className="mb-1 sm:mb-2 text-xs sm:text-sm font-normal break-keep text-white">
-                              {slide.badge}
-                            </div>
-                          )}
-                          <div className="mb-1 sm:mb-2 text-lg sm:text-xl md:text-2xl lg:text-[24px]/[30px] font-bold break-keep text-white">
-                            {slide.title.split("\n").map((line, i) => (
-                              <span key={i}>
-                                {line}
-                                {i < slide.title.split("\n").length - 1 && (
-                                  <br />
-                                )}
-                              </span>
-                            ))}
-                          </div>
-                          <div className="text-xs sm:text-sm md:text-base font-normal break-keep text-white">
-                            {slide.subtitle}
-                          </div>
-                        </div>
-                      </div>
-                    </a>
-                  </div>
-                </CarouselItem>
+                  <a href={slide.href} className="block relative h-full w-full">
+                    <Image
+                      src={slide.image}
+                      alt="banner"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 760px"
+                      className="object-contain rounded-lg"
+                      priority
+                      quality={100}
+                    />
+                  </a>
+                </div>
+              </CarouselItem>
             ))}
           </Carousel>
         </div>
