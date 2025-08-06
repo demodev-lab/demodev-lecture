@@ -7,6 +7,7 @@ import Header from "@/components/@shared/Header";
 import ConsoleEasterEgg from "@/components/@shared/ConsoleEasterEgg";
 import { AuthProvider } from "@/components/auth/AuthContext";
 import ParticlesBackground from "@/components/ui/ParticlesBackground";
+import { FavoriteLecturesProvider } from "@/contexts/FavoriteLecturesContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,12 +40,14 @@ export default function RootLayout({
       >
         <ParticlesBackground />
         <AuthProvider>
-          <Header />
-          <main className="flex-1">
-            <ClientBody>{children}</ClientBody>
-          </main>
-          <Footer />
-          <ConsoleEasterEgg />
+          <FavoriteLecturesProvider>
+            <Header />
+            <main className="flex-1">
+              <ClientBody>{children}</ClientBody>
+            </main>
+            <Footer />
+            <ConsoleEasterEgg />
+          </FavoriteLecturesProvider>
         </AuthProvider>
       </body>
     </html>

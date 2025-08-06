@@ -27,8 +27,8 @@ interface MenuSection {
 }
 
 interface MyPageSidebarProps {
-  activeTab?: "dashboard" | "profile" | "purchase";
-  onTabChange?: (tab: "dashboard" | "profile" | "purchase") => void;
+  activeTab?: "dashboard" | "profile" | "purchase" | "favorites";
+  onTabChange?: (tab: "dashboard" | "profile" | "purchase" | "favorites") => void;
 }
 
 export default function MyPageSidebar({ activeTab, onTabChange }: MyPageSidebarProps) {
@@ -46,7 +46,11 @@ export default function MyPageSidebar({ activeTab, onTabChange }: MyPageSidebarP
     {
       title: "강의 관련",
       items: [
-        { label: "관심 클래스", icon: <BookOpen className="w-4 h-4" /> },
+        { 
+          label: "관심 클래스", 
+          icon: <BookOpen className="w-4 h-4" />,
+          onClick: () => onTabChange?.("favorites")
+        },
         { label: "강의 상담", icon: <MessageCircle className="w-4 h-4" /> },
         { label: "아너스 혜택", icon: <Award className="w-4 h-4" /> },
         { label: "수료증", icon: <FileText className="w-4 h-4" /> },
