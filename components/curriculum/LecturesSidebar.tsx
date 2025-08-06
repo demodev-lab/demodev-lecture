@@ -196,7 +196,7 @@ export default function LecturesSidebar({ selectedCategory, selectedSubcategory 
         {searchQuery && (
           <div className="mb-6 p-3 bg-gray-50 rounded-lg">
             <p className="text-sm text-gray-600">
-              "{searchQuery}" 검색 결과
+              &ldquo;{searchQuery}&rdquo; 검색 결과
             </p>
           </div>
         )}
