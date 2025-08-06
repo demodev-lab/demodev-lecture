@@ -31,6 +31,12 @@ export default function CourseSection({
   className = "",
 }: CourseSectionProps) {
   const { isFavorite, toggleFavorite } = useFavoriteLectures();
+  
+  // 제목에 따라 타입 결정
+  const getType = () => {
+    if (title.includes("챌린지")) return "challenge" as const;
+    return "course" as const;
+  };
   return (
     <section className={`py-8 sm:py-10 md:py-12 bg-transparent ${className}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -118,11 +124,11 @@ export default function CourseSection({
                       badge: data.badge,
                       isNew: data.isNew,
                     };
-                    toggleFavorite(lecture);
+                    toggleFavorite(lecture, getType());
                   }}
                 >
                   <Heart className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-colors ${
-                    isFavorite(data.id) ? "text-red-500 fill-current" : "text-gray-600"
+                    isFavorite(data.id, getType()) ? "text-red-500 fill-current" : "text-gray-600"
                   }`} />
                 </div>
               </div>

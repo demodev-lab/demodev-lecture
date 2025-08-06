@@ -6,9 +6,9 @@ import { Lecture } from "@/app/lecture/[id]/lectures";
 interface FavoriteLecturesContextType {
   favoriteLectures: Lecture[];
   addToFavorites: (lecture: Lecture) => void;
-  removeFromFavorites: (lectureId: number) => void;
-  isFavorite: (lectureId: number) => boolean;
-  toggleFavorite: (lecture: Lecture) => void;
+  removeFromFavorites: (lectureId: number, type?: 'course' | 'challenge') => void;
+  isFavorite: (lectureId: number, type?: 'course' | 'challenge') => boolean;
+  toggleFavorite: (lecture: Lecture, type?: 'course' | 'challenge') => void;
 }
 
 const FavoriteLecturesContext = createContext<FavoriteLecturesContextType | undefined>(undefined);
@@ -47,17 +47,35 @@ export function FavoriteLecturesProvider({ children }: FavoriteLecturesProviderP
     });
   };
 
-  const removeFromFavorites = (lectureId: number) => {
-    setFavoriteLectures(prev => prev.filter(lecture => lecture.id !== lectureId));
+  const removeFromFavorites = (lectureId: number, type?: 'course' | 'challenge') => {
+    setFavoriteLectures(prev => prev.filter(lecture => {
+      if (type) {
+        // type이 지정된 경우, 해당 타입의 강의만 필터링
+        const isChallenge = lecture.url.includes('latpeed.com');
+        if (type === 'challenge' && isChallenge) return false;
+        if (type === 'course' && !isChallenge) return false;
+      }
+      return lecture.id !== lectureId;
+    }));
   };
 
-  const isFavorite = (lectureId: number) => {
-    return favoriteLectures.some(lecture => lecture.id === lectureId);
+  const isFavorite = (lectureId: number, type?: 'course' | 'challenge') => {
+    return favoriteLectures.some(lecture => {
+      if (lecture.id !== lectureId) return false;
+      if (type) {
+        // type이 지정된 경우, 해당 타입의 강의만 확인
+        const isChallenge = lecture.url.includes('latpeed.com');
+        if (type === 'challenge' && isChallenge) return true;
+        if (type === 'course' && !isChallenge) return true;
+        return false;
+      }
+      return true;
+    });
   };
 
-  const toggleFavorite = (lecture: Lecture) => {
-    if (isFavorite(lecture.id)) {
-      removeFromFavorites(lecture.id);
+  const toggleFavorite = (lecture: Lecture, type?: 'course' | 'challenge') => {
+    if (isFavorite(lecture.id, type)) {
+      removeFromFavorites(lecture.id, type);
     } else {
       addToFavorites(lecture);
     }
