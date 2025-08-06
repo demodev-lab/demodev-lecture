@@ -48,7 +48,10 @@ export default function FavoriteLectures() {
               />
               {/* 하트 버튼 */}
               <button
-                onClick={() => removeFromFavorites(lecture.id)}
+                onClick={() => {
+                  const isChallenge = lecture.url.includes('latpeed.com');
+                  removeFromFavorites(lecture.id, isChallenge ? 'challenge' : 'course');
+                }}
                 className="absolute top-3 right-3 p-2 bg-white/80 hover:bg-white rounded-full transition-colors"
                 aria-label="관심 강의에서 제거"
               >

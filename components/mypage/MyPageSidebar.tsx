@@ -3,7 +3,6 @@ import {
   User, 
   BookOpen, 
   MessageCircle, 
-  Award, 
   FileText, 
   Star, 
   ShoppingCart,
@@ -52,7 +51,6 @@ export default function MyPageSidebar({ activeTab, onTabChange }: MyPageSidebarP
           onClick: () => onTabChange?.("favorites")
         },
         { label: "강의 상담", icon: <MessageCircle className="w-4 h-4" /> },
-        { label: "아너스 혜택", icon: <Award className="w-4 h-4" /> },
         { label: "수료증", icon: <FileText className="w-4 h-4" /> },
         { label: "후기 관리", icon: <Star className="w-4 h-4" /> },
         { 

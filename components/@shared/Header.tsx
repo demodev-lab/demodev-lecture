@@ -162,12 +162,6 @@ export default function Header() {
                     <div className="overflow-hidden">
                       <div className="flex ml-0 h-full gap-6">
                         <Link
-                          href="/class/2"
-                          className="relative flex h-10 items-center border-b-2 border-b-transparent font-semibold pb-4 text-base hover:border-b-[#1c2a4b]"
-                        >
-                          오리지널
-                        </Link>
-                        <Link
                           href="/class/best"
                           className="relative flex h-10 items-center border-b-2 border-b-transparent font-semibold pb-4 text-base hover:border-b-[#1c2a4b]"
                         >
@@ -184,19 +178,6 @@ export default function Header() {
                           className="relative flex h-10 items-center border-b-2 border-b-transparent font-semibold pb-4 text-base hover:border-b-[#1c2a4b]"
                         >
                           오픈예정
-                        </Link>
-                        <Link
-                          href="#"
-                          className="relative flex h-10 items-center border-b-2 border-b-transparent font-semibold pb-4 text-base hover:border-b-[#1c2a4b]"
-                        >
-                          강의뭐듣지?
-                          <span className="absolute top-2 -right-2 rounded-full bg-red-500 h-1 w-1 sm:h-1.5 sm:w-1.5"></span>
-                        </Link>
-                        <Link
-                          href="/onboarding"
-                          className="relative flex h-10 items-center border-b-2 border-b-transparent font-semibold pb-4 text-base hover:border-b-[#1c2a4b]"
-                        >
-                          첫구매특가
                         </Link>
                       </div>
                     </div>
