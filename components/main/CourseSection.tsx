@@ -51,12 +51,18 @@ export default function CourseSection({
 
         {/* Course Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6">
-          {data.map((data) => (
-            <Link
-              key={data.id}
-              className="bg-white/95 backdrop-blur-sm rounded-xl border border-gray-200 hover:shadow-lg transition-shadow cursor-pointer group"
-              href={`/lecture/${data.id}`}
-            >
+          {data.map((data) => {
+            // 챌린지인지 확인 (latpeed.com URL 포함 여부)
+            const isChallenge = data.url.includes('latpeed.com');
+            
+            return (
+              <Link
+                key={data.id}
+                className="bg-white/95 backdrop-blur-sm rounded-xl border border-gray-200 hover:shadow-lg transition-shadow cursor-pointer group"
+                href={isChallenge ? data.url : `/lecture/${data.id}`}
+                target={isChallenge ? "_blank" : "_self"}
+                rel={isChallenge ? "noopener noreferrer" : ""}
+              >
               {/* Course Image */}
               <div className="relative aspect-video rounded-t-xl overflow-hidden">
                 <Image
@@ -165,7 +171,8 @@ export default function CourseSection({
                 </div>
               </div>
             </Link>
-          ))}
+          );
+        })}
         </div>
       </div>
     </section>
