@@ -136,7 +136,7 @@ export default function HeroSection() {
   return (
     <section className="relative">
       {/* Main Hero Carousel */}
-      <div className="relative h-[240px] sm:h-[280px] md:h-[320px] lg:h-[340px] overflow-hidden">
+      <div className="relative h-[428px] overflow-hidden">
         <div className="mx-auto px-4 sm:px-6 lg:px-8">
           <Carousel
             responsive={responsive}
@@ -146,7 +146,7 @@ export default function HeroSection() {
             keyBoardControl={true}
             centerMode={true}
             containerClass="py-6 sm:py-8"
-            itemClass="px-1 sm:px-2 carousel-item-padding"
+            itemClass="px-0.5 carousel-item-padding"
             arrows={true}
             showDots={false}
             swipeable={true}
@@ -157,58 +157,25 @@ export default function HeroSection() {
             dotListClass="!bottom-2 sm:!bottom-4"
           >
             {slides.map((slide) => (
-              <CarouselItem key={slide.id} className="px-1">
+              <CarouselItem key={slide.id} className="px-1 rounded-lg">
                 <div
                   role="group"
                   aria-roledescription="slide"
-                  className="relative overflow-auto rounded-lg h-[200px] sm:h-[240px] md:h-[280px] lg:h-[280px] carousel-slide"
+                  className="relative overflow-hidden h-[428px] carousel-slide"
                 >
-                    <a href={slide.href} className="block h-full w-full">
-                      {/* Background */}
-                      <div
-                        className="relative top-0 left-0 h-full w-full"
-                        style={{ backgroundColor: slide.backgroundColor }}
-                      />
-
-                      {/* Image Container */}
-                      <div className="absolute top-0 left-0 mx-auto my-0 flex h-full w-full justify-end p-0">
-                        <div className="relative h-full w-full">
-                          <Image
-                            src={slide.image}
-                            alt="banner"
-                            fill
-                            sizes="(max-width: 640px) 90vw, (max-width: 1024px) 80vw, 70vw"
-                            className="object-cover"
-                            priority
-                            quality={100}
-                          />
-                        </div>
-
-                        {/* Content */}
-                        <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 md:bottom-8 md:left-8 lg:bottom-10 lg:left-10 z-[1] w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] md:w-[calc(100%-4rem)] lg:w-[calc(100%-5rem)]">
-                          {slide.badge && (
-                            <div className="mb-1 sm:mb-2 text-xs sm:text-sm font-normal break-keep text-white">
-                              {slide.badge}
-                            </div>
-                          )}
-                          <div className="mb-1 sm:mb-2 text-lg sm:text-xl md:text-2xl lg:text-[24px]/[30px] font-bold break-keep text-white">
-                            {slide.title.split("\n").map((line, i) => (
-                              <span key={i}>
-                                {line}
-                                {i < slide.title.split("\n").length - 1 && (
-                                  <br />
-                                )}
-                              </span>
-                            ))}
-                          </div>
-                          <div className="text-xs sm:text-sm md:text-base font-normal break-keep text-white">
-                            {slide.subtitle}
-                          </div>
-                        </div>
-                      </div>
-                    </a>
-                  </div>
-                </CarouselItem>
+                  <a href={slide.href} className="block relative h-full w-full">
+                    <Image
+                      src={slide.image}
+                      alt="banner"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 760px"
+                      className="object-contain rounded-lg"
+                      priority
+                      quality={100}
+                    />
+                  </a>
+                </div>
+              </CarouselItem>
             ))}
           </Carousel>
         </div>

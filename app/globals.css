@@ -143,10 +143,7 @@
     padding: 0 8px;
   }
   
-  /* All slides visible styling */
-  .carousel-slide {
-    @apply transition-all duration-300;
-  }
+
   
   /* Track alignment */
   .carousel-slide-track {
@@ -154,10 +151,6 @@
     align-items: center !important;
   }
   
-  /* Carousel slide transitions */
-  .carousel-slide {
-    @apply transition-all duration-300;
-  }
   
   
   /* Mobile adjustments */
