@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState, useEffect, useMemo } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const sections = [
   {
@@ -125,9 +125,43 @@ interface LecturesSidebarProps {
 
 export default function LecturesSidebar({ selectedCategory, selectedSubcategory }: LecturesSidebarProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const searchQuery = searchParams.get('search') || '';
+  
   const [openSections, setOpenSections] = useState(
     sections.map((_, idx) => idx === 1) // 두 번째 섹션만 열어둠 (이미지와 같이)
   );
+
+  // 검색어에 따라 필터링된 섹션
+  const filteredSections = useMemo(() => {
+    if (!searchQuery) return sections;
+    
+    const lowerSearchQuery = searchQuery.toLowerCase();
+    
+    return sections.map(section => {
+      // 섹션 제목이 검색어를 포함하는지 확인
+      const titleMatches = section.title.toLowerCase().includes(lowerSearchQuery);
+      
+      // 섹션 아이템들 중 검색어를 포함하는 것만 필터링
+      const filteredItems = section.items.filter(item => 
+        item.toLowerCase().includes(lowerSearchQuery)
+      );
+      
+      // 섹션 제목이 매치되면 모든 아이템 표시, 아니면 필터링된 아이템만 표시
+      return {
+        ...section,
+        items: titleMatches ? section.items : filteredItems,
+        visible: titleMatches || filteredItems.length > 0
+      };
+    }).filter(section => section.visible);
+  }, [searchQuery]);
+
+  // 검색어가 있을 때 모든 섹션 열기
+  useEffect(() => {
+    if (searchQuery) {
+      setOpenSections(sections.map(() => true));
+    }
+  }, [searchQuery]);
 
   const handleToggle = (idx: number) => {
     setOpenSections((prev) =>
@@ -138,6 +172,10 @@ export default function LecturesSidebar({ selectedCategory, selectedSubcategory 
   const handleCategoryClick = (category: string) => {
     const params = new URLSearchParams();
     params.set('category', category);
+    // 검색어가 있으면 유지
+    if (searchQuery) {
+      params.set('search', searchQuery);
+    }
     router.push(`/curriculum?${params.toString()}`);
   };
 
@@ -145,26 +183,46 @@ export default function LecturesSidebar({ selectedCategory, selectedSubcategory 
     const params = new URLSearchParams();
     params.set('category', category);
     params.set('subcategory', subcategory);
+    // 검색어가 있으면 유지
+    if (searchQuery) {
+      params.set('search', searchQuery);
+    }
     router.push(`/curriculum?${params.toString()}`);
   };
 
   return (
     <aside className="w-full bg-white border-r border-gray-100 min-h-screen">
       <div className="px-6 py-8">
+        {searchQuery && (
+          <div className="mb-6 p-3 bg-gray-50 rounded-lg">
+            <p className="text-sm text-gray-600">
+              &ldquo;{searchQuery}&rdquo; 검색 결과
+            </p>
+          </div>
+        )}
         <div className="space-y-0">
-          {sections.map((section, idx) => (
-            <SectionToggle
-              key={section.title}
-              title={section.title}
-              items={section.items}
-              open={openSections[idx]}
-              onClick={() => handleToggle(idx)}
-              onItemClick={handleItemClick}
-              onCategoryClick={handleCategoryClick}
-              selectedCategory={selectedCategory || null}
-              selectedSubcategory={selectedSubcategory || null}
-            />
-          ))}
+          {filteredSections.length === 0 ? (
+            <div className="text-center py-8">
+              <p className="text-gray-500">검색 결과가 없습니다.</p>
+            </div>
+          ) : (
+            filteredSections.map((section) => {
+              const originalIdx = sections.findIndex(s => s.title === section.title);
+              return (
+                <SectionToggle
+                  key={section.title}
+                  title={section.title}
+                  items={section.items}
+                  open={openSections[originalIdx]}
+                  onClick={() => handleToggle(originalIdx)}
+                  onItemClick={handleItemClick}
+                  onCategoryClick={handleCategoryClick}
+                  selectedCategory={selectedCategory || null}
+                  selectedSubcategory={selectedSubcategory || null}
+                />
+              );
+            })
+          )}
         </div>
       </div>
     </aside>
