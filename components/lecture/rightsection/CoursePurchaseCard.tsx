@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Star } from "lucide-react";
 import { Lecture } from "@/app/lecture/[id]/lectures";
 import { formatPrice, getDiscountRate } from "@/lib/lecture-utils";
+import { useFavoriteLectures } from "@/contexts/FavoriteLecturesContext";
 import { useRouter } from "next/navigation";
 
 interface CoursePurchaseCardProps {
@@ -13,6 +14,7 @@ interface CoursePurchaseCardProps {
 export default function CoursePurchaseCard({ lecture }: CoursePurchaseCardProps) {
   const discountRate = getDiscountRate(lecture.price);
   const router = useRouter();
+  const { isFavorite, toggleFavorite } = useFavoriteLectures();
 
   const handlePurchaseClick = () => {
     router.push(`/payment?lectureId=${lecture.id}`);
@@ -112,9 +114,17 @@ export default function CoursePurchaseCard({ lecture }: CoursePurchaseCardProps)
         {/* Action Buttons */}
         <div className="space-y-3">
           <div className="flex items-center space-x-3">
-            <button className="p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors" aria-label="관심 강의로 추가">
+            <button 
+              onClick={() => toggleFavorite(lecture)}
+              className={`p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors ${
+                isFavorite(lecture.id) ? "bg-red-50 border-red-300" : ""
+              }`} 
+              aria-label="관심 강의로 추가"
+            >
               <svg
-                className="w-5 h-5 text-gray-600"
+                className={`w-5 h-5 transition-colors ${
+                  isFavorite(lecture.id) ? "text-red-500 fill-current" : "text-gray-600"
+                }`}
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >

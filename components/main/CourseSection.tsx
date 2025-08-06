@@ -3,6 +3,7 @@
 import { ChevronRight, Heart, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useFavoriteLectures } from "@/contexts/FavoriteLecturesContext";
 
 export interface Course {
   id: number;
@@ -29,6 +30,7 @@ export default function CourseSection({
   data,
   className = "",
 }: CourseSectionProps) {
+  const { isFavorite, toggleFavorite } = useFavoriteLectures();
   return (
     <section className={`py-8 sm:py-10 md:py-12 bg-white ${className}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -76,16 +78,52 @@ export default function CourseSection({
                   </span>
                 </div>
 
-                {/* Favorite Icon - button을 div로 변경 */}
+                {/* Favorite Icon */}
                 <div
                   className="absolute top-2 right-2 sm:top-3 sm:right-3 p-1 sm:p-1.5 bg-white/80 rounded-full hover:bg-white transition-colors cursor-pointer"
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    // 좋아요 기능 구현
+                    // Course 데이터를 Lecture 형태로 변환
+                    const lecture = {
+                      id: data.id,
+                      title: data.title,
+                      instructor: { 
+                        name: data.instructor || "데모데브", 
+                        bio: "", 
+                        avatar: "", 
+                        experience: "",
+                        specialties: []
+                      },
+                      description: data.description || "",
+                      detailedDescription: "",
+                      rating: data.rating,
+                      reviews: data.reviews,
+                      category: data.category,
+                      image: data.image,
+                      url: data.url,
+                      duration: "",
+                      level: "beginner" as const,
+                      language: "한국어",
+                      lastUpdated: "",
+                      enrolledStudents: 0,
+                      price: { original: 0, currency: "KRW" },
+                      learningOutcomes: [],
+                      prerequisites: [],
+                      tags: [],
+                      chapters: [],
+                      certificateProvided: false,
+                      hasSubtitles: false,
+                      supportedDevices: [],
+                      badge: data.badge,
+                      isNew: data.isNew,
+                    };
+                    toggleFavorite(lecture);
                   }}
                 >
-                  <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-600" />
+                  <Heart className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-colors ${
+                    isFavorite(data.id) ? "text-red-500 fill-current" : "text-gray-600"
+                  }`} />
                 </div>
               </div>
 
