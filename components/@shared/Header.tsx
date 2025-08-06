@@ -17,6 +17,7 @@ export default function Header() {
   const [headerHeight, setHeaderHeight] = useState(0);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     function updateHeaderHeight() {
@@ -29,6 +30,17 @@ export default function Header() {
     window.addEventListener("resize", updateHeaderHeight);
     return () => window.removeEventListener("resize", updateHeaderHeight);
   }, []);
+
+  const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/curriculum?search=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
 
   return (
     <>
@@ -75,18 +87,20 @@ export default function Header() {
           {/* Right section - Search and Auth */}
           <div className="flex items-center gap-2">
             {/* Search Bar - 모바일에서 크기 조정 */}
-            <div className="flex">
+            <form onSubmit={handleSearchSubmit} className="flex">
               <span className="relative inline-flex h-10 sm:h-11 w-full">
                 <span className="absolute flex h-full items-center pl-3 sm:pl-4">
                   <Search className="h-4 w-4 text-neutral-500" />
                 </span>
                 <input
-                  className="h-full w-36 sm:w-48 md:w-64 lg:w-80 xl:w-96 border border-solid border-gray-200 bg-gray-100 px-10 sm:px-11 py-0 font-medium placeholder-gray-400 rounded-lg text-xs sm:text-sm focus:border-blue-500 focus:bg-white focus:outline-none transition-all duration-200"
+                  onChange={handleSearchChange} 
+                  value={searchQuery}
+                  className="h-full w-36 sm:w-48 md:w-64 lg:w-80 xl:w-96 border border-solid border-gray-200 bg-gray-100 px-10 sm:px-11 py-0 font-medium placeholder-gray-400 rounded-lg text-xs sm:text-sm focus:border-brand-500 focus:bg-white focus:outline-none transition-all duration-200"
                   placeholder="검색어를 입력하세요"
                   aria-label="검색어 입력"
                 />
               </span>
-            </div>
+            </form>
 
             {/* Auth Buttons - 모바일에서는 숨기거나 간소화 */}
             <div className="hidden sm:flex items-center gap-1 md:gap-2">
