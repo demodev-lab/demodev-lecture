@@ -11,11 +11,14 @@ export default function SignupPage() {
   const [loading, setLoading] = useState(false);
 
   const handleSendVerification = () => {
-    if (phone) {
-      // 인증번호 발송 로직
-      setShowVerification(true);
-      alert("인증번호가 발송되었습니다.");
+    if (phone.length < 10) {
+      alert("휴대폰 번호를 정확히 입력해주세요.");
+      return;
     }
+    
+    // 임시로 인증번호는 "123456"으로 고정
+    setShowVerification(true);
+    alert("인증번호가 발송되었습니다.\n임시 인증번호: 123456");
   };
 
   const handleVerify = () => {
