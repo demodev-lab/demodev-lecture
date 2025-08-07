@@ -4,15 +4,9 @@ import { useState } from "react";
 
 const categories = [
   { id: "all", label: "전체" },
-  { id: "real-estate", label: "부동산투자" },
-  { id: "home", label: "내집마련" },
-  { id: "online-store", label: "온라인스토어" },
-  { id: "blog", label: "블로그" },
-  { id: "youtube", label: "유튜브" },
-  { id: "auction", label: "경매" },
-  { id: "stock", label: "주식" },
-  { id: "finance", label: "재테크" },
-  { id: "tax-loan", label: "세금/대출" },
+  { id: "vibe-coding", label: "바이브코딩" },
+  { id: "web-app", label: "웹/앱" },
+  { id: "auto", label: "자동화" },
 ];
 
 export default function BestPage() {

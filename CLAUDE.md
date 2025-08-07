@@ -1,276 +1,628 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides comprehensive guidance to Claude Code (claude.ai/code) when working with the DemoLearn platform - an online learning platform for development courses and challenges.
 
 ## Overview
 
-This is a Next.js 15 web application for "대모산 개발단" (Demodev Group), an online learning platform focused on development courses and challenges. The app uses React 19, TypeScript 5, and Tailwind CSS for styling with a custom purple brand theme.
+DemoLearn (대모산 개발단) is a comprehensive online education platform built with Next.js 15, React 19, TypeScript 5, and Tailwind CSS. The platform specializes in AI-powered coding education, offering structured courses, challenges, and a complete learning management system.
+
+## Tech Stack
+
+- **Framework**: Next.js 15 (App Router)
+- **Frontend**: React 19, TypeScript 5
+- **Styling**: Tailwind CSS with custom purple brand theme
+- **UI Components**: shadcn/ui with Radix UI primitives
+- **Icons**: Lucide React
+- **Carousel**: react-multi-carousel
+- **Font**: Noto Sans KR
+- **Package Manager**: npm (IMPORTANT: Do not use yarn or pnpm)
 
 ## Commands
 
 ### Development
-
-**IMPORTANT**: This project uses `npm` as the package manager.
-
-- `npm run dev` - Start development server on http://localhost:3000
-- `npm run build` - Create production build
-- `npm run start` - Start production server
-- `npm run lint` - Run ESLint for code quality checks
+```bash
+npm run dev        # Start development server on http://localhost:3000
+npm run build      # Create production build
+npm run start      # Start production server
+npm run lint       # Run ESLint for code quality checks
+```
 
 ### Package Management
+```bash
+npm install              # Install dependencies
+npm install <package>    # Add a new dependency
+npm uninstall <package>  # Remove a dependency
+```
 
-- `npm install` - Install dependencies
-- `npm install <package>` - Add a new dependency
-- `npm uninstall <package>` - Remove a dependency
+## Project Structure
 
-### TypeScript
+### Directory Layout
+```
+demolearn/
+├── app/                    # Next.js App Router pages
+│   ├── admin/             # Admin dashboard system
+│   ├── challenge/         # Challenge pages
+│   ├── class/            # Class-related pages
+│   │   ├── best/         # Best courses page
+│   │   └── openScheduled/ # Upcoming courses
+│   ├── curriculum/        # Course curriculum listing
+│   ├── find/             # Account recovery pages
+│   ├── lecture/          # Lecture detail pages
+│   ├── mypage/           # User dashboard
+│   ├── payment/          # Payment flow
+│   └── signup/           # Registration
+├── components/            # Reusable React components
+│   ├── @shared/          # Shared components (Header, Footer)
+│   ├── admin/            # Admin-specific components
+│   ├── auth/             # Authentication components
+│   ├── challenge/        # Challenge-related components
+│   ├── curriculum/       # Course listing components
+│   ├── lecture/          # Lecture viewing components
+│   ├── main/             # Homepage components
+│   ├── mypage/           # User dashboard components
+│   ├── payment/          # Payment components
+│   ├── signup/           # Registration components
+│   └── ui/               # Base UI components
+├── data/                 # Static data and fixtures
+├── lib/                  # Utility functions
+├── types/                # TypeScript type definitions
+└── public/               # Static assets
+```
 
-- No separate TypeScript check command; TypeScript errors appear during development and build
+## Database Schema (ERD)
 
-## Architecture
+### Core Entities
 
-### App Structure
+#### 1. Users (사용자)
+```typescript
+{
+  id: string (PK)
+  email: string (unique)
+  password: string (hashed)
+  name: string
+  phone: string
+  role: 'user' | 'admin'
+  created_at: timestamp
+  updated_at: timestamp
+}
+```
 
-The project uses Next.js 13+ App Router with the following key areas:
+#### 2. Lectures (강의)
+```typescript
+{
+  id: string (PK)
+  title: string
+  subtitle: string
+  instructor_id: string (FK → Instructors)
+  description: string
+  detailed_description: text
+  thumbnail: string
+  badge: string
+  category_id: string (FK → Categories)
+  subcategory_id: string (FK → Categories)
+  price: number
+  discounted_price: number
+  duration: string
+  level: 'beginner' | 'intermediate' | 'advanced'
+  language: string
+  rating: number
+  review_count: number
+  enrolled_count: number
+  is_new: boolean
+  is_active: boolean
+  last_updated: timestamp
+  created_at: timestamp
+  updated_at: timestamp
+}
+```
 
-1. **app/** - Next.js app router pages and layouts
+#### 3. Categories (카테고리)
+```typescript
+{
+  id: string (PK)
+  name: string
+  parent_id: string (FK → Categories, nullable)
+  order: number
+  is_active: boolean
+}
+```
 
-   - Routes are file-system based
-   - Client components require "use client" directive
-   - Server components are default
-   - `/curriculum` - Course listing page with sidebar navigation
-   - `/mypage` - User dashboard with learning progress and purchase history
+Current Category Structure:
+- **오리지널**
+  - 바이브 빌더스
+- **바이브 코딩**
+  - 프롬프트 엔지니어링
+  - 컨텍스트 엔지니어링
+  - AI 도구 활용
+- **앱/웹**
+  - 앱 바이브 코딩 입문
+  - 웹 바이브 코딩 입문
+  - 앱 수익화
+  - 웹 수익화
+- **자동화**
+  - n8n
+  - Make
+  - PyTorch
+  - 크롤링
+  - AI 업무 자동화
 
-2. **components/** - Reusable React components
+#### 4. Chapters (강의 챕터)
+```typescript
+{
+  id: string (PK)
+  lecture_id: string (FK → Lectures)
+  section_id: string (FK → Sections)
+  title: string
+  duration: number (seconds)
+  video_url: string
+  order: number
+  is_free: boolean
+  description: text
+}
+```
 
-   - `ui/` - Base UI components using shadcn/ui with Radix UI primitives and CVA for variants
-   - `admin/` - Admin-specific components (Header, Sidebar, UserProfileDropdown, LectureModal)
-   - `curriculum/` - Components for the course listing page (LecturesHero, LecturesGrid, LecturesSidebar, LectureCard)
-   - `mypage/` - User dashboard components:
-     - `MyPageDashboard.tsx` - Main dashboard with statistics and progress
-     - `MyPageProfile.tsx` - User profile management
-     - `MyPageSidebar.tsx` - Navigation sidebar with user statistics
-     - `PurchaseHistory.tsx` - Purchase history with filtering and status tracking
-     - `DatePicker.tsx` - Custom date range picker for filtering
-   - Business components like CourseCard, Header, Footer, HeroSection (now using react-multi-carousel)
-   - ConsoleEasterEgg - Developer console easter egg component
+#### 5. Sections (강의 섹션)
+```typescript
+{
+  id: string (PK)
+  lecture_id: string (FK → Lectures)
+  title: string
+  order: number
+}
+```
 
-3. **data/** - Static data and type definitions
+#### 6. Purchases (구매내역)
+```typescript
+{
+  id: string (PK)
+  user_id: string (FK → Users)
+  lecture_id: string (FK → Lectures)
+  payment_number: string (unique)
+  payment_date: timestamp
+  status: PurchaseStatus
+  original_price: number
+  coupon_discount: number
+  voucher_discount: number
+  points_used: number
+  final_amount: number
+  refundable: boolean
+  created_at: timestamp
+}
+```
 
-   - Course data structure with interfaces for type safety
-   - `courses.ts` exports Course interface and static data arrays
-   - `challenges.ts` contains challenge-related data
+Purchase Status Types:
+- `order_pending_unpayable` - 주문대기(결제불가)
+- `order_pending_payable` - 주문대기(결제가능)
+- `order_cancelled` - 주문취소
+- `completed` - 결제완료/수강중
+- `payment_cancelled` - 결제취소
+- `refund_pending` - 환불요청
+- `refunded` - 환불완료
 
-4. **lib/** - Utility functions
+#### 7. LectureProgress (수강 진도)
+```typescript
+{
+  user_id: string (FK → Users)
+  lecture_id: string (FK → Lectures)
+  chapter_id: string (FK → Chapters)
+  watched_seconds: number
+  completed: boolean
+  last_updated: timestamp
+}
+```
 
-   - `utils.ts` contains `cn()` helper for className merging
-   - `lecture-utils.ts` contains lecture-related utilities
+#### 8. Reviews (리뷰)
+```typescript
+{
+  id: string (PK)
+  user_id: string (FK → Users)
+  lecture_id: string (FK → Lectures)
+  rating: number (1-5)
+  content: text
+  is_best_review: boolean
+  created_at: timestamp
+  updated_at: timestamp
+}
+```
 
-5. **utils/** - Additional utility functions
-   - `console-easter-egg.ts` - Console easter egg implementation showing DEMODEV ASCII art
+#### 9. Instructors (강사)
+```typescript
+{
+  id: string (PK)
+  name: string
+  bio: text
+  avatar: string
+  experience: string
+  specialties: string[] (JSON)
+  created_at: timestamp
+}
+```
 
-6. **types/** - TypeScript type definitions
-   - `auth.ts` - Authentication-related types
-   - `purchase.ts` - Purchase and payment history types with 8 different status states
+#### 10. Challenges (챌린지)
+```typescript
+{
+  id: string (PK)
+  title: string
+  description: string
+  thumbnail: string
+  url: string
+  price: number
+  is_active: boolean
+  created_at: timestamp
+}
+```
 
-### Admin System Architecture
+#### 11. Favorites (찜목록)
+```typescript
+{
+  user_id: string (FK → Users)
+  lecture_id: string (FK → Lectures)
+  created_at: timestamp
+}
+```
 
-The admin system uses a comprehensive multi-layer approach with proper authentication flow:
+## API Endpoints Structure
 
-1. **Authentication Flow**:
+### Authentication
+```
+POST   /api/auth/login          # 로그인
+POST   /api/auth/signup         # 회원가입
+POST   /api/auth/logout         # 로그아웃
+POST   /api/auth/refresh        # 토큰 갱신
+POST   /api/auth/verify-phone   # 휴대폰 인증
+POST   /api/auth/find-id        # 아이디 찾기
+POST   /api/auth/reset-password # 비밀번호 재설정
+```
 
-   - `/admin` - Redirects to login page
-   - `/admin/login` - Enhanced login page with form validation and loading states
-   - Uses localStorage for authentication state management
-   - Hardcoded credentials: admin@demodev.com / admin123
-   - Prepared for Supabase integration
+### Lectures
+```
+GET    /api/lectures                    # 강의 목록
+GET    /api/lectures/:id               # 강의 상세
+GET    /api/lectures/:id/chapters      # 강의 챕터 목록
+GET    /api/lectures/:id/reviews       # 강의 리뷰
+POST   /api/lectures/:id/enroll        # 강의 수강 신청
+GET    /api/lectures/categories        # 카테고리 목록
+GET    /api/lectures/search           # 강의 검색
+```
 
-2. **Layout Structure**:
+### User Dashboard
+```
+GET    /api/users/profile              # 프로필 조회
+PUT    /api/users/profile              # 프로필 수정
+GET    /api/users/purchases            # 구매 내역
+GET    /api/users/progress             # 수강 진도
+GET    /api/users/favorites            # 찜 목록
+POST   /api/users/favorites/:lectureId # 찜 추가
+DELETE /api/users/favorites/:lectureId # 찜 삭제
+```
 
-   - `/admin/layout.tsx` - Simple passthrough layout
-   - `/admin/dashboard/layout.tsx` - Protected layout with sidebar/header + authentication check
-   - Login page has no sidebar/header for clean authentication experience
-   - Dashboard pages automatically include sidebar/header through layout
+### Payments
+```
+POST   /api/payments/prepare           # 결제 준비
+POST   /api/payments/complete          # 결제 완료
+POST   /api/payments/cancel            # 결제 취소
+POST   /api/payments/refund            # 환불 요청
+GET    /api/payments/:id               # 결제 상세
+```
 
-3. **Dashboard Layer**: `/admin/dashboard` - Protected admin interface
+### Admin
+```
+GET    /api/admin/dashboard            # 대시보드 통계
+GET    /api/admin/lectures             # 강의 관리
+POST   /api/admin/lectures             # 강의 생성
+PUT    /api/admin/lectures/:id         # 강의 수정
+DELETE /api/admin/lectures/:id         # 강의 삭제
+GET    /api/admin/users                # 사용자 관리
+GET    /api/admin/payments             # 결제 관리
+```
 
-   - Authentication verification in dashboard layout
-   - Sidebar navigation with mobile responsive design
-   - Statistics cards showing platform metrics
-   - Activity feed and quick action buttons
-   - Lectures management at `/admin/dashboard/lectures`
+## User Flows
 
-4. **Component Architecture**: `components/admin/`
-   - Modular admin components for reusability
-   - Sidebar component with navigation items
-   - Header and UserProfileDropdown with logout functionality
-   - Specialized components like LectureModal
+### 1. Registration Flow
+```
+홈페이지 → 회원가입 버튼 클릭
+→ AuthModal 오픈
+→ 회원가입 폼 표시
+→ 휴대폰 번호 입력
+→ 인증번호 발송
+→ 인증번호 확인
+→ 회원가입 완료
+→ 자동 로그인
+```
 
-### Authentication Integration
+### 2. Lecture Purchase Flow
+```
+강의 목록 → 강의 선택
+→ 상세 페이지 진입
+→ "수강 신청" 버튼 클릭
+→ 로그인 확인 (미로그인시 AuthModal)
+→ 결제 페이지 이동
+→ 결제 정보 입력
+→ 결제 완료
+→ 마이페이지 수강 목록 추가
+```
 
-The project implements a complete authentication system:
+### 3. Lecture Learning Flow
+```
+마이페이지 → 수강중인 강의
+→ 강의 선택
+→ 비디오 플레이어 페이지
+→ 챕터별 학습
+→ 진도 자동 저장
+→ 완료시 수료증 발급
+```
 
-- **Current Implementation**: localStorage-based authentication with hardcoded credentials
-- **Login Flow**: `/admin` → `/admin/login` → `/admin/dashboard` (on success)
-- **Protection**: Dashboard layout automatically redirects unauthenticated users to login
-- **Logout**: UserProfileDropdown component clears authentication and redirects to login
+### 4. Admin Management Flow
+```
+/admin 접속 → 로그인 (admin@demodev.com / admin123)
+→ 대시보드 진입
+→ 강의 관리 / 사용자 관리 / 통계 확인
+→ CRUD 작업 수행
+```
 
-### Client-Side Component Patterns
+## Component Architecture
 
-For components that need client-side features, follow these patterns to avoid hydration issues:
+### Atomic Design Pattern
+```
+1. UI Components (atoms)
+   - Button, Input, Card, Badge
+   - Radix UI primitives with CVA variants
 
-```tsx
+2. Feature Components (molecules)
+   - AuthForm, CourseCard, LectureCard
+   - VideoPlayer, ProgressTracker
+
+3. Section Components (organisms)
+   - Header, Footer, Sidebar
+   - HeroSection, CourseSection
+
+4. Page Components (templates)
+   - MyPageDashboard, PaymentPage
+   - LecturePlayerLayout
+
+5. Pages (pages)
+   - Route-based components
+```
+
+### State Management
+- **Authentication**: Context API (AuthContext)
+- **Local State**: useState, useEffect hooks
+- **Form State**: Controlled components
+- **URL State**: useSearchParams for filters
+
+### Data Fetching Pattern
+```typescript
+// Server Components (default)
+async function Page() {
+  const data = await fetchData();
+  return <Component data={data} />;
+}
+
+// Client Components
 "use client";
-
-import { useState, useEffect } from "react";
-
-export default function Component() {
-  const [mounted, setMounted] = useState(false);
-
+function Component() {
+  const [data, setData] = useState(null);
   useEffect(() => {
-    setMounted(true);
+    fetchData().then(setData);
   }, []);
+}
+```
 
-  if (!mounted) {
-    return null; // or loading skeleton
+## Styling System
+
+### Tailwind Configuration
+```javascript
+// Brand Colors
+colors: {
+  brand: {
+    50: '#f3e8ff',
+    100: '#e9d5ff',
+    200: '#d8b4fe',
+    300: '#c084fc',
+    400: '#a855f7',
+    500: '#9333ea', // Primary purple
+    600: '#7e22ce',
+    700: '#6b21a8',
+    800: '#581c87',
+    900: '#3b0764',
   }
-
-  return (
-    // Component JSX
-  );
 }
 ```
 
-### UI Component System
-
-The project uses shadcn/ui components built on Radix UI primitives:
-
-- **Styling**: Tailwind CSS with CSS variables for theming
-- **Variants**: Class Variance Authority (CVA) for component variants
-- **Theming**: CSS custom properties defined in globals.css with purple brand color palette
-- **Dark Mode**: Configured via Tailwind's class-based dark mode
-- **Icons**: Lucide React icons throughout the application
-- **Typography**: Noto Sans KR font for Korean content support
-- **Custom Utilities**: Brand colors, scrollbar styling, line clamp utilities
-
-### Carousel Implementation
-
-The project uses `react-multi-carousel` for carousel functionality:
-
-- **HeroSection**: Main homepage carousel with responsive breakpoints
-- Replaced `react-slick` with `react-multi-carousel` for better performance and React 19 compatibility
-- Features center mode, autoplay, and responsive design
-
-### Developer Experience Features
-
-**Console Easter Egg**: When opening developer tools, users see:
-- DEMODEV ASCII art in purple theme
-- Welcome message and company information
-- Hidden commands: `demodev.team()`, `demodev.courses()`, `demodev.secret()`
-- Implemented via ConsoleEasterEgg component in the root layout
-
-### MyPage System Architecture
-
-The MyPage system provides a comprehensive user dashboard:
-
-1. **Dashboard Features**:
-   - Learning progress tracking with statistics
-   - Course completion metrics
-   - User profile management
-   - Purchase history with advanced filtering
-
-2. **Purchase History System**:
-   - 8 different purchase status states (결제완료, 수강중, 수강완료, etc.)
-   - Date range filtering with custom date picker
-   - Status-based filtering with dropdown
-   - Responsive table layout with mobile optimization
-
-3. **Component Architecture**:
-   - Sidebar navigation with collapsible menu
-   - Statistics cards showing user metrics
-   - Tabbed interface for different sections
-   - Integrated with main app navigation
-
-### Data Structure
-
-Core data models include:
-
-**Course Interface**:
-```tsx
-interface Course {
-  id: number;
-  title: string;
-  instructor: string;
-  category: string;
-  price: number;
-  originalPrice?: number;
-  rating: number;
-  ratingCount: number;
-  likeCount: number;
-  thumbnail: string;
-  isLiked?: boolean;
-  url: string;
-}
+### Component Styling Pattern
+```typescript
+// Using CVA for variants
+const buttonVariants = cva(
+  "base-styles",
+  {
+    variants: {
+      variant: {
+        default: "default-styles",
+        outline: "outline-styles",
+      },
+      size: {
+        sm: "small-styles",
+        md: "medium-styles",
+        lg: "large-styles",
+      }
+    }
+  }
+);
 ```
 
-**Purchase Types**:
-```tsx
-type PurchaseStatus = 
-  | "결제완료"    // Payment Complete
-  | "수강중"      // In Progress
-  | "수강완료"    // Completed
-  | "환불요청"    // Refund Requested
-  | "환불완료"    // Refund Complete
-  | "수강취소"    // Cancelled
-  | "결제대기"    // Payment Pending
-  | "결제실패";   // Payment Failed
-```
+## Security Considerations
 
-### Key Architectural Decisions
+1. **Authentication**
+   - JWT tokens for session management
+   - Secure password hashing (bcrypt)
+   - Phone number verification for signup
 
-1. **Styling**: Tailwind CSS utility-first approach with CSS variables for theming and custom brand colors
-2. **Components**: Functional components with TypeScript interfaces for props
-3. **State**: Local component state only - no global state management
-4. **Data**: Static data in TypeScript files - prepared for API integration
-5. **Routing**: File-based routing with Next.js App Router
-6. **Authentication**: Prepared for Supabase, currently using placeholder implementation
-7. **Admin Interface**: Comprehensive admin system with reusable components
-8. **User Dashboard**: MyPage system with purchase history and learning progress
-9. **Carousel**: react-multi-carousel for better performance and compatibility
+2. **Authorization**
+   - Role-based access control (user/admin)
+   - Protected routes with middleware
+   - API endpoint authorization
 
-### Component Patterns
+3. **Data Protection**
+   - Input validation and sanitization
+   - SQL injection prevention
+   - XSS protection with React's default escaping
 
-Components follow this structure:
+## Performance Optimization
 
-```tsx
-"use client"; // Only if client-side features needed
+1. **Next.js Optimizations**
+   - Static generation for public pages
+   - Dynamic imports for code splitting
+   - Image optimization with next/image
 
+2. **React Optimizations**
+   - Memo for expensive calculations
+   - Lazy loading for components
+   - Virtualization for long lists
+
+3. **Asset Optimization**
+   - Tailwind CSS purging
+   - Font subsetting
+   - SVG optimization
+
+## Development Guidelines
+
+### Code Style
+```typescript
+// Component structure
 interface ComponentProps {
   // Typed props
 }
 
 export function Component({ props }: ComponentProps) {
-  // Implementation
+  // Hooks first
+  const [state, setState] = useState();
+  
+  // Effects
+  useEffect(() => {}, []);
+  
+  // Handlers
+  const handleClick = () => {};
+  
+  // Render
+  return <div />;
 }
 ```
 
-### Path Aliases
+### File Naming
+- Components: PascalCase (MyComponent.tsx)
+- Utilities: camelCase (myUtil.ts)
+- Types: PascalCase (MyType.ts)
+- Pages: kebab-case folders
 
-- `@/*` maps to project root for clean imports
+### Git Workflow
+```bash
+# Branch naming
+feat/feature-name
+fix/bug-description
+chore/task-description
+
+# Commit format
+feat: Add new feature
+fix: Resolve bug
+docs: Update documentation
+style: Format code
+refactor: Restructure code
+test: Add tests
+chore: Update dependencies
+```
+
+## Testing Strategy
+
+### Unit Testing (To be implemented)
+```typescript
+// Component testing with React Testing Library
+describe('Component', () => {
+  it('should render correctly', () => {
+    render(<Component />);
+    expect(screen.getByText('text')).toBeInTheDocument();
+  });
+});
+```
+
+### E2E Testing (To be implemented)
+```typescript
+// Playwright for E2E testing
+test('user can purchase course', async ({ page }) => {
+  await page.goto('/lectures');
+  await page.click('[data-testid="course-card"]');
+  await page.click('[data-testid="purchase-button"]');
+  // ...
+});
+```
+
+## Deployment
+
+### Environment Variables
+```env
+# .env.local
+NEXT_PUBLIC_API_URL=https://api.demolearn.com
+DATABASE_URL=postgresql://...
+JWT_SECRET=...
+PHONE_AUTH_API_KEY=...
+PAYMENT_API_KEY=...
+```
+
+### Build & Deploy
+```bash
+npm run build
+npm run start
+
+# Or with PM2
+pm2 start npm --name "demolearn" -- start
+```
+
+## Monitoring & Analytics
+
+### Performance Monitoring
+- Web Vitals tracking
+- Error logging with Sentry
+- Analytics with Google Analytics
+
+### User Tracking
+- Learning progress analytics
+- Course completion rates
+- User engagement metrics
+
+## Future Enhancements
+
+1. **Features**
+   - Live streaming classes
+   - Discussion forums
+   - Assignment submissions
+   - Peer reviews
+   - Certificates generation
+
+2. **Technical**
+   - GraphQL API migration
+   - Microservices architecture
+   - Redis caching
+   - WebSocket for real-time features
+   - Mobile app development
 
 ## Important Notes
 
-1. **Package Manager**: Uses `npm` as the package manager
-2. **No Testing Framework**: Currently no tests or testing setup
-3. **Admin Authentication**: Complete authentication system with localStorage, ready for Supabase upgrade
-4. **External Integration**: Courses link to external platform (latpeed.com)
-5. **Korean Language**: Content is primarily in Korean - ensure proper UTF-8 encoding when editing files
-6. **Development State**: Admin and MyPage systems are fully functional
-7. **Hydration**: Client components use mounted state pattern to prevent hydration mismatches
-8. **UI Library**: Uses shadcn/ui components with Radix UI primitives for accessibility
-9. **Layout Separation**: Login page (clean) vs Dashboard pages (with sidebar/header) via separate layouts
-10. **Authentication Pattern**: Dashboard layout handles auth checks, individual pages don't need auth logic
-11. **Carousel Library**: Uses react-multi-carousel instead of react-slick for React 19 compatibility
-12. **Developer Tools**: Console easter egg shows DEMODEV branding when developer tools are opened
-13. **MyPage Features**: User dashboard with purchase history, date filtering, and learning progress tracking
-14. **Brand Theme**: Purple color palette with custom Tailwind utilities for consistent branding
+1. **Package Manager**: Always use `npm` (not yarn or pnpm)
+2. **React Version**: React 19 with Next.js 15
+3. **TypeScript**: Strict mode enabled
+4. **Authentication**: Currently localStorage, prepared for Supabase
+5. **Payment**: Integration ready for Korean payment gateways
+6. **Internationalization**: Korean-first with UTF-8 encoding
+7. **Mobile**: Responsive design with mobile-first approach
+8. **Browser Support**: Modern browsers (Chrome, Firefox, Safari, Edge)
+
+## Console Easter Egg
+
+When developer tools are opened, users see:
+- DEMODEV ASCII art in purple theme
+- Hidden commands: `demodev.team()`, `demodev.courses()`, `demodev.secret()`
+- Welcome message for developers
+
+---
+
+Last Updated: 2025-01-07
+Version: 2.0.0
