@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/utils/supabase";
 import { User, Session } from "@supabase/supabase-js";
 
 interface AuthContextType {
@@ -53,7 +53,7 @@ export function SupabaseAuthProvider({ children }: { children: React.ReactNode }
 
   const signUp = async (email: string, password: string, name: string) => {
     try {
-      const { data, error } = await supabase.auth.signUp({
+      const { error } = await supabase.auth.signUp({
         email,
         password,
         options: {
