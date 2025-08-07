@@ -75,12 +75,6 @@ export default function Header() {
               >
                 클래스
               </Link>
-              <Link
-                href="/community"
-                className="cursor-pointer py-1 px-2 sm:px-3 text-base sm:text-lg md:text-xl font-bold no-underline text-gray-900"
-              >
-                커뮤니티
-              </Link>
             </div>
           </div>
 
@@ -229,12 +223,6 @@ export default function Header() {
               className="whitespace-nowrap text-sm font-semibold  px-2"
             >
               클래스
-            </Link>
-            <Link
-              href="/community"
-              className="whitespace-nowrap text-sm font-semibold text-[#222222] px-2"
-            >
-              커뮤니티
             </Link>
             <Link
               href="/class/best"
