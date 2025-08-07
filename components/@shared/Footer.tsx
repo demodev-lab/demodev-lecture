@@ -66,27 +66,6 @@ const Footer = () => {
             <ul className="flex flex-col gap-3 sm:gap-3.5">
               <li>
                 <a
-                  href=""
-                  target="_blank"
-                  className="flex items-center gap-1"
-                  rel="noreferrer"
-                >
-                  네이버 블로그
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="none"
-                  >
-                    <path
-                      fill="#EEE"
-                      d="M9.71 8.367 6.224 3.333h-2.89v9.405H6.36V7.705l3.486 5.033h2.89V3.334H9.71z"
-                    ></path>
-                  </svg>
-                </a>
-              </li>
-              <li>
-                <a
                   href="https://www.youtube.com/@%EB%8C%80%EB%AA%A8%EC%82%B0%EA%B0%9C%EB%B0%9C%EB%8B%A8"
                   target="_blank"
                   className="flex items-center gap-1"
@@ -102,6 +81,53 @@ const Footer = () => {
                     <path
                       fill="#EEE"
                       d="M14.478 5.348s-.13-.915-.53-1.317c-.505-.529-1.07-.532-1.33-.563-1.856-.135-4.644-.135-4.644-.135H7.97s-2.788 0-4.644.135c-.26.031-.825.034-1.33.563-.4.402-.527 1.317-.527 1.317s-.135 1.076-.135 2.15v1.006c0 1.074.133 2.15.133 2.15s.13.915.526 1.317c.506.53 1.17.51 1.465.568 1.063.101 4.515.132 4.515.132s2.79-.005 4.646-.137c.26-.031.825-.034 1.33-.563.4-.402.53-1.317.53-1.317s.132-1.074.132-2.15V7.498c0-1.074-.132-2.15-.132-2.15M6.6 9.725V5.994l3.586 1.872z"
+                    ></path>
+                  </svg>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://www.instagram.com/demodev_sns/"
+                  target="_blank"
+                  className="flex items-center gap-1"
+                  rel="noreferrer"
+                >
+                  인스타그램
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="none"
+                  >
+                    <path
+                      fill="#fff"
+                      d="M8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4"
+                    ></path>
+                    <path
+                      fill="#fff"
+                      d="M10.75 1.75h-5.5a3.5 3.5 0 0 0-3.5 3.5v5.5a3.5 3.5 0 0 0 3.5 3.5h5.5a3.5 3.5 0 0 0 3.5-3.5v-5.5a3.5 3.5 0 0 0-3.5-3.5M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6m3.25-5.5a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5"
+                    ></path>
+                  </svg>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://www.threads.com/@demodev_sns"
+                  target="_blank"
+                  className="flex items-center gap-1"
+                  rel="noreferrer"
+                >
+                  Threads
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="none"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      fill="#EEE"
+                      d="M11.39 8.69c-.19-.55-.51-.94-.95-1.18-.19-.1-.39-.18-.6-.22v-.04c0-1.36-.55-2.3-1.65-2.8-.39-.18-.83-.27-1.32-.27h-.04c-1.02 0-1.8.36-2.31 1.08l.8.58c.35-.49.87-.74 1.53-.74h.02c.82 0 1.39.42 1.69 1.25.11.29.17.64.18 1.04-1.04.02-2.01.17-2.78.57-1.01.53-1.56 1.36-1.56 2.35 0 .66.24 1.21.7 1.63.39.36.88.54 1.46.54.87 0 1.58-.31 2.12-.93.22-.25.4-.54.54-.87.12.41.31.75.57 1.01.46.47 1.12.7 1.96.7.67 0 1.32-.17 1.93-.5l-.32-.77c-.49.27-1 .4-1.52.4-.55 0-.97-.14-1.26-.43-.29-.29-.43-.71-.43-1.26v-.07c0-.41.1-.78.29-1.11zm-3.23 2.35c-.5.61-.99.81-1.46.81-.31 0-.56-.09-.76-.27-.2-.18-.3-.42-.3-.72 0-.59.3-1.05.89-1.36.52-.27 1.21-.41 1.98-.42-.01.68-.12 1.21-.35 1.61v.35z"
                     ></path>
                   </svg>
                 </a>
@@ -125,55 +151,6 @@ const Footer = () => {
                       fillRule="evenodd"
                       d="M5.333 4.667a2.667 2.667 0 1 1 5.334 0 2.667 2.667 0 0 1-5.334 0m0 4A3.333 3.333 0 0 0 2 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2 3.333 3.333 0 0 0-3.333-3.333z"
                       clipRule="evenodd"
-                    ></path>
-                  </svg>
-                </a>
-              </li>
-            </ul>
-
-            <ul className="flex flex-col gap-3 sm:gap-3.5">
-              <li>
-                <a
-                  href=""
-                  target="_blank"
-                  className="flex items-center gap-1"
-                  rel="noreferrer"
-                >
-                  네이버 카페
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="none"
-                  >
-                    <path
-                      fill="#EEE"
-                      d="M9.71 8.367 6.224 3.333h-2.89v9.405H6.36V7.705l3.486 5.033h2.89V3.334H9.71z"
-                    ></path>
-                  </svg>
-                </a>
-              </li>
-              <li>
-                <a
-                  href=""
-                  target="_blank"
-                  className="flex items-center gap-1"
-                  rel="noreferrer"
-                >
-                  인스타그램
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="none"
-                  >
-                    <path
-                      fill="#fff"
-                      d="M8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4"
-                    ></path>
-                    <path
-                      fill="#fff"
-                      d="M10.75 1.75h-5.5a3.5 3.5 0 0 0-3.5 3.5v5.5a3.5 3.5 0 0 0 3.5 3.5h5.5a3.5 3.5 0 0 0 3.5-3.5v-5.5a3.5 3.5 0 0 0-3.5-3.5M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6m3.25-5.5a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5"
                     ></path>
                   </svg>
                 </a>
