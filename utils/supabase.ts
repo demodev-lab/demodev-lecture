@@ -1,29 +1,32 @@
 import { createClient } from '@supabase/supabase-js'
 import { Database } from '@/types/supabase'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co'
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-key'
 
-// 런타임에서만 검증 (빌드 타임에는 환경변수가 없을 수 있음)
-function validateEnvironmentVariables() {
-  if (typeof window !== 'undefined' || process.env.NODE_ENV === 'production') {
-    if (!supabaseUrl) {
-      throw new Error('Missing environment variable: NEXT_PUBLIC_SUPABASE_URL')
+// 런타임 환경변수 검증 함수
+function getSupabaseCredentials() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  
+  // 빌드 타임이 아닌 실제 사용 시에만 검증
+  if (typeof window !== 'undefined') {
+    if (!url || url === 'https://placeholder.supabase.co') {
+      console.error('Missing NEXT_PUBLIC_SUPABASE_URL environment variable')
     }
-    if (!supabaseAnonKey) {
-      throw new Error('Missing environment variable: NEXT_PUBLIC_SUPABASE_ANON_KEY')
+    if (!key || key === 'placeholder-key') {
+      console.error('Missing NEXT_PUBLIC_SUPABASE_ANON_KEY environment variable')
     }
   }
+  
+  return { url: url || supabaseUrl, key: key || supabaseAnonKey }
 }
 
-// 개발 환경에서만 검증
-if (process.env.NODE_ENV !== 'test') {
-  validateEnvironmentVariables()
-}
+const credentials = getSupabaseCredentials()
 
 export const supabase = createClient<Database>(
-  supabaseUrl || 'https://placeholder.supabase.co',
-  supabaseAnonKey || 'placeholder-key',
+  credentials.url,
+  credentials.key,
   {
     auth: {
       persistSession: typeof window !== 'undefined',
