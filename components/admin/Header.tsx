@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { UserProfileDropdown } from "./UserProfileDropdown";
+import { User } from "lucide-react";
 
 interface HeaderProps {
   user: {
@@ -16,13 +16,11 @@ export function Header({ user }: HeaderProps) {
 
   const getPageTitle = () => {
     const routes: { [key: string]: string } = {
-      "/admin": "대시보드",
-      "/admin/lectures": "강의 관리",
-      "/admin/coaches": "강사 관리",
-      "/admin/members": "회원 관리",
+      "/admin/dashboard": "대시보드",
+      "/admin/dashboard/lectures": "강의 관리",
     };
 
-    return routes[pathname] || "대시보드";
+    return routes[pathname] || "강의 관리 시스템";
   };
 
   return (
@@ -33,7 +31,17 @@ export function Header({ user }: HeaderProps) {
             <span className="font-medium text-gray-900">{getPageTitle()}</span>
           </nav>
         </div>
-        <UserProfileDropdown user={user} />
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <div className="h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center">
+              <User className="h-4 w-4 text-gray-600" />
+            </div>
+            <div className="text-sm">
+              <div className="font-medium text-gray-900">{user.name}</div>
+              <div className="text-gray-500">{user.email}</div>
+            </div>
+          </div>
+        </div>
       </div>
     </header>
   );

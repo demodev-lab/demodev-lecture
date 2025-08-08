@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { X, Upload, Calendar, DollarSign, BookOpen, Image as ImageIcon } from "lucide-react";
+import { X, Upload, Calendar, DollarSign, BookOpen, Image as ImageIcon, Loader2 } from "lucide-react";
 import Image from "next/image";
+import { uploadLectureThumbnail, validateImageFile, createStorageBucket } from "@/utils/supabase/storage";
 
 interface AddLectureModalProps {
   isOpen: boolean;
@@ -18,6 +19,7 @@ interface LectureFormData {
   endDate: string;
   thumbnail: File | null;
   thumbnailPreview: string;
+  thumbnailUrl: string;
 }
 
 export default function AddLectureModal({
@@ -33,9 +35,11 @@ export default function AddLectureModal({
     endDate: "",
     thumbnail: null,
     thumbnailPreview: "",
+    thumbnailUrl: "",
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isUploading, setIsUploading] = useState(false);
 
   const handleInputChange = (field: keyof LectureFormData, value: string) => {
     setFormData(prev => ({
@@ -52,44 +56,60 @@ export default function AddLectureModal({
     }
   };
 
-  const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleThumbnailChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      // 파일 크기 체크 (5MB 제한)
-      if (file.size > 5 * 1024 * 1024) {
-        setErrors(prev => ({
-          ...prev,
-          thumbnail: "파일 크기는 5MB 이하여야 합니다."
-        }));
-        return;
-      }
+    if (!file) return;
 
-      // 파일 형식 체크
-      if (!file.type.startsWith('image/')) {
-        setErrors(prev => ({
-          ...prev,
-          thumbnail: "이미지 파일만 업로드 가능합니다."
-        }));
-        return;
-      }
+    // 파일 유효성 검사
+    const validation = validateImageFile(file);
+    if (!validation.isValid) {
+      setErrors(prev => ({
+        ...prev,
+        thumbnail: validation.error || "잘못된 파일입니다."
+      }));
+      return;
+    }
 
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setFormData(prev => ({
-          ...prev,
-          thumbnail: file,
-          thumbnailPreview: e.target?.result as string
-        }));
-      };
-      reader.readAsDataURL(file);
+    // 로컬 미리보기 생성
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setFormData(prev => ({
+        ...prev,
+        thumbnail: file,
+        thumbnailPreview: e.target?.result as string
+      }));
+    };
+    reader.readAsDataURL(file);
 
-      // 에러 메시지 클리어
-      if (errors.thumbnail) {
-        setErrors(prev => ({
-          ...prev,
-          thumbnail: ""
-        }));
-      }
+    // 에러 메시지 클리어
+    if (errors.thumbnail) {
+      setErrors(prev => ({
+        ...prev,
+        thumbnail: ""
+      }));
+    }
+
+    // Supabase Storage에 업로드
+    setIsUploading(true);
+    try {
+      // Storage bucket이 존재하지 않으면 생성
+      await createStorageBucket();
+      
+      // 파일 업로드
+      const thumbnailUrl = await uploadLectureThumbnail(file, formData.title || 'lecture');
+      
+      setFormData(prev => ({
+        ...prev,
+        thumbnailUrl
+      }));
+    } catch (error) {
+      console.error('업로드 실패:', error);
+      setErrors(prev => ({
+        ...prev,
+        thumbnail: error instanceof Error ? error.message : "업로드에 실패했습니다."
+      }));
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -97,7 +117,8 @@ export default function AddLectureModal({
     setFormData(prev => ({
       ...prev,
       thumbnail: null,
-      thumbnailPreview: ""
+      thumbnailPreview: "",
+      thumbnailUrl: ""
     }));
   };
 
@@ -158,6 +179,7 @@ export default function AddLectureModal({
       endDate: "",
       thumbnail: null,
       thumbnailPreview: "",
+      thumbnailUrl: "",
     });
     setErrors({});
     onClose();
@@ -193,17 +215,29 @@ export default function AddLectureModal({
                   type="file"
                   accept="image/*"
                   onChange={handleThumbnailChange}
-                  className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+                  disabled={isUploading}
+                  className="absolute inset-0 h-full w-full cursor-pointer opacity-0 disabled:cursor-not-allowed"
                 />
                 <div className="flex h-32 items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 transition-colors hover:border-gray-400 hover:bg-gray-100">
                   <div className="text-center">
-                    <Upload className="mx-auto h-8 w-8 text-gray-400" />
-                    <p className="mt-2 text-sm text-gray-600">
-                      이미지를 클릭하여 업로드하세요
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      PNG, JPG, GIF (최대 5MB)
-                    </p>
+                    {isUploading ? (
+                      <>
+                        <Loader2 className="mx-auto h-8 w-8 text-blue-500 animate-spin" />
+                        <p className="mt-2 text-sm text-blue-600">
+                          업로드 중...
+                        </p>
+                      </>
+                    ) : (
+                      <>
+                        <Upload className="mx-auto h-8 w-8 text-gray-400" />
+                        <p className="mt-2 text-sm text-gray-600">
+                          이미지를 클릭하여 업로드하세요
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          PNG, JPG, WebP, GIF (최대 5MB)
+                        </p>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
@@ -223,6 +257,11 @@ export default function AddLectureModal({
                 >
                   <X className="h-4 w-4" />
                 </button>
+                {formData.thumbnailUrl && (
+                  <div className="absolute bottom-2 left-2 rounded bg-green-500 px-2 py-1 text-xs text-white">
+                    업로드 완료
+                  </div>
+                )}
               </div>
             )}
             

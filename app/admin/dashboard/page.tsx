@@ -1,104 +1,91 @@
-import { BookOpen, Users, UserCheck, TrendingUp } from "lucide-react";
+import Link from "next/link";
+import { BookOpen, Plus } from "lucide-react";
 
 export default function AdminDashboardPage() {
   return (
     <div className="p-6">
-      <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-3">
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold text-gray-900">강의 관리 대시보드</h1>
+        <p className="mt-1 text-sm text-gray-600">
+          강의를 추가하고 관리할 수 있습니다.
+        </p>
+      </div>
+
+      {/* Quick Actions */}
+      <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2">
         <div className="rounded-lg border bg-white p-6 shadow-sm">
           <div className="mb-4 flex items-center justify-between">
-            <h3 className="text-sm font-medium text-gray-900">전체 강의</h3>
-            <BookOpen className="h-5 w-5 text-gray-400" />
+            <h3 className="text-lg font-medium text-gray-900">강의 관리</h3>
+            <BookOpen className="h-6 w-6 text-gray-400" />
           </div>
-          <div className="text-2xl font-bold text-gray-900">245</div>
-          <p className="mt-1 text-xs text-gray-500">+12% from last month</p>
+          <p className="mb-4 text-sm text-gray-600">
+            기존 강의를 조회하고 편집할 수 있습니다.
+          </p>
+          <Link
+            href="/admin/dashboard/lectures"
+            className="inline-flex items-center rounded-lg bg-black px-4 py-2 text-sm font-medium text-white hover:bg-gray-800 transition-colors"
+          >
+            <BookOpen className="mr-2 h-4 w-4" />
+            강의 관리
+          </Link>
         </div>
 
         <div className="rounded-lg border bg-white p-6 shadow-sm">
           <div className="mb-4 flex items-center justify-between">
-            <h3 className="text-sm font-medium text-gray-900">진행중인 챌린지</h3>
-            <Users className="h-5 w-5 text-gray-400" />
+            <h3 className="text-lg font-medium text-gray-900">새 강의 추가</h3>
+            <Plus className="h-6 w-6 text-gray-400" />
           </div>
-          <div className="text-2xl font-bold text-gray-900">89</div>
-          <p className="mt-1 text-xs text-gray-500">+5% from last month</p>
-        </div>
-
-        <div className="rounded-lg border bg-white p-6 shadow-sm">
-          <div className="mb-4 flex items-center justify-between">
-            <h3 className="text-sm font-medium text-gray-900">활성 사용자</h3>
-            <UserCheck className="h-5 w-5 text-gray-400" />
-          </div>
-          <div className="text-2xl font-bold text-gray-900">12,847</div>
-          <p className="mt-1 text-xs text-gray-500">+18% from last month</p>
+          <p className="mb-4 text-sm text-gray-600">
+            새로운 강의를 추가하고 썸네일을 업로드할 수 있습니다.
+          </p>
+          <Link
+            href="/admin/dashboard/lectures"
+            className="inline-flex items-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 transition-colors"
+          >
+            <Plus className="mr-2 h-4 w-4" />
+            강의 추가하기
+          </Link>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-7">
-        <div className="rounded-lg border bg-white shadow-sm lg:col-span-4">
-          <div className="border-b p-6">
-            <h3 className="text-lg font-semibold text-gray-900">최근 활동</h3>
-            <p className="mt-1 text-sm text-gray-600">
-              최근 7일간의 활동 내역입니다.
-            </p>
-          </div>
-          <div className="p-6">
-            <div className="space-y-4">
-              <div className="flex items-center">
-                <div className="mr-3 h-2 w-2 rounded-full bg-black"></div>
-                <div className="flex-1">
-                  <p className="text-sm font-medium">새로운 강의 추가</p>
-                  <p className="text-xs text-gray-500">
-                    React 고급 강의가 추가되었습니다.
-                  </p>
-                </div>
-                <div className="text-xs text-gray-500">2시간 전</div>
-              </div>
-              <div className="flex items-center">
-                <div className="mr-3 h-2 w-2 rounded-full bg-gray-400"></div>
-                <div className="flex-1">
-                  <p className="text-sm font-medium">챌린지 시작</p>
-                  <p className="text-xs text-gray-500">
-                    알고리즘 챌린지가 시작되었습니다.
-                  </p>
-                </div>
-                <div className="text-xs text-gray-500">4시간 전</div>
-              </div>
-              <div className="flex items-center">
-                <div className="mr-3 h-2 w-2 rounded-full bg-black"></div>
-                <div className="flex-1">
-                  <p className="text-sm font-medium">신규 가입자 증가</p>
-                  <p className="text-xs text-gray-500">
-                    오늘 하루동안 25명이 가입했습니다.
-                  </p>
-                </div>
-                <div className="text-xs text-gray-500">6시간 전</div>
+      {/* Recent Activity */}
+      <div className="rounded-lg border bg-white shadow-sm">
+        <div className="border-b p-6">
+          <h3 className="text-lg font-semibold text-gray-900">시작하기</h3>
+          <p className="mt-1 text-sm text-gray-600">
+            강의 관리 시스템을 사용하여 강의를 효과적으로 관리하세요.
+          </p>
+        </div>
+        <div className="p-6">
+          <div className="space-y-4">
+            <div className="flex items-start">
+              <div className="mr-4 mt-1 h-2 w-2 rounded-full bg-blue-500"></div>
+              <div>
+                <p className="text-sm font-medium text-gray-900">1. 새 강의 추가</p>
+                <p className="text-sm text-gray-600">
+                  강의 제목, 가격, 기간을 설정하고 썸네일 이미지를 업로드하세요.
+                </p>
               </div>
             </div>
-          </div>
-        </div>
-
-        <div className="rounded-lg border bg-white shadow-sm lg:col-span-3">
-          <div className="border-b p-6">
-            <h3 className="text-lg font-semibold text-gray-900">빠른 메뉴</h3>
-            <p className="mt-1 text-sm text-gray-600">
-              자주 사용하는 기능들입니다.
-            </p>
-          </div>
-          <div className="space-y-3 p-6">
-            <button className="flex w-full items-center justify-start gap-3 rounded-lg border border-gray-200 p-3 text-left text-sm transition-colors hover:bg-gray-50">
-              <BookOpen className="h-4 w-4" />새 강의 추가
-            </button>
-            <button className="flex w-full items-center justify-start gap-3 rounded-lg border border-gray-200 p-3 text-left text-sm transition-colors hover:bg-gray-50">
-              <Users className="h-4 w-4" />
-              챌린지 관리
-            </button>
-            <button className="flex w-full items-center justify-start gap-3 rounded-lg border border-gray-200 p-3 text-left text-sm transition-colors hover:bg-gray-50">
-              <UserCheck className="h-4 w-4" />
-              사용자 관리
-            </button>
-            <button className="flex w-full items-center justify-start gap-3 rounded-lg border border-gray-200 p-3 text-left text-sm transition-colors hover:bg-gray-50">
-              <TrendingUp className="h-4 w-4" />
-              통계 보기
-            </button>
+            <div className="flex items-start">
+              <div className="mr-4 mt-1 h-2 w-2 rounded-full bg-green-500"></div>
+              <div>
+                <p className="text-sm font-medium text-gray-900">2. 이미지 자동 업로드</p>
+                <p className="text-sm text-gray-600">
+                  Supabase Storage에 자동으로 이미지가 업로드되어 관리됩니다.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-start">
+              <div className="mr-4 mt-1 h-2 w-2 rounded-full bg-purple-500"></div>
+              <div>
+                <p className="text-sm font-medium text-gray-900">3. 강의 목록 확인</p>
+                <p className="text-sm text-gray-600">
+                  업로드된 썸네일과 함께 강의 목록을 확인하고 관리하세요.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   BookOpen,
-  Users,
 } from "lucide-react";
 
 const sidebarItems = [
@@ -19,16 +18,6 @@ const sidebarItems = [
     href: "/admin/dashboard/lectures",
     icon: BookOpen,
   },
-  {
-    name: "강사 관리",
-    href: "/admin/coaches",
-    icon: Users,
-  },
-  {
-    name: "회원 관리",
-    href: "/admin/members",
-    icon: Users,
-  },
 ];
 
 export function Sidebar() {
@@ -38,7 +27,7 @@ export function Sidebar() {
     <div className="flex h-full w-64 flex-col border-r bg-white">
       <div className="flex h-16 items-center justify-between border-b border-gray-200 px-6">
         <Link href="/admin/dashboard" className="text-xl font-bold text-black">
-          대모런 관리자
+          강의 관리
         </Link>
       </div>
       <div className="flex-1 overflow-y-auto">
