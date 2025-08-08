@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Flame, BookOpen, Users, ClipboardList, PlayCircle, Clock } from "lucide-react";
+import { BookOpen, PlayCircle, Clock } from "lucide-react";
 import Link from "next/link";
 import { getUserLectures } from "@/data/lectures";
 import Image from "next/image";

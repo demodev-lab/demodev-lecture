@@ -21,7 +21,7 @@ export default function CopyrightPage() {
             <section>
               <h2 className="text-xl font-semibold text-gray-900 mb-4">1. 저작권 보호</h2>
               <p className="text-gray-700 leading-relaxed mb-4">
-                주식회사 대모산개발단(이하 "회사")이 운영하는 대모산 개발단 플랫폼에서 제공하는 모든 콘텐츠(강의 영상, 강의 자료, 텍스트, 
+                주식회사 대모산개발단(이하 &quot;회사&quot;)이 운영하는 대모산 개발단 플랫폼에서 제공하는 모든 콘텐츠(강의 영상, 강의 자료, 텍스트, 
                 이미지, 소스코드, 디자인 등)는 대한민국 저작권법 및 국제 저작권 협약에 의해 보호받고 있습니다.
               </p>
               <p className="text-gray-700 leading-relaxed">

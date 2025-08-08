@@ -3,7 +3,6 @@ import {
   User, 
   BookOpen, 
   MessageCircle, 
-  FileText, 
   Star, 
   ShoppingCart,
   HelpCircle,
