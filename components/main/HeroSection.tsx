@@ -63,6 +63,24 @@ const slides: HeroSlide[] = [
     backgroundColor: "#312292",
     href: "#",
   },
+  {
+    id: 6,
+    title: "",
+    subtitle: "",
+    image: "/carousel/Frame_6.png",
+    textColor: "white",
+    backgroundColor: "#312292",
+    href: "#",
+  },
+  {
+    id: 7,
+    title: "",
+    subtitle: "",
+    image: "/carousel/Frame_7.png",
+    textColor: "white",
+    backgroundColor: "#312292",
+    href: "#",
+  },
 ];
 
 
@@ -108,15 +126,15 @@ export default function HeroSection() {
     setMounted(true);
   }, []);
 
-  // React Slick 설정 - 이미지처럼 여러 슬라이드가 보이도록
+  // React Slick 설정 - 큰 화면에서는 3개, 작은 화면에서는 1개 슬라이드
   const settings = {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 3, // 데스크톱에서 3개 슬라이드 표시
+    slidesToShow: 3, // 기본: 큰 화면에서 3개 슬라이드 표시
     slidesToScroll: 1,
     centerMode: true, // 중앙 정렬
-    centerPadding: "15%", // 양쪽 패딩을 퍼센트로 설정
+    centerPadding: "0%", // 양쪽 패딩
     autoplay: true,
     autoplaySpeed: 4000,
     pauseOnHover: true,
@@ -125,16 +143,9 @@ export default function HeroSection() {
     dotsClass: "slick-dots custom-dots",
     responsive: [
       {
-        breakpoint: 1440, // 큰 데스크톱
+        breakpoint: 1200, // 1200px 이하에서 1개 슬라이드만 표시
         settings: {
-          slidesToShow: 3,
-          centerPadding: "10%",
-        }
-      },
-      {
-        breakpoint: 1024, // 태블릿
-        settings: {
-          slidesToShow: 2,
+          slidesToShow: 1,
           centerPadding: "8%",
         }
       },
@@ -166,7 +177,7 @@ export default function HeroSection() {
         <div className="hero-carousel-wrapper w-full">
           <Slider {...settings}>
             {slides.map((slide) => (
-              <div key={slide.id} className="px-2">
+              <div key={slide.id} className="px-22 py-1">
                 <div className="relative overflow-hidden h-[280px] sm:h-[360px] md:h-[400px] lg:h-[428px] xl:h-[450px] max-w-[720px] rounded-xl mx-auto bg-white shadow-lg">
                   <a href={slide.href} className="block relative h-full w-full">
                     <Image
