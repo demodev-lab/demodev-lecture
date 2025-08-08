@@ -1,37 +1,21 @@
-// import { createClient } from '@supabase/supabase-js'
-// import { Database } from '@/types/supabase'
+// Legacy client - 새로운 SSR 패턴 사용을 권장합니다
+// 새로운 클라이언트는 utils/supabase/client.ts를 사용하세요
 
-// const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co'
-// const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-key'
+import { createClient } from '@supabase/supabase-js'
+import { Database } from '@/types/supabase'
 
-// // 런타임 환경변수 검증 함수
-// function getSupabaseCredentials() {
-//   const url = process.env.NEXT_PUBLIC_SUPABASE_URL
-//   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  
-//   // 빌드 타임이 아닌 실제 사용 시에만 검증
-//   if (typeof window !== 'undefined') {
-//     if (!url || url === 'https://placeholder.supabase.co') {
-//       console.error('Missing NEXT_PUBLIC_SUPABASE_URL environment variable')
-//     }
-//     if (!key || key === 'placeholder-key') {
-//       console.error('Missing NEXT_PUBLIC_SUPABASE_ANON_KEY environment variable')
-//     }
-//   }
-  
-//   return { url: url || supabaseUrl, key: key || supabaseAnonKey }
-// }
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
-// const credentials = getSupabaseCredentials()
-
-// export const supabase = createClient<Database>(
-//   credentials.url,
-//   credentials.key,
-//   {
-//     auth: {
-//       persistSession: typeof window !== 'undefined',
-//       autoRefreshToken: typeof window !== 'undefined',
-//       detectSessionInUrl: typeof window !== 'undefined'
-//     }
-//   }
-// )
+// 기존 코드와의 호환성을 위해 유지
+export const supabase = createClient<Database>(
+  supabaseUrl,
+  supabaseAnonKey,
+  {
+    auth: {
+      persistSession: typeof window !== 'undefined',
+      autoRefreshToken: typeof window !== 'undefined',
+      detectSessionInUrl: typeof window !== 'undefined'
+    }
+  }
+)

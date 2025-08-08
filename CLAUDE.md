@@ -10,6 +10,8 @@ DemoLearn (대모산 개발단) is a comprehensive online education platform bui
 
 - **Framework**: Next.js 15 (App Router)
 - **Frontend**: React 19, TypeScript 5
+- **Authentication**: Supabase Auth with SSR support
+- **Database**: Supabase (PostgreSQL)
 - **Styling**: Tailwind CSS with custom purple brand theme
 - **UI Components**: shadcn/ui with Radix UI primitives
 - **Icons**: Lucide React
@@ -41,6 +43,9 @@ npm uninstall <package>  # Remove a dependency
 demolearn/
 ├── app/                    # Next.js App Router pages
 │   ├── admin/             # Admin dashboard (not in use)
+│   ├── auth/              # Auth routes
+│   │   ├── callback/      # OAuth callback handler
+│   │   └── actions.ts     # Server actions for auth
 │   ├── challenge/         # Challenge pages
 │   ├── class/            # Class-related pages
 │   │   ├── best/         # Best courses page
@@ -55,6 +60,9 @@ demolearn/
 │   ├── @shared/          # Shared components (Header, Footer)
 │   ├── admin/            # Admin components (not in use)
 │   ├── auth/             # Authentication components
+│   │   ├── AuthModal.tsx  # Login modal
+│   │   ├── SupabaseAuthContext.tsx  # Auth context provider
+│   │   └── SupabaseAuthForm.tsx     # Auth form component
 │   ├── challenge/        # Challenge-related components
 │   ├── curriculum/       # Course listing components
 │   ├── lecture/          # Lecture viewing components
@@ -63,9 +71,16 @@ demolearn/
 │   ├── payment/          # Payment components
 │   ├── signup/           # Registration components
 │   └── ui/               # Base UI components
+├── utils/                 # Utility functions
+│   ├── supabase/         # Supabase client utilities
+│   │   ├── client.ts     # Browser client
+│   │   ├── server.ts     # Server component client
+│   │   └── middleware.ts # Middleware utilities
+│   └── supabase.ts       # Legacy client (for compatibility)
 ├── data/                 # Static data and fixtures
 ├── lib/                  # Utility functions
 ├── types/                # TypeScript type definitions
+├── middleware.ts         # Next.js middleware for auth
 └── public/               # Static assets
 ```
 
@@ -298,19 +313,29 @@ GET    /api/payments/:id               # 결제 상세
 
 ## User Flows
 
-### 1. Registration Flow
+### 1. Registration Flow (Supabase Auth)
 ```
 홈페이지 → 회원가입 버튼 클릭
-→ AuthModal 오픈
+→ /signup 페이지로 이동
 → 회원가입 폼 표시
-→ 휴대폰 번호 입력
-→ 인증번호 발송
-→ 인증번호 확인
-→ 회원가입 완료
-→ 자동 로그인
+→ 이메일/비밀번호 입력
+→ Supabase Auth signUp 호출
+→ 이메일 확인 메일 발송
+→ 이메일 확인 후 자동 로그인
 ```
 
-### 2. Lecture Purchase Flow
+### 2. Login Flow (Supabase Auth)
+```
+홈페이지 → 로그인 버튼 클릭
+→ AuthModal 오픈
+→ 로그인 폼 표시
+→ 이메일/비밀번호 입력
+→ Supabase Auth signInWithPassword 호출
+→ 세션 쿠키 설정
+→ 로그인 완료
+```
+
+### 3. Lecture Purchase Flow
 ```
 강의 목록 → 강의 선택
 → 상세 페이지 진입
@@ -422,12 +447,34 @@ const buttonVariants = cva(
 );
 ```
 
+## Authentication System (Supabase Auth)
+
+### Configuration
+1. **Environment Variables**
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL=your-project-url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+   ```
+
+2. **Client Setup**
+   - Browser client: `utils/supabase/client.ts`
+   - Server client: `utils/supabase/server.ts`
+   - Middleware: `utils/supabase/middleware.ts`
+
+3. **Auth Features**
+   - Email/Password authentication
+   - OAuth providers (Google, GitHub ready)
+   - Session management with cookies
+   - Automatic session refresh via middleware
+   - Server-side authentication (SSR)
+
 ## Security Considerations
 
 1. **Authentication**
-   - JWT tokens for session management
-   - Secure password hashing (bcrypt)
-   - Phone number verification for signup
+   - Supabase Auth with PKCE flow
+   - Secure session management via cookies
+   - Automatic token refresh
+   - Server-side session validation
 
 2. **Authorization**
    - Role-based access control (user/admin)
@@ -508,11 +555,18 @@ chore: Update dependencies
 ### Environment Variables
 ```env
 # .env.local
-NEXT_PUBLIC_API_URL=https://api.demolearn.com
-DATABASE_URL=postgresql://...
-JWT_SECRET=...
-PHONE_AUTH_API_KEY=...
-PAYMENT_API_KEY=...
+# Supabase Configuration (Required)
+NEXT_PUBLIC_SUPABASE_URL=your-project-url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+
+# API Configuration
+NEXT_PUBLIC_API_URL=http://localhost:3000/api
+
+# OAuth Configuration (Optional)
+NEXT_PUBLIC_KAKAO_CLIENT_ID=your_kakao_client_id
+NEXT_PUBLIC_NAVER_CLIENT_ID=your_naver_client_id
+NEXT_PUBLIC_GOOGLE_CLIENT_ID=your_google_client_id
+NEXT_PUBLIC_APPLE_CLIENT_ID=your_apple_client_id
 ```
 
 ### Build & Deploy
@@ -580,11 +634,19 @@ pm2 start npm --name "demolearn" -- start
 1. **Package Manager**: Always use `npm` (not yarn or pnpm)
 2. **React Version**: React 19 with Next.js 15
 3. **TypeScript**: Strict mode enabled
-4. **Authentication**: Currently localStorage, prepared for Supabase
+4. **Authentication**: Supabase Auth with SSR support (fully implemented)
 5. **Payment**: Integration ready for Korean payment gateways
 6. **Language**: Korean-first with UTF-8 encoding
 7. **Mobile**: Responsive design with mobile-first approach
 8. **Browser Support**: Modern browsers (Chrome, Firefox, Safari, Edge)
+
+## Removed Files (Legacy Auth System)
+
+The following files have been removed after migrating to Supabase Auth:
+- `components/auth/AuthContext.tsx` - Old custom auth context
+- `components/auth/AuthForm.tsx` - Old auth form with hardcoded logic
+- `utils/supabase-server.ts` - Deprecated server client
+- `utils/supabase-client.ts` - Deprecated browser client
 
 ## Console Easter Egg
 
@@ -595,5 +657,5 @@ When developer tools are opened, users see:
 
 ---
 
-Last Updated: 2025-01-07
-Version: 2.1.0
+Last Updated: 2025-01-08
+Version: 3.0.0 (Supabase Auth Integration)
