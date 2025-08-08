@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import Carousel, { ArrowProps } from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import { useEffect, useState } from "react";
 
 interface HeroSlide {
@@ -62,56 +63,64 @@ const slides: HeroSlide[] = [
     backgroundColor: "#312292",
     href: "#",
   },
+  {
+    id: 6,
+    title: "",
+    subtitle: "",
+    image: "/carousel/Frame_6.png",
+    textColor: "white",
+    backgroundColor: "#312292",
+    href: "#",
+  },
+  {
+    id: 7,
+    title: "",
+    subtitle: "",
+    image: "/carousel/Frame_7.png",
+    textColor: "white",
+    backgroundColor: "#312292",
+    href: "#",
+  },
 ];
 
-// CarouselItem 컴포넌트의 props 타입 정의
-interface CarouselItemProps extends React.HTMLAttributes<HTMLDivElement> {
-  carouselState?: unknown;
-  rtl?: boolean;
+// Custom Arrow Components for react-slick
+interface ArrowProps {
+  className?: string;
+  style?: React.CSSProperties;
+  onClick?: () => void;
 }
 
-// Custom Arrow Components to filter out unwanted props
-const CustomLeftArrow = ({ onClick, ...rest }: ArrowProps) => {
-  // carouselState와 rtl을 제거하고 나머지 props만 사용
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
-  const { carouselState, rtl, ...arrowProps } = rest as any;
+const CustomPrevArrow = (props: ArrowProps) => {
+  const { className, style, onClick } = props;
   return (
-    <button 
-      {...arrowProps}
+    <button
+      className={`${className} !absolute !left-2 sm:!left-4 lg:!left-6 !top-1/2 !-translate-y-1/2 !w-10 !h-10 sm:!w-12 sm:!h-12 lg:!w-14 lg:!h-14 !text-white !bg-black/20 hover:!bg-black/40 !rounded-lg !transition-all !duration-300 !flex !items-center !justify-center !group !z-10`}
+      style={{ ...style, display: "flex" }}
       onClick={onClick}
-      className="absolute left-2 sm:left-4 lg:left-6 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-20 text-brand-700 rounded-lg transition-all duration-300 flex items-center justify-center group"
       aria-label="이전 슬라이드"
     >
       <svg className="w-5 h-5 sm:w-6 sm:h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={5} d="M15 19l-7-7 7-7" />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M15 19l-7-7 7-7" />
       </svg>
     </button>
   );
 };
 
-const CustomRightArrow = ({ onClick, ...rest }: ArrowProps) => {
-  // carouselState와 rtl을 제거하고 나머지 props만 사용
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
-  const { carouselState, rtl, ...arrowProps } = rest as any;
+const CustomNextArrow = (props: ArrowProps) => {
+  const { className, style, onClick } = props;
   return (
-    <button 
-      {...arrowProps}
+    <button
+      className={`${className} !absolute !right-2 sm:!right-4 lg:!right-6 !top-1/2 !-translate-y-1/2 !w-10 !h-10 sm:!w-12 sm:!h-12 lg:!w-14 lg:!h-14 !text-white !bg-black/20 hover:!bg-black/40 !rounded-lg !transition-all !duration-300 !flex !items-center !justify-center !group !z-10`}
+      style={{ ...style, display: "flex" }}
       onClick={onClick}
-      className="absolute right-2 sm:right-4 lg:right-6 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-20  text-brand-700 rounded-lg transition-all duration-300 flex items-center justify-center group"
       aria-label="다음 슬라이드"
     >
       <svg className="w-5 h-5 sm:w-6 sm:h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={5} d="M9 5l7 7-7 7" />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
       </svg>
     </button>
   );
 };
-
-// CarouselItem wrapper to filter out unwanted props
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const CarouselItem = ({ carouselState, rtl, ...props }: CarouselItemProps) => (
-  <div {...props} />
-);
 
 export default function HeroSection() {
   const [mounted, setMounted] = useState(false);
@@ -120,13 +129,46 @@ export default function HeroSection() {
     setMounted(true);
   }, []);
 
-  // 모든 브레이크포인트에서 동일한 설정을 사용하므로 간소화
-  const responsive = {
-    all: {
-      breakpoint: { max: 3000, min: 0 },
-      items: 1,
-      slidesToSlide: 1,
-    },
+  // react-slick 설정
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    centerMode: true,
+    centerPadding: "0px",
+    autoplay: true,
+    autoplaySpeed: 4000,
+    pauseOnHover: true,
+    focusOnSelect: true,
+    prevArrow: <CustomPrevArrow />,
+    nextArrow: <CustomNextArrow />,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+          centerMode: true,
+        }
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+          centerMode: true,
+          centerPadding: "40px",
+        }
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          centerMode: false,
+          centerPadding: "0px",
+        }
+      }
+    ]
   };
 
   if (!mounted) {
@@ -136,48 +178,27 @@ export default function HeroSection() {
   return (
     <section className="relative">
       {/* Main Hero Carousel */}
-      <div className="relative h-[428px] overflow-hidden">
-        <div className="mx-auto px-4 sm:px-6 lg:px-8">
-          <Carousel
-            responsive={responsive}
-            infinite={true}
-            autoPlay={true}
-            autoPlaySpeed={4000}
-            keyBoardControl={true}
-            centerMode={true}
-            containerClass="py-6 sm:py-8"
-            itemClass="px-0.5 carousel-item-padding"
-            arrows={true}
-            showDots={false}
-            swipeable={true}
-            draggable={true}
-            focusOnSelect={true}
-            customLeftArrow={<CustomLeftArrow />}
-            customRightArrow={<CustomRightArrow />}
-            dotListClass="!bottom-2 sm:!bottom-4"
-          >
+      <div className="relative h-[428px] overflow-hidden bg-gradient-to-r from-purple-50 to-blue-50">
+        <div className="mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <Slider {...settings} className="hero-slider">
             {slides.map((slide) => (
-              <CarouselItem key={slide.id} className="px-1 rounded-lg">
-                <div
-                  role="group"
-                  aria-roledescription="slide"
-                  className="relative overflow-hidden h-[428px] carousel-slide"
-                >
+              <div key={slide.id} className="px-2">
+                <div className="relative overflow-hidden h-[380px] carousel-slide">
                   <a href={slide.href} className="block relative h-full w-full">
                     <Image
                       src={slide.image}
-                      alt="banner"
+                      alt={`슬라이드 ${slide.id}`}
                       fill
-                      sizes="(max-width: 768px) 100vw, 760px"
-                      className="object-contain rounded-lg"
-                      priority
-                      quality={100}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-contain rounded-lg transition-transform duration-500 hover:scale-105"
+                      priority={slide.id <= 3}
+                      quality={90}
                     />
                   </a>
                 </div>
-              </CarouselItem>
+              </div>
             ))}
-          </Carousel>
+          </Slider>
         </div>
       </div>
     </section>

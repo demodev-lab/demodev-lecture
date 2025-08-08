@@ -119,44 +119,123 @@
   }
 }
 
-/* Hero Carousel Styles */
+/* Hero Carousel Styles - React Slick */
 @layer components {
-  .carousel-item-padding .carousel-slide {
-    @apply opacity-40;
+  /* Hero Slider 기본 스타일 */
+  .hero-slider {
+    position: relative;
   }
   
-  .react-multi-carousel-item--active .carousel-slide {
-    @apply opacity-100 scale-100;
-  }
-}
-
-@layer components {
-  /* Carousel container */
-  .carousel-container {
-    padding-top: 24px;
-    padding-bottom: 24px;
-    margin: 0 -20%;
+  .hero-slider .slick-list {
+    overflow: visible;
   }
   
-  /* Carousel item padding */
-  .carousel-item-padding {
-    padding: 0 8px;
+  .hero-slider .slick-track {
+    display: flex;
+    align-items: center;
   }
   
-
+  .hero-slider .slick-slide {
+    padding: 0 10px;
+    transition: all 0.3s ease;
+  }
   
-  /* Track alignment */
-  .carousel-slide-track {
+  /* 중앙 슬라이드 강조 */
+  .hero-slider .slick-center .carousel-slide {
+    transform: scale(1.1);
+    z-index: 2;
+    opacity: 1;
+    filter: brightness(1);
+  }
+  
+  /* 비중앙 슬라이드 */
+  .hero-slider .slick-slide:not(.slick-center) .carousel-slide {
+    transform: scale(0.85);
+    opacity: 0.6;
+    filter: brightness(0.7);
+  }
+  
+  /* 캐러셀 슬라이드 */
+  .carousel-slide {
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* 점(Dots) 스타일링 */
+  .hero-slider .slick-dots {
+    bottom: -50px;
     display: flex !important;
-    align-items: center !important;
+    justify-content: center;
+    gap: 8px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
   }
   
+  .hero-slider .slick-dots li {
+    width: 12px;
+    height: 12px;
+    margin: 0;
+  }
   
+  .hero-slider .slick-dots li button {
+    width: 12px;
+    height: 12px;
+    padding: 0;
+    border-radius: 50%;
+    border: none;
+    background: rgba(156, 163, 175, 0.5);
+    transition: all 0.3s ease;
+    font-size: 0;
+  }
   
-  /* Mobile adjustments */
-  @media (max-width: 640px) {
-    .carousel-container {
-      margin: 0;
+  .hero-slider .slick-dots li.slick-active button {
+    background: #9333ea;
+    transform: scale(1.2);
+  }
+  
+  .hero-slider .slick-dots li button:hover {
+    background: #9333ea;
+    opacity: 0.8;
+  }
+  
+  /* 화살표 기본 스타일 제거 */
+  .hero-slider .slick-prev,
+  .hero-slider .slick-next {
+    background: none;
+    border: none;
+    width: auto;
+    height: auto;
+  }
+  
+  .hero-slider .slick-prev:before,
+  .hero-slider .slick-next:before {
+    display: none;
+  }
+  
+  /* 모바일 조정 */
+  @media (max-width: 768px) {
+    .hero-slider .slick-center .carousel-slide {
+      transform: scale(1.05);
+    }
+    
+    .hero-slider .slick-slide:not(.slick-center) .carousel-slide {
+      transform: scale(0.9);
+      opacity: 0.8;
+    }
+    
+    .hero-slider .slick-dots {
+      bottom: -40px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .hero-slider .slick-slide .carousel-slide {
+      transform: scale(1) !important;
+      opacity: 1 !important;
+      filter: brightness(1) !important;
     }
   }
 }

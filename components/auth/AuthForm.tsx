@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Mail, Lock, User, Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "./AuthContext";
+import { useSupabaseAuth } from "./SupabaseAuthContext";
 
 interface AuthFormProps {
   mode: "login" | "signup";
@@ -13,6 +14,7 @@ interface AuthFormProps {
 
 export default function AuthForm({ mode, onModeChange, onSuccess }: AuthFormProps) {
   const { login } = useAuth();
+  const { signIn, signUp } = useSupabaseAuth();
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,14 +34,22 @@ export default function AuthForm({ mode, onModeChange, onSuccess }: AuthFormProp
 
     try {
       if (mode === "login") {
-        // TODO: 실제 로그인 API 연동 필요
-        // ⚠️ WARNING: 하드코딩된 인증 정보 - 프로덕션에서 절대 사용 금지!
-        // 현재는 test@demodev.com / test123 을 임시 인증 정보로 사용
-        if (email === "test@demodev.com" && password === "test123") {
+        // Supabase 로그인 사용
+        const { error: signInError } = await signIn(email, password);
+        
+        if (signInError) {
+          console.error("Login error:", signInError);
+          if (signInError.message.includes("Invalid login credentials")) {
+            setError("이메일 또는 비밀번호가 올바르지 않습니다.");
+          } else if (signInError.message.includes("Email not confirmed")) {
+            setError("이메일 인증이 필요합니다. 이메일을 확인해주세요.");
+          } else {
+            setError(signInError.message || "로그인 중 오류가 발생했습니다.");
+          }
+        } else {
+          // 로그인 성공 - 기존 AuthContext도 업데이트 (호환성 유지)
           login(email, undefined, stayLoggedIn);
           onSuccess();
-        } else {
-          setError("이메일 또는 비밀번호가 올바르지 않습니다.");
         }
       } else {
         // 회원가입 처리
@@ -51,9 +61,27 @@ export default function AuthForm({ mode, onModeChange, onSuccess }: AuthFormProp
           setError("약관에 동의해주세요.");
           return;
         }
-        // 임시 회원가입 처리
-        login(email, name);
-        onSuccess();
+        if (password.length < 6) {
+          setError("비밀번호는 최소 6자 이상이어야 합니다.");
+          return;
+        }
+        
+        // Supabase 회원가입 사용
+        const { error: signUpError } = await signUp(email, password, name);
+        
+        if (signUpError) {
+          console.error("Signup error:", signUpError);
+          if (signUpError.message.includes("already registered")) {
+            setError("이미 가입된 이메일입니다.");
+          } else if (signUpError.message.includes("password")) {
+            setError("비밀번호는 최소 6자 이상이어야 합니다.");
+          } else {
+            setError(signUpError.message || "회원가입 중 오류가 발생했습니다.");
+          }
+        } else {
+          alert("회원가입이 완료되었습니다!\n이메일을 확인하여 계정을 활성화해주세요.");
+          onSuccess();
+        }
       }
     } catch (error) {
       console.error("Authentication error:", error);
