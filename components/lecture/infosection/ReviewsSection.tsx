@@ -138,7 +138,7 @@ export default function ReviewsSection({ lecture }: ReviewsSectionProps) {
                     <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
                   ))}
                   <span className="ml-2 text-sm font-medium">5.0</span>
-                  <span className="ml-4 text-sm text-gray-500">2024-11-28</span>
+                  <span className="ml-4 text-sm text-gray-500">2025-11-28</span>
                 </div>
                 <p className="text-gray-700 leading-relaxed mb-4">
                   처음 강의를 들었는데 정말 만족스러웠습니다. AI 도구들을 실제로 어떻게 활용해야 하는지 명확하게 알려주셔서 바로 적용할 수 있었어요. 
@@ -181,7 +181,7 @@ export default function ReviewsSection({ lecture }: ReviewsSectionProps) {
                     <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
                   ))}
                   <span className="ml-2 text-sm font-medium">5.0</span>
-                  <span className="ml-4 text-sm text-gray-500">2024-11-27</span>
+                  <span className="ml-4 text-sm text-gray-500">2025-11-27</span>
                 </div>
                 <p className="text-gray-700 leading-relaxed mb-4">
                   40대에 개발을 시작하면서 걱정이 많았는데, 이 강의 덕분에 자신감을 얻었습니다. 
@@ -220,7 +220,7 @@ export default function ReviewsSection({ lecture }: ReviewsSectionProps) {
                   ))}
                   <Star className="w-4 h-4 text-gray-300" />
                   <span className="ml-2 text-sm font-medium">4.0</span>
-                  <span className="ml-4 text-sm text-gray-500">2024-11-26</span>
+                  <span className="ml-4 text-sm text-gray-500">2025-11-26</span>
                 </div>
                 <p className="text-gray-700 leading-relaxed mb-4">
                   전반적으로 좋은 강의였습니다. AI 도구 사용법을 차근차근 알려주셔서 도움이 많이 되었어요. 

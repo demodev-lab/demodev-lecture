@@ -57,12 +57,12 @@ export default function Header() {
               <Image
                 src="/logo.png"
                 alt="logo"
-                width={140}
-                height={40}
-                className="mr-3 sm:mr-4 md:mr-6 object-contain"
+                width={120}
+                height={32}
+                className="mr-2 sm:mr-4 md:mr-6 object-contain"
                 style={{
                   width: "auto",
-                  height: "32px",
+                  height: "28px",
                 }}
               />
             </Link>
@@ -82,15 +82,15 @@ export default function Header() {
           <div className="flex items-center gap-2">
             {/* Search Bar - 모바일에서 크기 조정 */}
             <form onSubmit={handleSearchSubmit} className="flex">
-              <span className="relative inline-flex h-10 sm:h-11 w-full">
+              <span className="relative inline-flex h-9 sm:h-10 w-full">
                 <span className="absolute flex h-full items-center pl-3 sm:pl-4">
-                  <Search className="h-4 w-4 text-neutral-500" />
+                  <Search className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-neutral-500" />
                 </span>
                 <input
                   onChange={handleSearchChange} 
                   value={searchQuery}
-                  className="h-full w-36 sm:w-48 md:w-64 lg:w-80 xl:w-96 border border-solid border-gray-200 bg-gray-100 px-10 sm:px-11 py-0 font-medium placeholder-gray-400 rounded-lg text-xs sm:text-sm focus:border-brand-500 focus:bg-white focus:outline-none transition-all duration-200"
-                  placeholder="검색어를 입력하세요"
+                  className="h-full w-32 sm:w-44 md:w-56 lg:w-72 xl:w-80 border border-solid border-gray-200 bg-gray-100 px-8 sm:px-10 py-0 font-medium placeholder-gray-400 rounded-lg text-xs sm:text-sm focus:border-brand-500 focus:bg-white focus:outline-none transition-all duration-200"
+                  placeholder="검색어를 입력"
                   aria-label="검색어 입력"
                 />
               </span>
@@ -194,7 +194,7 @@ export default function Header() {
               </div>
 
               {/* Right Links */}
-              <div className="flex shrink-0 items-center font-medium text-neutral-700">
+              {/* <div className="flex shrink-0 items-center font-medium text-neutral-700">
                 <a
                   className="px-2.5"
                   target="_blank"
@@ -210,29 +210,29 @@ export default function Header() {
                 >
                   강사 지원하기
                 </a>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
 
         {/* 모바일용 간소화된 네비게이션 */}
-        <div className="lg:hidden mx-auto w-full max-w-7xl px-4 sm:px-6 py-2">
-          <div className="flex items-center gap-4 overflow-x-auto">
+        <div className="lg:hidden mx-auto w-full max-w-7xl px-4 sm:px-6 py-2 border-t border-gray-100">
+          <div className="flex items-center justify-center gap-8 overflow-x-auto">
             <Link
               href="/"
-              className="whitespace-nowrap text-sm font-semibold  px-2"
+              className="whitespace-nowrap text-sm font-semibold text-brand-600 px-3 py-1"
             >
               클래스
             </Link>
             <Link
               href="/class/best"
-              className="whitespace-nowrap text-sm font-semibold text-[#222222] px-2"
+              className="whitespace-nowrap text-sm font-semibold text-gray-700 px-3 py-1 hover:text-brand-600 transition-colors"
             >
               베스트
             </Link>
             <Link
               href="/curriculum"
-              className="whitespace-nowrap text-sm font-semibold text-[#222222] px-2"
+              className="whitespace-nowrap text-sm font-semibold text-gray-700 px-3 py-1 hover:text-brand-600 transition-colors"
             >
               커리큘럼
             </Link>

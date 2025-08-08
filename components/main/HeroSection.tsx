@@ -207,6 +207,6 @@ export default function HeroSection() {
 
 /* 
   Note: Additional carousel styling is handled through a CSS module or Tailwind's @layer directive
-  to avoid global style pollution. The react-multi-carousel library requires some CSS overrides
+  to avoid global style pollution. The react-slick library requires some CSS overrides
   that can't be achieved with utility classes alone.
 */

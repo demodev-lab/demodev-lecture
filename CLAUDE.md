@@ -40,7 +40,7 @@ npm uninstall <package>  # Remove a dependency
 ```
 demolearn/
 ├── app/                    # Next.js App Router pages
-│   ├── admin/             # Admin dashboard system
+│   ├── admin/             # Admin dashboard (not in use)
 │   ├── challenge/         # Challenge pages
 │   ├── class/            # Class-related pages
 │   │   ├── best/         # Best courses page
@@ -53,7 +53,7 @@ demolearn/
 │   └── signup/           # Registration
 ├── components/            # Reusable React components
 │   ├── @shared/          # Shared components (Header, Footer)
-│   ├── admin/            # Admin-specific components
+│   ├── admin/            # Admin components (not in use)
 │   ├── auth/             # Authentication components
 │   ├── challenge/        # Challenge-related components
 │   ├── curriculum/       # Course listing components
@@ -103,14 +103,10 @@ demolearn/
   price: number
   discounted_price: number
   duration: string
-  level: 'beginner' | 'intermediate' | 'advanced'
-  language: string
   rating: number
   review_count: number
-  enrolled_count: number
   is_new: boolean
   is_active: boolean
-  last_updated: timestamp
   created_at: timestamp
   updated_at: timestamp
 }
@@ -156,7 +152,6 @@ Current Category Structure:
   duration: number (seconds)
   video_url: string
   order: number
-  is_free: boolean
   description: text
 }
 ```
@@ -219,7 +214,6 @@ Purchase Status Types:
   lecture_id: string (FK → Lectures)
   rating: number (1-5)
   content: text
-  is_best_review: boolean
   created_at: timestamp
   updated_at: timestamp
 }
@@ -232,8 +226,6 @@ Purchase Status Types:
   name: string
   bio: text
   avatar: string
-  experience: string
-  specialties: string[] (JSON)
   created_at: timestamp
 }
 ```
@@ -288,7 +280,6 @@ GET    /api/lectures/search           # 강의 검색
 ### User Dashboard
 ```
 GET    /api/users/profile              # 프로필 조회
-PUT    /api/users/profile              # 프로필 수정
 GET    /api/users/purchases            # 구매 내역
 GET    /api/users/progress             # 수강 진도
 GET    /api/users/favorites            # 찜 목록
@@ -303,17 +294,6 @@ POST   /api/payments/complete          # 결제 완료
 POST   /api/payments/cancel            # 결제 취소
 POST   /api/payments/refund            # 환불 요청
 GET    /api/payments/:id               # 결제 상세
-```
-
-### Admin
-```
-GET    /api/admin/dashboard            # 대시보드 통계
-GET    /api/admin/lectures             # 강의 관리
-POST   /api/admin/lectures             # 강의 생성
-PUT    /api/admin/lectures/:id         # 강의 수정
-DELETE /api/admin/lectures/:id         # 강의 삭제
-GET    /api/admin/users                # 사용자 관리
-GET    /api/admin/payments             # 결제 관리
 ```
 
 ## User Flows
@@ -349,15 +329,6 @@ GET    /api/admin/payments             # 결제 관리
 → 비디오 플레이어 페이지
 → 챕터별 학습
 → 진도 자동 저장
-→ 완료시 수료증 발급
-```
-
-### 4. Admin Management Flow
-```
-/admin 접속 → 로그인 (admin@demodev.com / admin123)
-→ 대시보드 진입
-→ 강의 관리 / 사용자 관리 / 통계 확인
-→ CRUD 작업 수행
 ```
 
 ## Component Architecture
@@ -389,6 +360,7 @@ GET    /api/admin/payments             # 결제 관리
 - **Local State**: useState, useEffect hooks
 - **Form State**: Controlled components
 - **URL State**: useSearchParams for filters
+- **Favorites**: Context API (FavoriteLecturesContext)
 
 ### Data Fetching Pattern
 ```typescript
@@ -477,7 +449,7 @@ const buttonVariants = cva(
 2. **React Optimizations**
    - Memo for expensive calculations
    - Lazy loading for components
-   - Virtualization for long lists
+   - Suspense for async components
 
 3. **Asset Optimization**
    - Tailwind CSS purging
@@ -531,30 +503,6 @@ test: Add tests
 chore: Update dependencies
 ```
 
-## Testing Strategy
-
-### Unit Testing (To be implemented)
-```typescript
-// Component testing with React Testing Library
-describe('Component', () => {
-  it('should render correctly', () => {
-    render(<Component />);
-    expect(screen.getByText('text')).toBeInTheDocument();
-  });
-});
-```
-
-### E2E Testing (To be implemented)
-```typescript
-// Playwright for E2E testing
-test('user can purchase course', async ({ page }) => {
-  await page.goto('/lectures');
-  await page.click('[data-testid="course-card"]');
-  await page.click('[data-testid="purchase-button"]');
-  // ...
-});
-```
-
 ## Deployment
 
 ### Environment Variables
@@ -590,19 +538,42 @@ pm2 start npm --name "demolearn" -- start
 
 ## Future Enhancements
 
-1. **Features**
+### Features to Implement
+1. **Learning Features**
    - Live streaming classes
    - Discussion forums
    - Assignment submissions
    - Peer reviews
    - Certificates generation
+   - Learning paths
+   - Quiz system
 
-2. **Technical**
-   - GraphQL API migration
-   - Microservices architecture
-   - Redis caching
-   - WebSocket for real-time features
-   - Mobile app development
+2. **User Features**
+   - Profile editing
+   - Points/rewards system
+   - Social login (Google, Kakao)
+   - Email notifications
+   - Achievement badges
+
+3. **Payment Features**
+   - Gift card system
+   - Subscription model
+   - Bundle purchases
+   - Referral program
+
+4. **Content Features**
+   - Advanced search filters
+   - Course recommendations
+   - Offline download
+   - Mobile app
+
+### Technical Improvements
+- GraphQL API migration
+- Microservices architecture
+- Redis caching
+- WebSocket for real-time features
+- PWA implementation
+- Internationalization (i18n)
 
 ## Important Notes
 
@@ -611,7 +582,7 @@ pm2 start npm --name "demolearn" -- start
 3. **TypeScript**: Strict mode enabled
 4. **Authentication**: Currently localStorage, prepared for Supabase
 5. **Payment**: Integration ready for Korean payment gateways
-6. **Internationalization**: Korean-first with UTF-8 encoding
+6. **Language**: Korean-first with UTF-8 encoding
 7. **Mobile**: Responsive design with mobile-first approach
 8. **Browser Support**: Modern browsers (Chrome, Firefox, Safari, Edge)
 
@@ -625,4 +596,4 @@ When developer tools are opened, users see:
 ---
 
 Last Updated: 2025-01-07
-Version: 2.0.0
+Version: 2.1.0

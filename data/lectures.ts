@@ -135,7 +135,7 @@ export const dummyLectures: Lecture[] = [
         ]
       }
     ],
-    enrolledAt: "2024-01-15T09:00:00Z",
+    enrolledAt: "2025-01-15T09:00:00Z",
     lastWatchedAt: undefined,
     lastWatchedChapterId: undefined
   },
@@ -241,8 +241,8 @@ export const dummyLectures: Lecture[] = [
         ]
       }
     ],
-    enrolledAt: "2024-01-20T14:30:00Z",
-    lastWatchedAt: "2024-01-22T16:45:00Z",
+    enrolledAt: "2025-01-20T14:30:00Z",
+    lastWatchedAt: "2025-01-22T16:45:00Z",
     lastWatchedChapterId: "ch3"
   }
 ];

@@ -1,18 +1,16 @@
 "use client";
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState, useEffect, useMemo } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
-const categories = [
+const sections = [
   {
     title: "오리지널",
     items: ["바이브 빌더스"],
-    emoji: "✨",
   },
   {
     title: "바이브 코딩",
     items: ["프롬프트 엔지니어링", "컨텍스트 엔지니어링", "AI 도구 활용"],
-    emoji: "💻",
   },
   {
     title: "앱/웹",
@@ -22,7 +20,6 @@ const categories = [
       "앱 수익화",
       "웹 수익화",
     ],
-    emoji: "🌐",
   },
   {
     title: "자동화",
@@ -33,70 +30,54 @@ const categories = [
       "크롤링",
       "AI 업무 자동화",
     ],
-    emoji: "⚡",
   },
 ];
 
-interface CategoryDropdownProps {
-  category: {
-    title: string;
-    items: string[];
-    emoji: string;
-  };
-  isOpen: boolean;
-  onToggle: () => void;
-  onCategoryClick: (category: string) => void;
-  onItemClick: (category: string, subcategory: string) => void;
-  selectedCategory: string | null;
-  selectedSubcategory: string | null;
-}
-
-function CategoryDropdown({
-  category,
-  isOpen,
-  onToggle,
-  onCategoryClick,
+function SectionToggle({
+  title,
+  items,
+  open,
+  onClick,
   onItemClick,
+  onCategoryClick,
   selectedCategory,
   selectedSubcategory,
-}: CategoryDropdownProps) {
-  const isSelectedCategory = selectedCategory === category.title;
+}: {
+  title: string;
+  items: string[];
+  open: boolean;
+  onClick: () => void;
+  onItemClick: (category: string, subcategory: string) => void;
+  onCategoryClick: (category: string) => void;
+  selectedCategory: string | null;
+  selectedSubcategory: string | null;
+}) {
+  const isSelectedCategory = selectedCategory === title;
 
   return (
-    <div className="mb-2">
-      <div className="mx-4 rounded-lg overflow-hidden bg-white shadow-sm border border-gray-100 hover:shadow-md transition-all duration-200">
+    <div className="border-b border-gray-100 last:border-b-0">
+      <div className="flex items-center">
         <button
-          onClick={onToggle}
-          className={`w-full px-4 py-3.5 flex items-center justify-between transition-all duration-200 ${
-            isSelectedCategory 
-              ? "bg-gradient-to-r from-brand-50 to-purple-50" 
-              : "hover:bg-gray-50"
-          }`}
+          className="flex-1 flex items-center py-4 px-0 text-left focus:outline-none group"
+          onClick={() => onCategoryClick(title)}
         >
-          <div className="flex items-center space-x-3">
-            <span className="text-xl">{category.emoji}</span>
-            <span 
-              className={`font-semibold transition-colors ${
-                isSelectedCategory 
-                  ? "text-brand-600" 
-                  : "text-gray-800 hover:text-brand-500"
-              }`}
-              onClick={(e) => {
-                e.stopPropagation();
-                onCategoryClick(category.title);
-              }}
-            >
-              {category.title}
-            </span>
-          </div>
+          <span className={`text-lg font-medium transition-colors ${
+            isSelectedCategory ? "text-brand-500" : "text-gray-800 hover:text-brand-500"
+          }`}>
+            {title}
+          </span>
+        </button>
+        <button
+          className="p-2 text-gray-400 hover:text-gray-600 transition-colors"
+          onClick={onClick}
+          aria-expanded={open}
+        >
           <svg
             width="20"
             height="20"
             fill="none"
             viewBox="0 0 24 24"
-            className={`transition-all duration-300 ${
-              isOpen ? "rotate-180 text-brand-500" : "text-gray-400"
-            }`}
+            className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`}
           >
             <path
               d="M6 9l6 6 6-6"
@@ -107,39 +88,31 @@ function CategoryDropdown({
             />
           </svg>
         </button>
-        
-        <div
-          className={`overflow-hidden transition-all duration-300 ease-in-out ${
-            isOpen ? "max-h-96" : "max-h-0"
-          }`}
-        >
-          <div className="bg-gradient-to-b from-gray-50 to-white border-t border-gray-100">
-            {category.items.map((item, index) => {
-              const isSelected = selectedCategory === category.title && selectedSubcategory === item;
-              return (
+      </div>
+      <div
+        className={`overflow-hidden transition-all duration-300 ease-in-out ${
+          open ? "max-h-96 pb-4" : "max-h-0"
+        }`}
+      >
+        <ul className="space-y-2 pl-0">
+          {items.map((item) => {
+            const isSelected = selectedCategory === title && selectedSubcategory === item;
+            return (
+              <li key={item}>
                 <button
-                  key={item}
-                  onClick={() => onItemClick(category.title, item)}
-                  className={`w-full px-12 py-3 text-left text-sm transition-all duration-150 relative group ${
+                  onClick={() => onItemClick(title, item)}
+                  className={`block w-full text-left text-base py-2 transition-colors duration-150 ${
                     isSelected 
-                      ? "text-brand-600 font-semibold bg-brand-50" 
-                      : "text-gray-600 hover:text-brand-500 hover:bg-gray-50"
-                  } ${index !== category.items.length - 1 ? "border-b border-gray-100" : ""}`}
+                      ? "text-brand-500 font-medium" 
+                      : "text-gray-600 hover:text-brand-500"
+                  }`}
                 >
-                  <span className={`absolute left-6 transition-opacity ${
-                    isSelected ? "opacity-100" : "opacity-0 group-hover:opacity-100"
-                  }`}>
-                    •
-                  </span>
                   {item}
-                  {isSelected && (
-                    <span className="absolute right-4 top-1/2 -translate-y-1/2 w-1 h-8 bg-brand-500 rounded-full"></span>
-                  )}
                 </button>
-              );
-            })}
-          </div>
-        </div>
+              </li>
+            );
+          })}
+        </ul>
       </div>
     </div>
   );
@@ -150,28 +123,59 @@ interface OpenScheduledSidebarProps {
   selectedSubcategory?: string | null;
 }
 
-export default function OpenScheduledSidebar({ 
-  selectedCategory, 
-  selectedSubcategory 
-}: OpenScheduledSidebarProps) {
+export default function OpenScheduledSidebar({ selectedCategory, selectedSubcategory }: OpenScheduledSidebarProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const searchQuery = searchParams.get('search') || '';
+  
+  const [openSections, setOpenSections] = useState(
+    sections.map((_, idx) => idx === 1) // 두 번째 섹션만 열어둠 (이미지와 같이)
+  );
 
-  const safeSelectedCategory: string | null = typeof selectedCategory === "undefined" ? null : selectedCategory;
-  const safeSelectedSubcategory: string | null = typeof selectedSubcategory === "undefined" ? null : selectedSubcategory;
+  // 검색어에 따라 필터링된 섹션
+  const filteredSections = useMemo(() => {
+    if (!searchQuery) return sections;
+    
+    const lowerSearchQuery = searchQuery.toLowerCase();
+    
+    return sections.map(section => {
+      // 섹션 제목이 검색어를 포함하는지 확인
+      const titleMatches = section.title.toLowerCase().includes(lowerSearchQuery);
+      
+      // 섹션 아이템들 중 검색어를 포함하는 것만 필터링
+      const filteredItems = section.items.filter(item => 
+        item.toLowerCase().includes(lowerSearchQuery)
+      );
+      
+      // 섹션 제목이 매치되면 모든 아이템 표시, 아니면 필터링된 아이템만 표시
+      return {
+        ...section,
+        items: titleMatches ? section.items : filteredItems,
+        visible: titleMatches || filteredItems.length > 0
+      };
+    }).filter(section => section.visible);
+  }, [searchQuery]);
 
-  const [openCategories, setOpenCategories] = useState<string[]>([]);
+  // 검색어가 있을 때 모든 섹션 열기
+  useEffect(() => {
+    if (searchQuery) {
+      setOpenSections(sections.map(() => true));
+    }
+  }, [searchQuery]);
 
-  const handleToggle = (categoryTitle: string) => {
-    setOpenCategories(prev => 
-      prev.includes(categoryTitle)
-        ? prev.filter(c => c !== categoryTitle)
-        : [...prev, categoryTitle]
+  const handleToggle = (idx: number) => {
+    setOpenSections((prev) =>
+      prev.map((open, i) => (i === idx ? !open : open))
     );
   };
 
   const handleCategoryClick = (category: string) => {
     const params = new URLSearchParams();
     params.set('category', category);
+    // 검색어가 있으면 유지
+    if (searchQuery) {
+      params.set('search', searchQuery);
+    }
     router.push(`/class/openScheduled?${params.toString()}`);
   };
 
@@ -179,35 +183,46 @@ export default function OpenScheduledSidebar({
     const params = new URLSearchParams();
     params.set('category', category);
     params.set('subcategory', subcategory);
+    // 검색어가 있으면 유지
+    if (searchQuery) {
+      params.set('search', searchQuery);
+    }
     router.push(`/class/openScheduled?${params.toString()}`);
   };
 
   return (
-    <aside className="w-full bg-gradient-to-b from-gray-50 to-white min-h-screen">
-      <div className="py-6">
-        <div className="px-6 pb-6">
-          <div className="flex items-center space-x-2">
-            <div className="w-1 h-6 bg-brand-500 rounded-full"></div>
-            <h3 className="text-xl font-bold bg-gradient-to-r from-brand-600 to-purple-600 bg-clip-text text-transparent">
-              카테고리
-            </h3>
+    <aside className="w-full bg-white border-r border-gray-100 min-h-screen">
+      <div className="px-6 py-8">
+        {searchQuery && (
+          <div className="mb-6 p-3 bg-gray-50 rounded-lg">
+            <p className="text-sm text-gray-600">
+              &ldquo;{searchQuery}&rdquo; 검색 결과
+            </p>
           </div>
-          <p className="text-xs text-gray-500 mt-2">원하는 카테고리를 선택해주세요</p>
-        </div>
-        
-        <div className="space-y-2">
-          {categories.map((category) => (
-            <CategoryDropdown
-              key={category.title}
-              category={category}
-              isOpen={openCategories.includes(category.title)}
-              onToggle={() => handleToggle(category.title)}
-              onCategoryClick={handleCategoryClick}
-              onItemClick={handleItemClick}
-              selectedCategory={safeSelectedCategory}
-              selectedSubcategory={safeSelectedSubcategory}
-            />
-          ))}
+        )}
+        <div className="space-y-0">
+          {filteredSections.length === 0 ? (
+            <div className="text-center py-8">
+              <p className="text-gray-500">검색 결과가 없습니다.</p>
+            </div>
+          ) : (
+            filteredSections.map((section) => {
+              const originalIdx = sections.findIndex(s => s.title === section.title);
+              return (
+                <SectionToggle
+                  key={section.title}
+                  title={section.title}
+                  items={section.items}
+                  open={openSections[originalIdx]}
+                  onClick={() => handleToggle(originalIdx)}
+                  onItemClick={handleItemClick}
+                  onCategoryClick={handleCategoryClick}
+                  selectedCategory={selectedCategory || null}
+                  selectedSubcategory={selectedSubcategory || null}
+                />
+              );
+            })
+          )}
         </div>
       </div>
     </aside>

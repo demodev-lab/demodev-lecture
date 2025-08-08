@@ -11,14 +11,6 @@ const Footer = () => {
               <li>
                 <a
                   className="hover:text-brand-400 transition-colors"
-                  href="/footer/notice"
-                >
-                  공지사항
-                </a>
-              </li>
-              <li>
-                <a
-                  className="hover:text-brand-400 transition-colors"
                   href="/footer/terms"
                 >
                   서비스 이용약관
@@ -27,8 +19,7 @@ const Footer = () => {
               <li>
                 <a
                   className="hover:text-brand-400 transition-colors"
-                  target="_blank"
-                  href="https://docs.channel.io/wbfaq"
+                  href="/footer/ask"
                 >
                   자주 묻는 질문
                 </a>
@@ -40,7 +31,7 @@ const Footer = () => {
               <li>
                 <a
                   className="hover:text-brand-400 transition-colors"
-                  href="/footer/privacy"
+                  href="/footer/notice"
                 >
                   개인정보처리방침
                 </a>
@@ -51,11 +42,6 @@ const Footer = () => {
                   href="/footer/copyright"
                 >
                   저작권 안내
-                </a>
-              </li>
-              <li>
-                <a href="" target="_blank" className="hover:text-brand-400 transition-colors" rel="noreferrer">
-                  채용
                 </a>
               </li>
             </ul>
@@ -138,7 +124,7 @@ const Footer = () => {
               </li>
             </ul>
 
-            <ul className="flex flex-col gap-4">
+            {/* <ul className="flex flex-col gap-4">
               <li className="font-semibold text-white mb-2">비즈니스</li>
               <li>
                 <a
@@ -155,15 +141,18 @@ const Footer = () => {
                   비즈니스/제휴 문의
                 </a>
               </li>
-            </ul>
+            </ul> */}
           </div>
 
           <div className="flex flex-shrink-0 flex-col gap-4 w-full sm:w-auto">
             <div className="border border-gray-800 p-5 rounded-lg">
               <h3 className="font-semibold text-white mb-3">고객 지원</h3>
-              <button className="w-full bg-gray-800 text-gray-200 rounded-lg px-4 py-2.5 text-sm font-medium hover:bg-gray-700 transition-colors mb-3">
+              <a 
+                href="mailto:demodev.works@gmail.com?subject=[대모산 개발단] 문의사항&body=안녕하세요,%0D%0A%0D%0A문의 내용을 작성해 주세요.%0D%0A%0D%0A감사합니다."
+                className="w-full bg-gray-800 text-gray-200 rounded-lg px-4 py-2.5 text-sm font-medium hover:bg-gray-700 transition-colors mb-3 block text-center"
+              >
                 문의하기
-              </button>
+              </a>
               <div className="text-xs text-gray-400 space-y-1">
                 <div>평일 10:00 - 18:00</div>
                 <div>점심시간 12:00 - 13:00</div>
@@ -180,7 +169,7 @@ const Footer = () => {
                 대모산 개발단
               </div>
               <div className="text-xs text-gray-500">
-                © 2024 Demodev. All rights reserved.
+                © 2025 Demodev. All rights reserved.
               </div>
             </div>
             <div className="flex items-center gap-4 text-xs text-gray-500">
