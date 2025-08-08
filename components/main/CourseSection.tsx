@@ -4,8 +4,9 @@ import { ChevronRight, Heart, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useFavoriteLectures } from "@/contexts/FavoriteLecturesContext";
-import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 export interface Course {
   id: number;
@@ -40,29 +41,24 @@ export default function CourseSection({
     return "course" as const;
   };
 
-  // 강의 카드용 반응형 설정
-  const courseResponsive = {
-    desktop: {
-      breakpoint: { max: 3000, min: 1200 },
-      items: 4,
-      slidesToSlide: 2,
-    },
-    laptop: {
-      breakpoint: { max: 1200, min: 1024 },
-      items: 3,
-      slidesToSlide: 2,
-    },
-    tablet: {
-      breakpoint: { max: 1024, min: 640 },
-      items: 2,
-      slidesToSlide: 1,
-    },
-    mobile: {
-      breakpoint: { max: 640, min: 0 },
-      items: 1.2,
-      slidesToSlide: 1,
-      partialVisibilityGutter: 20,
-    },
+  // react-slick 설정
+  const sliderSettings = {
+    dots: false,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 1.2,
+    slidesToScroll: 1,
+    arrows: false,
+    swipeToSlide: true,
+    responsive: [
+      {
+        breakpoint: 640,
+        settings: {
+          slidesToShow: 1.2,
+          slidesToScroll: 1,
+        }
+      }
+    ]
   };
   return (
     <section className={`py-4 sm:py-6 md:py-8 bg-transparent ${className}`}>
@@ -195,17 +191,7 @@ export default function CourseSection({
 
         {/* 모바일용 캐러셀 */}
         <div className="sm:hidden">
-          <Carousel
-            responsive={courseResponsive}
-            infinite={false}
-            arrows={false}
-            showDots={false}
-            swipeable={true}
-            draggable={true}
-            partialVisible={true}
-            containerClass="course-carousel"
-            itemClass="px-2"
-          >
+          <Slider {...sliderSettings} className="course-slider">
             {data.map((data) => {
               // 챌린지인지 확인 (latpeed.com URL 포함 여부)
               const isChallenge = data.url.includes('latpeed.com');
@@ -324,7 +310,7 @@ export default function CourseSection({
                 </Link>
               );
             })}
-          </Carousel>
+          </Slider>
         </div>
       </div>
     </section>
