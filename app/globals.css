@@ -126,7 +126,7 @@
   }
   
   .react-multi-carousel-item--active .carousel-slide {
-    @apply opacity-100 scale-100;
+    @apply opacity-100 scale-100; 
   }
 }
 
@@ -139,8 +139,17 @@
   }
   
   /* Carousel item padding */
-  .carousel-item-padding {
+  .hero-carousel-item {
     padding: 0 8px;
+  }
+  
+  /* Hero carousel container */
+  .hero-carousel-container .react-multi-carousel-list {
+    overflow: visible !important;
+  }
+  
+  .hero-carousel-container .react-multi-carousel-track {
+    align-items: center;
   }
   
 

@@ -11,14 +11,6 @@ const Footer = () => {
               <li>
                 <a
                   className="hover:text-brand-400 transition-colors"
-                  href="/footer/notice"
-                >
-                  공지사항
-                </a>
-              </li>
-              <li>
-                <a
-                  className="hover:text-brand-400 transition-colors"
                   href="/footer/terms"
                 >
                   서비스 이용약관
@@ -27,8 +19,7 @@ const Footer = () => {
               <li>
                 <a
                   className="hover:text-brand-400 transition-colors"
-                  target="_blank"
-                  href="https://docs.channel.io/wbfaq"
+                  href="/footer/ask"
                 >
                   자주 묻는 질문
                 </a>
@@ -40,7 +31,7 @@ const Footer = () => {
               <li>
                 <a
                   className="hover:text-brand-400 transition-colors"
-                  href="/footer/privacy"
+                  href="/footer/notice"
                 >
                   개인정보처리방침
                 </a>
@@ -51,11 +42,6 @@ const Footer = () => {
                   href="/footer/copyright"
                 >
                   저작권 안내
-                </a>
-              </li>
-              <li>
-                <a href="" target="_blank" className="hover:text-brand-400 transition-colors" rel="noreferrer">
-                  채용
                 </a>
               </li>
             </ul>
@@ -138,7 +124,7 @@ const Footer = () => {
               </li>
             </ul>
 
-            <ul className="flex flex-col gap-4">
+            {/* <ul className="flex flex-col gap-4">
               <li className="font-semibold text-white mb-2">비즈니스</li>
               <li>
                 <a
@@ -155,7 +141,7 @@ const Footer = () => {
                   비즈니스/제휴 문의
                 </a>
               </li>
-            </ul>
+            </ul> */}
           </div>
 
           <div className="flex flex-shrink-0 flex-col gap-4 w-full sm:w-auto">
@@ -180,7 +166,7 @@ const Footer = () => {
                 대모산 개발단
               </div>
               <div className="text-xs text-gray-500">
-                © 2024 Demodev. All rights reserved.
+                © 2025 Demodev. All rights reserved.
               </div>
             </div>
             <div className="flex items-center gap-4 text-xs text-gray-500">

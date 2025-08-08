@@ -2,7 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
-import OpenScheduledSidebar from "@/components/openScheduled/OpenScheduledSidebar";
+import OpenScheduledSidebar from "@/components/openscheduled/OpenScheduledSidebar";
 
 function OpenScheduledContent() {
   const searchParams = useSearchParams();

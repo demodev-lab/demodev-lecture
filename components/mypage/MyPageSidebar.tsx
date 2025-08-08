@@ -50,8 +50,6 @@ export default function MyPageSidebar({ activeTab, onTabChange }: MyPageSidebarP
           icon: <BookOpen className="w-4 h-4" />,
           onClick: () => onTabChange?.("favorites")
         },
-        { label: "강의 상담", icon: <MessageCircle className="w-4 h-4" /> },
-        { label: "수료증", icon: <FileText className="w-4 h-4" /> },
         { label: "후기 관리", icon: <Star className="w-4 h-4" /> },
         { 
           label: "구매 내역", 
@@ -100,21 +98,6 @@ export default function MyPageSidebar({ activeTab, onTabChange }: MyPageSidebarP
         </div>
         <h2 className="font-bold text-base sm:text-lg">{userData.name}</h2>
         <p className="text-xs sm:text-sm text-gray-500">{userData.levelTitle} <span className="text-blue-600">{userData.level}</span></p>
-      </div>
-      {/* 통계 섹션 */}
-      <div className="grid grid-cols-3 gap-2 mb-4 sm:mb-6 pb-4 sm:pb-6 border-b">
-        <div className="text-center">
-          <p className="text-[10px] sm:text-xs text-gray-500">내 쿠폰</p>
-          <p className="font-semibold text-sm sm:text-base text-blue-600">{userData.coupons}장</p>
-        </div>
-        <div className="text-center">
-          <p className="text-[10px] sm:text-xs text-gray-500">쌓음권</p>
-          <p className="font-semibold text-sm sm:text-base text-blue-600">{userData.credits}원</p>
-        </div>
-        <div className="text-center">
-          <p className="text-[10px] sm:text-xs text-gray-500">포인트</p>
-          <p className="font-semibold text-sm sm:text-base text-blue-600">{userData.points}원</p>
-        </div>
       </div>
 
       {/* 탭 네비게이션 */}

@@ -22,7 +22,7 @@ const mockLectures: Lecture[] = [
     level: "초급",
     students: 1234,
     status: "active",
-    updatedAt: "2024-01-10",
+    updatedAt: "2025-01-10",
   },
   {
     id: "2",
@@ -31,7 +31,7 @@ const mockLectures: Lecture[] = [
     level: "중급",
     students: 856,
     status: "active",
-    updatedAt: "2024-01-09",
+    updatedAt: "2025-01-09",
   },
   {
     id: "3",
@@ -40,7 +40,7 @@ const mockLectures: Lecture[] = [
     level: "중급",
     students: 945,
     status: "draft",
-    updatedAt: "2024-01-08",
+    updatedAt: "2025-01-08",
   },
   {
     id: "4",
@@ -49,7 +49,7 @@ const mockLectures: Lecture[] = [
     level: "중급",
     students: 678,
     status: "active",
-    updatedAt: "2024-01-07",
+    updatedAt: "2025-01-07",
   },
   {
     id: "5",
@@ -58,7 +58,7 @@ const mockLectures: Lecture[] = [
     level: "초급",
     students: 0,
     status: "archived",
-    updatedAt: "2024-01-06",
+    updatedAt: "2025-01-06",
   },
 ];
 
