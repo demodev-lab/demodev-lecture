@@ -5,12 +5,12 @@ import {
   MessageCircle, 
   Star, 
   ShoppingCart,
-  HelpCircle,
   Settings,
   ChevronRight,
   LayoutGrid
 } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface MenuItem {
   label: string;
@@ -30,6 +30,8 @@ interface MyPageSidebarProps {
 }
 
 export default function MyPageSidebar({ activeTab, onTabChange }: MyPageSidebarProps) {
+  const router = useRouter();
+  
   // 임시 사용자 데이터
   const userData = {
     name: "고성현",
@@ -60,8 +62,11 @@ export default function MyPageSidebar({ activeTab, onTabChange }: MyPageSidebarP
     {
       title: "고객 지원",
       items: [
-        { label: "1:1 문의", icon: <HelpCircle className="w-4 h-4" /> },
-        { label: "자주 묻는 질문", icon: <MessageCircle className="w-4 h-4" /> },
+        { 
+          label: "자주 묻는 질문", 
+          icon: <MessageCircle className="w-4 h-4" />,
+          onClick: () => router.push("/footer/ask")
+        },
       ],
     },
     {

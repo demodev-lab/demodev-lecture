@@ -147,9 +147,12 @@ const Footer = () => {
           <div className="flex flex-shrink-0 flex-col gap-4 w-full sm:w-auto">
             <div className="border border-gray-800 p-5 rounded-lg">
               <h3 className="font-semibold text-white mb-3">고객 지원</h3>
-              <button className="w-full bg-gray-800 text-gray-200 rounded-lg px-4 py-2.5 text-sm font-medium hover:bg-gray-700 transition-colors mb-3">
+              <a 
+                href="mailto:demodev.works@gmail.com?subject=[대모산 개발단] 문의사항&body=안녕하세요,%0D%0A%0D%0A문의 내용을 작성해 주세요.%0D%0A%0D%0A감사합니다."
+                className="w-full bg-gray-800 text-gray-200 rounded-lg px-4 py-2.5 text-sm font-medium hover:bg-gray-700 transition-colors mb-3 block text-center"
+              >
                 문의하기
-              </button>
+              </a>
               <div className="text-xs text-gray-400 space-y-1">
                 <div>평일 10:00 - 18:00</div>
                 <div>점심시간 12:00 - 13:00</div>
