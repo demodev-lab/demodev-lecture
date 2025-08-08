@@ -16,49 +16,13 @@ interface Lecture {
 
 const mockLectures: Lecture[] = [
   {
-    id: "1",
-    title: "React 기초부터 실전까지",
-    category: "Frontend",
+    id: "demo-1",
+    title: "AI 프롬프트 엔지니어링 실전",
+    category: "바이브 코딩",
     level: "초급",
-    students: 1234,
+    students: 128,
     status: "active",
-    updatedAt: "2025-01-10",
-  },
-  {
-    id: "2",
-    title: "Next.js 14 마스터 클래스",
-    category: "Frontend",
-    level: "중급",
-    students: 856,
-    status: "active",
-    updatedAt: "2025-01-09",
-  },
-  {
-    id: "3",
-    title: "TypeScript 완벽 가이드",
-    category: "Programming",
-    level: "중급",
-    students: 945,
-    status: "draft",
     updatedAt: "2025-01-08",
-  },
-  {
-    id: "4",
-    title: "Node.js 백엔드 개발",
-    category: "Backend",
-    level: "중급",
-    students: 678,
-    status: "active",
-    updatedAt: "2025-01-07",
-  },
-  {
-    id: "5",
-    title: "Python 데이터 분석",
-    category: "Data Science",
-    level: "초급",
-    students: 0,
-    status: "archived",
-    updatedAt: "2025-01-06",
   },
 ];
 
