@@ -1,13 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { supabase } from "@/utils/supabase-client";
+import { createClient } from "@/utils/supabase/client";
 
 export default function TestAuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<{ type?: string; data?: unknown; error?: unknown } | null>(null);
   const [loading, setLoading] = useState(false);
+  const supabase = createClient();
 
   const testSignUp = async () => {
     setLoading(true);

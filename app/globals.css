@@ -238,4 +238,14 @@
       filter: brightness(1) !important;
     }
   }
+
+  /* Course Slider Styles */
+  .course-slider .slick-track {
+    display: flex;
+    align-items: stretch;
+  }
+
+  .course-slider .slick-slide > div {
+    height: 100%;
+  }
 }
