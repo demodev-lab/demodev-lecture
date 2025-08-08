@@ -6,8 +6,6 @@ import Footer from "@/components/@shared/Footer";
 import Header from "@/components/@shared/Header";
 import ConsoleEasterEgg from "@/components/@shared/ConsoleEasterEgg";
 import { AuthProvider } from "@/components/auth/AuthContext";
-import { SupabaseAuthProvider } from "@/components/auth/SupabaseAuthContext";
-import ParticlesBackground from "@/components/ui/ParticlesBackground";
 import { FavoriteLecturesProvider } from "@/contexts/FavoriteLecturesContext";
 
 const geistSans = Geist({
@@ -39,19 +37,16 @@ export default function RootLayout({
         suppressHydrationWarning
         className="antialiased flex flex-col min-h-screen relative bg-transparent"
       >
-        <ParticlesBackground />
-        <SupabaseAuthProvider>
-          <AuthProvider>
-            <FavoriteLecturesProvider>
-              <Header />
-              <main className="flex-1">
-                <ClientBody>{children}</ClientBody>
-              </main>
-              <Footer />
-              <ConsoleEasterEgg />
-            </FavoriteLecturesProvider>
-          </AuthProvider>
-        </SupabaseAuthProvider>
+        <AuthProvider>
+          <FavoriteLecturesProvider>
+            <Header />
+            <main className="flex-1">
+              <ClientBody>{children}</ClientBody>
+            </main>
+            <Footer />
+            <ConsoleEasterEgg />
+          </FavoriteLecturesProvider>
+        </AuthProvider>
       </body>
     </html>
   );

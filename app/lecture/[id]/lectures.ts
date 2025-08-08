@@ -88,7 +88,7 @@ export const lectures: Lecture[] = [
     duration: "3시간 15분",
     level: "beginner",
     language: "한국어",
-    lastUpdated: "2024년 1월",
+    lastUpdated: "2025년 1월",
     enrolledStudents: 12450,
     price: {
       original: 49000,
@@ -292,7 +292,7 @@ export const lectures: Lecture[] = [
     duration: "4시간 30분",
     level: "beginner",
     language: "한국어",
-    lastUpdated: "2024년 2월",
+    lastUpdated: "2025년 2월",
     enrolledStudents: 3247,
     price: {
       original: 69000,
@@ -402,7 +402,7 @@ export const lectures: Lecture[] = [
     duration: "6시간 20분",
     level: "intermediate",
     language: "한국어",
-    lastUpdated: "2024년 1월",
+    lastUpdated: "2025년 1월",
     enrolledStudents: 2156,
     price: {
       original: 89000,

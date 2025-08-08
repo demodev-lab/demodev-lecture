@@ -79,11 +79,11 @@ const CustomLeftArrow = ({ onClick, ...rest }: ArrowProps) => {
     <button 
       {...arrowProps}
       onClick={onClick}
-      className="absolute left-2 sm:left-4 lg:left-6 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-20 text-brand-700 rounded-lg transition-all duration-300 flex items-center justify-center group"
+      className="absolute left-1 sm:left-2 lg:left-4 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 text-brand-700 rounded-lg flex items-center justify-center group"
       aria-label="이전 슬라이드"
     >
-      <svg className="w-5 h-5 sm:w-6 sm:h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={5} d="M15 19l-7-7 7-7" />
+      <svg className="w-4 h-4 sm:w-5 sm:h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M15 19l-7-7 7-7" />
       </svg>
     </button>
   );
@@ -97,11 +97,11 @@ const CustomRightArrow = ({ onClick, ...rest }: ArrowProps) => {
     <button 
       {...arrowProps}
       onClick={onClick}
-      className="absolute right-2 sm:right-4 lg:right-6 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-20  text-brand-700 rounded-lg transition-all duration-300 flex items-center justify-center group"
+      className="absolute right-1 sm:right-2 lg:right-4 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 text-brand-700 rounded-lg  flex items-center justify-center group"
       aria-label="다음 슬라이드"
     >
-      <svg className="w-5 h-5 sm:w-6 sm:h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={5} d="M9 5l7 7-7 7" />
+      <svg className="w-4 h-4 sm:w-5 sm:h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
       </svg>
     </button>
   );
@@ -120,10 +120,22 @@ export default function HeroSection() {
     setMounted(true);
   }, []);
 
-  // 모든 브레이크포인트에서 동일한 설정을 사용하므로 간소화
+  // 반응형 설정 - 심플한 구성
   const responsive = {
-    all: {
-      breakpoint: { max: 3000, min: 0 },
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      infinite: true,
+      items: 1,
+      slidesToSlide: 1,
+    },
+    tablet: {
+      breakpoint: { max: 1023, min: 768 },
+      infinite: true,
+      items: 1,
+      slidesToSlide: 1,
+    },
+    mobile: {
+      breakpoint: { max: 767, min: 0 },
       items: 1,
       slidesToSlide: 1,
     },
@@ -134,10 +146,10 @@ export default function HeroSection() {
   }
 
   return (
-    <section className="relative">
+    <section className="relative overflow-visible">
       {/* Main Hero Carousel */}
-      <div className="relative h-[428px] overflow-hidden">
-        <div className="mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative h-[280px] sm:h-[320px] md:h-[380px] lg:h-[428px] hero-carousel-container overflow-visible py-4">
+        <div className="mx-auto px-2 sm:px-6 lg:px-8 overflow-hidden">
           <Carousel
             responsive={responsive}
             infinite={true}
@@ -145,31 +157,37 @@ export default function HeroSection() {
             autoPlaySpeed={4000}
             keyBoardControl={true}
             centerMode={true}
-            containerClass="py-6 sm:py-8"
-            itemClass="px-0.5 carousel-item-padding"
+            partialVisible={false}
+            containerClass="hero-carousel-container"
+            itemClass="hero-carousel-item"
             arrows={true}
-            showDots={false}
+            showDots={true}
             swipeable={true}
             draggable={true}
-            focusOnSelect={true}
+            focusOnSelect={false}
             customLeftArrow={<CustomLeftArrow />}
             customRightArrow={<CustomRightArrow />}
-            dotListClass="!bottom-2 sm:!bottom-4"
+            dotListClass="hero-dots"
+            additionalTransfrom={0}
+            minimumTouchDrag={80}
+            rewind={false}
+            rewindWithAnimation={false}
           >
             {slides.map((slide) => (
-              <CarouselItem key={slide.id} className="px-1 rounded-lg">
+              <CarouselItem key={slide.id} className="">
                 <div
                   role="group"
                   aria-roledescription="slide"
-                  className="relative overflow-hidden h-[428px] carousel-slide"
+                  className="relative overflow-hidden h-[230px] sm:h-[270px] md:h-[330px] lg:h-[380px] carousel-slide rounded-lg mx-auto"
+                  style={{ width: "760px" }}
                 >
                   <a href={slide.href} className="block relative h-full w-full">
                     <Image
                       src={slide.image}
                       alt="banner"
                       fill
-                      sizes="(max-width: 768px) 100vw, 760px"
-                      className="object-contain rounded-lg"
+                      sizes="(max-width: 768px) 90vw, (max-width: 1024px) 85vw, 760px"
+                      className="object-contain"
                       priority
                       quality={100}
                     />
