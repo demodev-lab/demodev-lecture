@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Heart, BookOpen, Award } from "lucide-react";
-import { useAuth } from "@/components/auth/AuthContext";
+import { useSupabaseAuth } from "@/components/auth/SupabaseAuthContext";
 import { useRouter } from "next/navigation";
 
 // 더미 데이터
@@ -24,11 +24,11 @@ interface Tab {
 
 export default function MyPageProfile() {
   const [activeTab, setActiveTab] = useState("studying");
-  const { logout } = useAuth();
+  const { signOut } = useSupabaseAuth();
   const router = useRouter();
 
   const handleLogout = () => {
-    logout();
+    signOut();
     router.push("/");
   };
 

@@ -119,53 +119,107 @@
   }
 }
 
-/* Hero Carousel Styles */
-@layer components {
-  .carousel-item-padding .carousel-slide {
-    @apply opacity-40;
-  }
-  
-  .react-multi-carousel-item--active .carousel-slide {
-    @apply opacity-100 scale-100; 
-  }
-}
 
+/* React Slick Hero Carousel Styles */
 @layer components {
-  /* Carousel container */
-  .carousel-container {
-    padding-top: 24px;
-    padding-bottom: 24px;
-    margin: 0 -20%;
+  /* Hero carousel wrapper - 전체 화면 너비 사용 */
+  .hero-carousel-wrapper {
+    width: 100%;
+    margin: 0;
+    padding: 0;
   }
-  
-  /* Carousel item padding */
-  .hero-carousel-item {
-    padding: 0 8px;
-  }
-  
-  /* Hero carousel container */
-  .hero-carousel-container .react-multi-carousel-list {
-    overflow: visible !important;
-  }
-  
-  .hero-carousel-container .react-multi-carousel-track {
-    align-items: center;
-  }
-  
 
-  
-  /* Track alignment */
-  .carousel-slide-track {
+  /* Slick slider customization */
+  .hero-carousel-wrapper .slick-center {
+    transform: scale(1.1);
+    opacity: 1;
+    z-index: 10;
+  }
+
+  .hero-carousel-wrapper .slick-slide {
+    opacity: 0.7;
+    transform: scale(0.9);
+    transition: all 0.3s ease;
+  }
+
+  .hero-carousel-wrapper .slick-slide:not(.slick-center) {
+    transform: scale(0.9);
+  }
+
+  /* Custom dots styling */
+  .hero-carousel-wrapper .custom-dots {
+    bottom: -50px !important;
     display: flex !important;
-    align-items: center !important;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
   }
-  
-  
-  
-  /* Mobile adjustments */
+
+  .hero-carousel-wrapper .custom-dots li {
+    width: 12px;
+    height: 12px;
+    margin: 0;
+  }
+
+  .hero-carousel-wrapper .custom-dots li button {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: none;
+    background: #d1d5db;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0;
+    padding: 0;
+  }
+
+  .hero-carousel-wrapper .custom-dots li button:hover {
+    background: #9ca3af;
+    transform: scale(1.2);
+  }
+
+  .hero-carousel-wrapper .custom-dots li.slick-active button {
+    background: #6366f1;
+    transform: scale(1.3);
+  }
+
+  /* Arrow positioning and styling */
+  .hero-carousel-wrapper .slick-arrow {
+    z-index: 20;
+  }
+
+  .hero-carousel-wrapper .slick-arrow:before {
+    display: none;
+  }
+
+  /* Large desktop - full width */
+  @media (min-width: 1440px) {
+    .hero-carousel-wrapper .slick-list {
+      overflow: visible;
+    }
+  }
+
+  /* Mobile responsiveness */
+  @media (max-width: 768px) {
+    .hero-carousel-wrapper {
+      padding: 0 10px;
+    }
+    
+    .hero-carousel-wrapper .slick-center {
+      transform: scale(1.05);
+    }
+    
+    .hero-carousel-wrapper .slick-slide:not(.slick-center) {
+      transform: scale(0.95);
+    }
+  }
+
   @media (max-width: 640px) {
-    .carousel-container {
-      margin: 0;
+    .hero-carousel-wrapper .custom-dots {
+      bottom: -40px !important;
     }
   }
 }

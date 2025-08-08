@@ -6,11 +6,12 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import AuthModal from "../auth/AuthModal";
-import { useAuth } from "../auth/AuthContext";
+import { useSupabaseAuth } from "../auth/SupabaseAuthContext";
 import CategoryDropdown from "../main/CategoryDropdown";
 
 export default function Header() {
-  const { isAuthenticated, logout } = useAuth();
+  const { user, signOut } = useSupabaseAuth();
+  const isAuthenticated = !!user;
   const router = useRouter();
   // 헤더 높이 동적으로 계산
   const headerRef = useRef<HTMLDivElement>(null);
@@ -109,7 +110,7 @@ export default function Header() {
                   <div className="h-3 md:h-4 w-[1px] bg-neutral-200 mx-0.5"></div>
                   <button
                     onClick={() => {
-                      logout();
+                      signOut();
                       router.push("/");
                     }}
                     className="h-10 md:h-[42px] cursor-pointer border-none bg-transparent px-2 md:px-3 font-semibold text-[#222222] text-xs md:text-sm hover:bg-gray-100 rounded-md transition-colors"
@@ -126,12 +127,12 @@ export default function Header() {
                     로그인
                   </button>
                   <div className="h-3 md:h-4 w-[1px] bg-neutral-200 mx-0.5"></div>
-                  <button
-                    onClick={() => setShowAuthModal(true)}
-                    className="h-10 md:h-[42px] cursor-pointer border-none bg-transparent px-2 md:px-3 font-semibold text-brand-500 text-xs md:text-sm hover:bg-gray-100 rounded-md transition-colors"
+                  <Link
+                    href="/signup"
+                    className="h-10 md:h-[42px] flex items-center cursor-pointer border-none bg-transparent px-2 md:px-3 font-semibold text-brand-500 text-xs md:text-sm hover:bg-gray-100 rounded-md transition-colors"
                   >
                     회원가입
-                  </button>
+                  </Link>
                 </>
               )}
             </div>

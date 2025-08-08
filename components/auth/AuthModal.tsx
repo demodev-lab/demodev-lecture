@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
-import AuthForm from "./AuthForm";
+import SupabaseAuthForm from "./SupabaseAuthForm";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -63,7 +63,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
               : "지금 가입 하고\n첫구매 할인쿠폰 받으세요!"}
           </p>
 
-          <AuthForm mode={mode} onModeChange={setMode} onSuccess={onClose} />
+          <SupabaseAuthForm mode={mode} onModeChange={setMode} onSuccess={onClose} />
         </div>
       </div>
     </div>
