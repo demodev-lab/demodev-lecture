@@ -2,14 +2,16 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { Play, Pause, Volume2, VolumeX, Maximize, Settings, SkipForward, SkipBack } from "lucide-react";
+import { lectureStore } from "@/utils/lectureStore";
 
 interface VideoPlayerProps {
   videoUrl: string;
   chapterId: string;
+  lectureId: string;
   onComplete?: () => void;
 }
 
-export default function VideoPlayer({ videoUrl, chapterId, onComplete }: VideoPlayerProps) {
+export default function VideoPlayer({ videoUrl, chapterId, lectureId, onComplete }: VideoPlayerProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [volume, setVolume] = useState(1);
@@ -23,6 +25,7 @@ export default function VideoPlayer({ videoUrl, chapterId, onComplete }: VideoPl
   const videoRef = useRef<HTMLVideoElement>(null);
   const progressBarRef = useRef<HTMLDivElement>(null);
   const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const progressUpdateIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // YouTube URL을 임베드 URL로 변환
   const getEmbedUrl = (url: string) => {
@@ -42,44 +45,112 @@ export default function VideoPlayer({ videoUrl, chapterId, onComplete }: VideoPl
   useEffect(() => {
     const video = videoRef.current;
     
-    // 비디오 메타데이터 로드
     if (video) {
       const handleLoadedMetadata = () => {
         setDuration(video.duration);
+        
+        // 이전 진도 불러오기
+        const savedProgress = lectureStore.getChapterProgress(lectureId, chapterId);
+        if (savedProgress && savedProgress.watchedSeconds > 0) {
+          const resumeTime = Math.min(savedProgress.watchedSeconds, video.duration);
+          video.currentTime = resumeTime;
+          setCurrentTime(resumeTime);
+          setProgress((resumeTime / video.duration) * 100);
+        }
       };
 
       const handleTimeUpdate = () => {
         const current = video.currentTime;
+        const videoDuration = video.duration;
+        
         setCurrentTime(current);
-        setProgress((current / video.duration) * 100);
+        setProgress((current / videoDuration) * 100);
 
         // 90% 이상 시청 시 완료 처리
-        if (current / video.duration > 0.9 && onComplete) {
-          onComplete();
+        if (current / videoDuration >= 0.9) {
+          lectureStore.completeChapter(lectureId, chapterId, videoDuration);
+          if (onComplete) {
+            onComplete();
+          }
+        }
+      };
+
+      const handlePlay = () => {
+        setIsPlaying(true);
+        // 10초마다 진도 업데이트 (저장 부담 줄이기)
+        progressUpdateIntervalRef.current = setInterval(() => {
+          if (video.currentTime && video.duration) {
+            lectureStore.updateChapterProgress(
+              lectureId, 
+              chapterId, 
+              video.currentTime, 
+              video.duration
+            );
+          }
+        }, 10000); // 3초 -> 10초로 변경
+      };
+
+      const handlePause = () => {
+        setIsPlaying(false);
+        // 일시정지 시 진도 저장
+        if (video.currentTime && video.duration) {
+          lectureStore.updateChapterProgress(
+            lectureId, 
+            chapterId, 
+            video.currentTime, 
+            video.duration
+          );
+        }
+        // 인터벌 클리어
+        if (progressUpdateIntervalRef.current) {
+          clearInterval(progressUpdateIntervalRef.current);
+          progressUpdateIntervalRef.current = null;
+        }
+      };
+
+      const handleSeeking = () => {
+        // 시크 시 진도 업데이트
+        if (video.currentTime && video.duration) {
+          lectureStore.updateChapterProgress(
+            lectureId, 
+            chapterId, 
+            video.currentTime, 
+            video.duration
+          );
         }
       };
 
       video.addEventListener("loadedmetadata", handleLoadedMetadata);
       video.addEventListener("timeupdate", handleTimeUpdate);
-
-      // 로컬 스토리지에서 이전 진도 불러오기
-      const savedProgress = localStorage.getItem(`lecture-progress-${chapterId}`);
-      if (savedProgress) {
-        const time = parseFloat(savedProgress);
-        video.currentTime = time;
-        setCurrentTime(time);
-      }
+      video.addEventListener("play", handlePlay);
+      video.addEventListener("pause", handlePause);
+      video.addEventListener("seeked", handleSeeking);
 
       return () => {
-        // 진도 저장
-        localStorage.setItem(`lecture-progress-${chapterId}`, video.currentTime.toString());
+        // 최종 진도 저장
+        if (video.currentTime && video.duration) {
+          lectureStore.updateChapterProgress(
+            lectureId, 
+            chapterId, 
+            video.currentTime, 
+            video.duration
+          );
+        }
+        
+        // 인터벌 클리어
+        if (progressUpdateIntervalRef.current) {
+          clearInterval(progressUpdateIntervalRef.current);
+        }
         
         // 이벤트 리스너 제거
         video.removeEventListener("loadedmetadata", handleLoadedMetadata);
         video.removeEventListener("timeupdate", handleTimeUpdate);
+        video.removeEventListener("play", handlePlay);
+        video.removeEventListener("pause", handlePause);
+        video.removeEventListener("seeked", handleSeeking);
       };
     }
-  }, [chapterId, onComplete]);
+  }, [chapterId, lectureId, onComplete]);
 
   const handlePlayPause = () => {
     if (videoRef.current) {

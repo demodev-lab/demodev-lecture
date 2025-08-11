@@ -39,6 +39,17 @@ export interface LectureProgress {
   lectureId: string;
   chapterId: string;
   watchedSeconds: number;
+  totalDuration: number;
   completed: boolean;
   lastUpdated: string;
+  progressPercentage: number; // 0-100
+}
+
+export interface ChapterProgress {
+  chapterId: string;
+  watchedSeconds: number;
+  totalDuration: number;
+  completed: boolean;
+  progressPercentage: number;
+  lastWatchedAt: string;
 }

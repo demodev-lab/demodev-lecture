@@ -323,5 +323,33 @@ export function getUserLectures(): Lecture[] {
     new Map(allLectures.map(lecture => [lecture.id, lecture])).values()
   );
   
-  return uniqueLectures;
+  // 각 강의의 실시간 진도 정보 업데이트
+  return uniqueLectures.map(lecture => {
+    const progressData = lectureStore.calculateOverallProgress(lecture.id);
+    const lectureProgress = lectureStore.getLectureProgress(lecture.id);
+    
+    // 마지막 시청한 챕터 정보 업데이트
+    let lastWatchedChapterId = lecture.lastWatchedChapterId;
+    let lastWatchedAt = lecture.lastWatchedAt;
+    
+    if (lectureProgress) {
+      const progressArray = Array.from(lectureProgress.values());
+      const lastWatched = progressArray
+        .sort((a, b) => new Date(b.lastWatchedAt).getTime() - new Date(a.lastWatchedAt).getTime())[0];
+      
+      if (lastWatched) {
+        lastWatchedChapterId = lastWatched.chapterId;
+        lastWatchedAt = lastWatched.lastWatchedAt;
+      }
+    }
+    
+    return {
+      ...lecture,
+      progress: progressData.percentage,
+      completedChapters: progressData.completedChapters,
+      totalChapters: progressData.totalChapters || lecture.totalChapters,
+      lastWatchedChapterId,
+      lastWatchedAt
+    };
+  });
 }

@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { Lecture } from "@/types/lecture";
 import VideoPlayer from "./VideoPlayer";
 import LectureCurriculum from "./LectureCurriculum";
-import ProgressTracker from "./ProgressTracker";
 import { ArrowLeft, Share2, BookmarkPlus } from "lucide-react";
 import Link from "next/link";
 
@@ -76,20 +75,12 @@ export default function LecturePlayerLayout({ lecture }: LecturePlayerLayoutProp
               <VideoPlayer
                 videoUrl={currentChapter.videoUrl || ""}
                 chapterId={currentChapter.id}
+                lectureId={lecture.id}
                 onComplete={handleChapterComplete}
               />
             )}
           </div>
 
-          {/* 진도율 트래커 */}
-          <div className="bg-white border-b">
-            <div className="px-4 py-3">
-              <ProgressTracker
-                lecture={lecture}
-                currentChapterId={currentChapterId}
-              />
-            </div>
-          </div>
 
           {/* 모바일에서 커리큘럼 토글 버튼 */}
           <button
