@@ -81,12 +81,12 @@ export default function CategoryDropdown({ isOpen, onClose }: CategoryDropdownPr
     <>
       {/* 오버레이 배경 */}
       <div
-        className="fixed inset-0 z-40"
+        className="fixed inset-0 z-[200]"
         onClick={onClose}
       />
       
-      {/* 드롭다운 메뉴 */}
-      <div className="absolute top-full left-0 w-full bg-white border border-gray-200 shadow-lg rounded-lg z-50 overflow-hidden">
+      {/* 드롭다운 메뉴 - 헤더 바로 아래 위치 */}
+      <div className="fixed top-[90px] lg:top-[106px] left-0 right-0 w-full bg-white border-t border-gray-200 shadow-lg z-[200] overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="grid grid-cols-4 gap-8">
             {sections.map((section) => (

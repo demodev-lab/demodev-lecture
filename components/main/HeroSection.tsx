@@ -83,7 +83,6 @@ const slides: HeroSlide[] = [
   },
 ];
 
-
 // Custom Arrow Components for React Slick
 interface CustomArrowProps {
   onClick?: () => void;
@@ -95,7 +94,7 @@ const CustomPrevArrow = ({ onClick }: CustomArrowProps) => {
   return (
     <button 
       onClick={onClick}
-      className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center group transition-all duration-200"
+      className="absolute left-4 sm:left-8 lg:left-12 top-1/2 -translate-y-1/2 z-20 touch-target w-10 h-10 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center group transition-all duration-200 focus-visible-ring"
       aria-label="이전 슬라이드"
     >
       <svg className="w-5 h-5 text-gray-700 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -109,7 +108,7 @@ const CustomNextArrow = ({ onClick }: CustomArrowProps) => {
   return (
     <button 
       onClick={onClick}
-      className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center group transition-all duration-200"
+      className="absolute right-4 sm:right-8 lg:right-12 top-1/2 -translate-y-1/2 z-20 touch-target w-10 h-10 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center group transition-all duration-200 focus-visible-ring"
       aria-label="다음 슬라이드"
     >
       <svg className="w-5 h-5 text-gray-700 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -126,77 +125,149 @@ export default function HeroSection() {
     setMounted(true);
   }, []);
 
-  // React Slick 설정 - 큰 화면에서는 3개, 작은 화면에서는 1개 슬라이드
+  // React Slick 설정 - 세밀한 반응형 설정
   const settings = {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 3, // 기본: 큰 화면에서 3개 슬라이드 표시
+    slidesToShow: 3, // 기본: 3개 표시
     slidesToScroll: 1,
-    centerMode: true, // 중앙 정렬
-    centerPadding: "0%", // 양쪽 패딩
+    centerMode: true,
+    centerPadding: "80px",
     autoplay: true,
     autoplaySpeed: 4000,
     pauseOnHover: true,
     prevArrow: <CustomPrevArrow />,
     nextArrow: <CustomNextArrow />,
     dotsClass: "slick-dots custom-dots",
+    initialSlide: 0,
+    mobileFirst: false,
     responsive: [
       {
-        breakpoint: 1200, // 1200px 이하에서 1개 슬라이드만 표시
+        breakpoint: 2560, // 초대형 모니터
         settings: {
-          slidesToShow: 1,
-          centerPadding: "8%",
+          slidesToShow: 3.5,
+          centerPadding: "100px",
         }
       },
       {
-        breakpoint: 768, // 모바일
+        breakpoint: 1920, // Full HD
         settings: {
-          slidesToShow: 1,
+          slidesToShow: 3,
+          centerPadding: "80px",
+        }
+      },
+      {
+        breakpoint: 1440, // 노트북
+        settings: {
+          slidesToShow: 2.5,
           centerPadding: "60px",
         }
       },
       {
-        breakpoint: 480, // 작은 모바일
+        breakpoint: 1280, // xl
+        settings: {
+          slidesToShow: 2.2,
+          centerPadding: "50px",
+        }
+      },
+      {
+        breakpoint: 1024, // lg
+        settings: {
+          slidesToShow: 1.8,
+          centerPadding: "40px",
+        }
+      },
+      {
+        breakpoint: 768, // md - 태블릿
         settings: {
           slidesToShow: 1,
+          slidesToScroll: 1,
+          centerMode: true,
           centerPadding: "20px",
+          arrows: false,
+          dots: true,
+          infinite: true,
+        }
+      },
+      {
+        breakpoint: 640, // sm - 모바일
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          centerMode: true,
+          centerPadding: "10px",
+          arrows: false,
+          dots: true,
+          infinite: true,
+        }
+      },
+      {
+        breakpoint: 480, // xs - 소형 모바일
+        settings: {
+          slidesToShow: 1,  // 1개만 보이도록 설정
+          slidesToScroll: 1,
+          centerMode: true,
+          centerPadding: "10px",
+          arrows: false,
+          dots: true,
+          infinite: true,
         }
       }
     ]
   };
 
   if (!mounted) {
-    return null;
+    return (
+      <section className="relative overflow-hidden py-4 sm:py-6 lg:py-8">
+        <div className="h-[300px] sm:h-[400px] md:h-[450px] lg:h-[500px] xl:h-[550px] bg-gray-100 animate-pulse" />
+      </section>
+    );
   }
 
   return (
-    <section className="relative overflow-hidden">
-      {/* Main Hero Carousel with React Slick */}
-      <div className="relative py-8 w-full">
-        <div className="hero-carousel-wrapper w-full">
-          <Slider {...settings}>
-            {slides.map((slide) => (
-              <div key={slide.id} className="px-22 py-1">
-                <div className="relative overflow-hidden h-[280px] sm:h-[360px] md:h-[400px] lg:h-[428px] xl:h-[450px] max-w-[720px] rounded-xl mx-auto bg-white shadow-lg">
-                  <a href={slide.href} className="block relative h-full w-full">
-                    <Image
-                      src={slide.image}
-                      alt="banner"
-                      fill
-                      sizes="(max-width: 768px) 90vw, (max-width: 1024px) 60vw, 720px"
-                      className="object-cover rounded-xl"
-                      priority
-                      quality={100}
-                    />
+    <section className="relative overflow-hidden bg-gradient-to-b from-gray-50 to-white">
+      {/* Hero Carousel - 모바일에서는 컨테이너 너빔, 데스크톱에서는 전체 화면 너빔 */}
+      <div className="relative py-3 sm:py-4 lg:py-6 px-4 sm:px-0">
+        <div 
+          className="sm:mx-[-50vw] sm:w-[100vw] sm:relative sm:left-[50%] sm:right-[50%]"
+        >
+        <div className="hero-carousel-wrapper w-full hero-mobile-fix">
+          <Slider {...settings} className="hero-slider">
+            {slides.map((slide, index) => (
+              <div key={slide.id} className="px-0 sm:px-2 lg:px-3">
+                <div className="relative overflow-hidden rounded-lg sm:rounded-xl lg:rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 gpu-accelerated">
+                  <a 
+                    href={slide.href} 
+                    className="block relative w-full"
+                    aria-label={`슬라이드 ${index + 1}`}
+                  >
+                    {/* 반응형 이미지 컨테이너 - 모바일에서 더 작게 */}
+                    <div className="relative w-full">
+                      {/* 모바일: 710*400 비율, 다른 화면은 기존 유지 */}
+                      <div className="relative w-full aspect-[710/400] sm:aspect-[16/10] md:aspect-[16/9] lg:aspect-[21/9] xl:aspect-[2/1]">
+                        <Image
+                          src={slide.image}
+                          alt={`Hero banner ${index + 1}`}
+                          fill
+                          sizes="(max-width: 640px) 90vw, (max-width: 768px) 85vw, (max-width: 1024px) 60vw, (max-width: 1280px) 50vw, (max-width: 1600px) 40vw, 33vw"
+                          className="object-cover"
+                          priority={index < 3}
+                          quality={95}
+                        />
+                      </div>
+                    </div>
+                    
+                    {/* 그라데이션 오버레이 */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300" />
                   </a>
                 </div>
               </div>
             ))}
           </Slider>
         </div>
+        </div>
       </div>
     </section>
   );
 }
-
