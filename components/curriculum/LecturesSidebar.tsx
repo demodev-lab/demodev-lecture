@@ -121,9 +121,10 @@ function SectionToggle({
 interface LecturesSidebarProps {
   selectedCategory?: string | null;
   selectedSubcategory?: string | null;
+  onItemClick?: () => void;
 }
 
-export default function LecturesSidebar({ selectedCategory, selectedSubcategory }: LecturesSidebarProps) {
+export default function LecturesSidebar({ selectedCategory, selectedSubcategory, onItemClick }: LecturesSidebarProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get('search') || '';
@@ -177,6 +178,7 @@ export default function LecturesSidebar({ selectedCategory, selectedSubcategory 
       params.set('search', searchQuery);
     }
     router.push(`/curriculum?${params.toString()}`);
+    onItemClick?.(); // 모바일에서 사이드바 닫기
   };
 
   const handleItemClick = (category: string, subcategory: string) => {
@@ -188,6 +190,7 @@ export default function LecturesSidebar({ selectedCategory, selectedSubcategory 
       params.set('search', searchQuery);
     }
     router.push(`/curriculum?${params.toString()}`);
+    onItemClick?.(); // 모바일에서 사이드바 닫기
   };
 
   return (

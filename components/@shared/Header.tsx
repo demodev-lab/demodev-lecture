@@ -18,6 +18,7 @@ export default function Header() {
   const [headerHeight, setHeaderHeight] = useState(0);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
@@ -47,10 +48,11 @@ export default function Header() {
     <>
       <header
         ref={headerRef}
-        className="w-full bg-white border-b border-gray-200 fixed top-0 left-0 z-30"
+        className="w-full bg-white border-b border-gray-200 fixed top-0 left-0 z-40"
       >
-        {/* Main Header */}
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex justify-between items-center">
+        {/* Main Header - 전체 화면 너비 사용 */}
+        <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-3 sm:py-4">
+          <div className="max-w-[1920px] mx-auto flex justify-between items-center">
           {/* Left section - Logo and Navigation */}
           <div className="flex items-center">
             {/* Logo */}
@@ -67,16 +69,6 @@ export default function Header() {
                 }}
               />
             </Link>
-
-            {/* Navigation Links - 모바일에서는 숨김 */}
-            <div className="hidden md:flex">
-              <Link
-                href="/"
-                className="cursor-pointer py-1 px-2 sm:px-3 text-base sm:text-lg md:text-xl font-bold no-underline text-brand"
-              >
-                클래스
-              </Link>
-            </div>
           </div>
 
           {/* Right section - Search and Auth */}
@@ -103,7 +95,7 @@ export default function Header() {
                 <>
                   <Link
                     href="/mypage"
-                    className="h-10 md:h-[42px] flex items-center cursor-pointer border-none bg-transparent px-2 md:px-3 font-semibold text-[#222222] text-xs md:text-sm hover:bg-gray-100 rounded-md transition-colors"
+                    className="touch-target h-10 md:h-[44px] flex items-center cursor-pointer border-none bg-transparent px-2 md:px-3 font-semibold text-[#222222] text-xs md:text-sm hover:bg-gray-100 rounded-md transition-colors focus-visible-ring"
                   >
                     마이페이지
                   </Link>
@@ -113,7 +105,7 @@ export default function Header() {
                       signOut();
                       router.push("/");
                     }}
-                    className="h-10 md:h-[42px] cursor-pointer border-none bg-transparent px-2 md:px-3 font-semibold text-[#222222] text-xs md:text-sm hover:bg-gray-100 rounded-md transition-colors"
+                    className="touch-target h-10 md:h-[44px] cursor-pointer border-none bg-transparent px-2 md:px-3 font-semibold text-[#222222] text-xs md:text-sm hover:bg-gray-100 rounded-md transition-colors focus-visible-ring"
                   >
                     로그아웃
                   </button>
@@ -122,14 +114,14 @@ export default function Header() {
                 <>
                   <button
                     onClick={() => setShowAuthModal(true)}
-                    className="h-10 md:h-[42px] cursor-pointer border-none bg-transparent px-2 md:px-3 font-semibold text-[#222222] text-xs md:text-sm hover:bg-gray-100 rounded-md transition-colors"
+                    className="touch-target h-10 md:h-[44px] cursor-pointer border-none bg-transparent px-2 md:px-3 font-semibold text-[#222222] text-xs md:text-sm hover:bg-gray-100 rounded-md transition-colors focus-visible-ring"
                   >
                     로그인
                   </button>
                   <div className="h-3 md:h-4 w-[1px] bg-neutral-200 mx-0.5"></div>
                   <Link
                     href="/signup"
-                    className="h-10 md:h-[42px] flex items-center cursor-pointer border-none bg-transparent px-2 md:px-3 font-semibold text-brand-500 text-xs md:text-sm hover:bg-gray-100 rounded-md transition-colors"
+                    className="touch-target h-10 md:h-[44px] flex items-center cursor-pointer border-none bg-transparent px-2 md:px-3 font-semibold text-brand-500 text-xs md:text-sm hover:bg-gray-100 rounded-md transition-colors focus-visible-ring"
                   >
                     회원가입
                   </Link>
@@ -138,14 +130,20 @@ export default function Header() {
             </div>
 
             {/* 모바일 햄버거 메뉴 */}
-            <button className="sm:hidden p-2" aria-label="메뉴 열기">
+            <button 
+              onClick={() => setShowMobileMenu(!showMobileMenu)}
+              className="sm:hidden p-3 touch-target-sm" 
+              aria-label="메뉴 열기"
+            >
               <Menu className="w-5 h-5" />
             </button>
+          </div>
           </div>
         </div>
 
         {/* Category Navigation - 모바일에서는 숨김 */}
-        <div className="hidden lg:block mx-auto h-10 w-full max-w-7xl gap-4 md:gap-6 px-4 sm:px-6 lg:px-8">
+        <div className="hidden lg:block w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 h-10">
+          <div className="max-w-[1920px] mx-auto">
           <div className="flex justify-between items-center gap-4 md:gap-6">
             {/* Category Button */}
             <div className="flex items-center gap-2">
@@ -214,10 +212,11 @@ export default function Header() {
               </div> */}
             </div>
           </div>
+          </div>
         </div>
 
         {/* 모바일용 간소화된 네비게이션 */}
-        <div className="lg:hidden mx-auto w-full max-w-7xl px-4 sm:px-6 py-2 border-t border-gray-100">
+        <nav className="lg:hidden w-full px-4 sm:px-6 py-2 border-t border-gray-100" aria-label="Mobile navigation">
           <div className="flex items-center justify-center gap-8 overflow-x-auto">
             <Link
               href="/"
@@ -238,7 +237,7 @@ export default function Header() {
               커리큘럼
             </Link>
           </div>
-        </div>
+        </nav>
       </header>
       {/* 헤더가 고정되면서 아래 컨텐츠가 가려지지 않도록 패딩 추가 */}
       <div
@@ -248,6 +247,156 @@ export default function Header() {
           height: headerHeight ? `${headerHeight}px` : undefined,
         }}
       />
+
+      {/* 모바일 드롭다운 메뉴 */}
+      {showMobileMenu && (
+        <>
+          {/* 오버레이 */}
+          <div 
+            className="sm:hidden fixed inset-0 bg-black bg-opacity-50 z-40"
+            onClick={() => setShowMobileMenu(false)}
+          />
+          
+          {/* 드롭다운 메뉴 */}
+          <div className="sm:hidden fixed top-0 right-0 w-72 h-full bg-white shadow-xl z-50 transform transition-transform duration-300">
+            <div className="p-4 border-b border-gray-200">
+              <div className="flex items-center justify-between">
+                <Image
+                  src="/logo.png"
+                  alt="logo"
+                  width={100}
+                  height={26}
+                  className="object-contain"
+                />
+                <button
+                  onClick={() => setShowMobileMenu(false)}
+                  className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                  aria-label="메뉴 닫기"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            
+            {/* 사용자 정보 영역 */}
+            <div className="p-4 border-b border-gray-200">
+              {isAuthenticated ? (
+                <div className="space-y-3">
+                  <Link
+                    href="/mypage"
+                    onClick={() => setShowMobileMenu(false)}
+                    className="block px-4 py-3 bg-gray-50 rounded-lg font-medium text-gray-900 hover:bg-gray-100 transition-colors"
+                  >
+                    마이페이지
+                  </Link>
+                  <button
+                    onClick={() => {
+                      signOut();
+                      router.push("/");
+                      setShowMobileMenu(false);
+                    }}
+                    className="w-full text-left px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors"
+                  >
+                    로그아웃
+                  </button>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  <button
+                    onClick={() => {
+                      setShowAuthModal(true);
+                      setShowMobileMenu(false);
+                    }}
+                    className="w-full px-4 py-3 bg-brand-500 text-white rounded-lg font-medium hover:bg-brand-600 transition-colors"
+                  >
+                    로그인
+                  </button>
+                  <Link
+                    href="/signup"
+                    onClick={() => setShowMobileMenu(false)}
+                    className="block text-center px-4 py-3 border border-brand-500 text-brand-500 rounded-lg font-medium hover:bg-brand-50 transition-colors"
+                  >
+                    회원가입
+                  </Link>
+                </div>
+              )}
+            </div>
+            
+            {/* 네비게이션 링크 */}
+            <nav className="p-4">
+              <div className="space-y-2">
+                <Link
+                  href="/"
+                  onClick={() => setShowMobileMenu(false)}
+                  className="block px-4 py-3 text-gray-900 font-medium hover:bg-gray-50 rounded-lg transition-colors"
+                >
+                  클래스
+                </Link>
+                <Link
+                  href="/class/best"
+                  onClick={() => setShowMobileMenu(false)}
+                  className="block px-4 py-3 text-gray-900 font-medium hover:bg-gray-50 rounded-lg transition-colors"
+                >
+                  베스트
+                </Link>
+                <Link
+                  href="/curriculum"
+                  onClick={() => setShowMobileMenu(false)}
+                  className="block px-4 py-3 text-gray-900 font-medium hover:bg-gray-50 rounded-lg transition-colors"
+                >
+                  커리큘럼
+                </Link>
+                <Link
+                  href="/class/openScheduled"
+                  onClick={() => setShowMobileMenu(false)}
+                  className="block px-4 py-3 text-gray-900 font-medium hover:bg-gray-50 rounded-lg transition-colors"
+                >
+                  오픈예정
+                </Link>
+              </div>
+              
+              {/* 카테고리 섹션 */}
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h3 className="px-4 text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">
+                  카테고리
+                </h3>
+                <div className="space-y-1">
+                  <Link
+                    href="/curriculum?category=오리지널"
+                    onClick={() => setShowMobileMenu(false)}
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
+                  >
+                    오리지널
+                  </Link>
+                  <Link
+                    href="/curriculum?category=바이브 코딩"
+                    onClick={() => setShowMobileMenu(false)}
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
+                  >
+                    바이브 코딩
+                  </Link>
+                  <Link
+                    href="/curriculum?category=앱/웹"
+                    onClick={() => setShowMobileMenu(false)}
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
+                  >
+                    앱/웹
+                  </Link>
+                  <Link
+                    href="/curriculum?category=자동화"
+                    onClick={() => setShowMobileMenu(false)}
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
+                  >
+                    자동화
+                  </Link>
+                </div>
+              </div>
+            </nav>
+          </div>
+        </>
+      )}
 
       {/* Auth Modal */}
       <AuthModal
