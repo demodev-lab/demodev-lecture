@@ -25,7 +25,10 @@ export interface Lecture {
   rating: number | null;
   reviews: number | null;
   category: string;
+  subcategory?: string;
   image: string;
+  thumbnailUrl?: string;
+  videoUrl?: string;
   isNew?: boolean;
   url: string;
 

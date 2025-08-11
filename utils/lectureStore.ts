@@ -7,11 +7,12 @@ const STORAGE_KEY = 'demolearn_lectures';
 class LectureStore {
   private lectures: Lecture[] = [];
   private listeners: Set<() => void> = new Set();
+  private isInitialized: boolean = false;
 
   constructor() {
-    // 브라우저 환경에서만 localStorage 사용
     if (typeof window !== 'undefined') {
       this.loadFromLocalStorage();
+      this.isInitialized = true;
     }
   }
 
@@ -40,6 +41,11 @@ class LectureStore {
 
   // 강의 목록 가져오기
   getLectures(): Lecture[] {
+    // 초기화되지 않았다면 강제로 로드
+    if (!this.isInitialized && typeof window !== 'undefined') {
+      this.loadFromLocalStorage();
+      this.isInitialized = true;
+    }
     return [...this.lectures];
   }
 
@@ -70,10 +76,13 @@ class LectureStore {
       detailedDescription: `${lectureData.title}에 대한 상세한 설명입니다.`,
       rating: null,
       reviews: null,
-      category: lectureData.subcategory || lectureData.category,
-      image: lectureData.thumbnailUrl,
+      category: lectureData.category,
+      subcategory: lectureData.subcategory,
+      image: lectureData.thumbnailUrl, // Base64 직접 저장
+      thumbnailUrl: lectureData.thumbnailUrl, // Base64 직접 저장
       isNew: true,
-      url: lectureData.videoUrl,
+      url: lectureData.videoUrl, // Base64 직접 저장
+      videoUrl: lectureData.videoUrl, // Base64 직접 저장
       duration: lectureData.duration,
       level: "beginner",
       language: "한국어",
@@ -91,7 +100,7 @@ class LectureStore {
           id: 1,
           title: `${lectureData.title} 소개`,
           duration: "20분",
-          videoUrl: lectureData.videoUrl,
+          videoUrl: lectureData.videoUrl, // Base64 직접 저장
           description: `${lectureData.title}에 대한 기본 소개`,
           isFree: true,
         }
@@ -159,7 +168,8 @@ class LectureStore {
       existingLecture.description = `${updateData.title} 강의입니다.`;
     }
     if (updateData.category || updateData.subcategory) {
-      existingLecture.category = updateData.subcategory || updateData.category || existingLecture.category;
+      existingLecture.category = updateData.category || existingLecture.category;
+      existingLecture.subcategory = updateData.subcategory;
       existingLecture.badge = this.getCategoryBadge(updateData.category || "");
       existingLecture.tags = [updateData.category || "", updateData.subcategory || ""].filter(Boolean);
     }
@@ -171,9 +181,11 @@ class LectureStore {
     }
     if (updateData.thumbnailUrl) {
       existingLecture.image = updateData.thumbnailUrl;
+      existingLecture.thumbnailUrl = updateData.thumbnailUrl;
     }
     if (updateData.videoUrl) {
       existingLecture.url = updateData.videoUrl;
+      existingLecture.videoUrl = updateData.videoUrl;
       // 첫 번째 챕터의 비디오 URL도 업데이트
       if (existingLecture.chapters.length > 0) {
         existingLecture.chapters[0].videoUrl = updateData.videoUrl;
@@ -207,7 +219,7 @@ class LectureStore {
     let filtered = this.getLectures();
 
     if (subcategory) {
-      filtered = filtered.filter(lecture => lecture.category === subcategory);
+      filtered = filtered.filter(lecture => lecture.subcategory === subcategory);
     } else if (category) {
       // 카테고리의 모든 하위 카테고리 포함
       const categoryMap: Record<string, string[]> = {
@@ -219,7 +231,7 @@ class LectureStore {
       
       const subcategories = categoryMap[category] || [];
       filtered = filtered.filter(lecture => 
-        subcategories.includes(lecture.category) || lecture.category === category
+        subcategories.includes(lecture.subcategory || '') || lecture.category === category
       );
     }
 

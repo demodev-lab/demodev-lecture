@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BookOpen, PlayCircle, Clock } from "lucide-react";
 import Link from "next/link";
 import { getUserLectures } from "@/data/lectures";
+import { lectureStore } from "@/utils/lectureStore";
 import Image from "next/image";
 
 
@@ -23,7 +24,29 @@ type EmptyState = {
 
 export default function MyPageDashboard() {
   const [activeTab, setActiveTab] = useState("lecture");
-  const userLectures = getUserLectures();
+  const [userLectures, setUserLectures] = useState<Array<{
+    id: string;
+    title: string;
+    instructor: string;
+    thumbnail: string;
+    badge: string;
+    progress: number;
+    totalDuration: number;
+    completedChapters: number;
+    totalChapters: number;
+  }>>([]);
+
+  useEffect(() => {
+    const updateLectures = () => {
+      const lectures = getUserLectures();
+      setUserLectures(lectures);
+    };
+
+    updateLectures();
+    const unsubscribe = lectureStore.subscribe(updateLectures);
+
+    return unsubscribe;
+  }, []);
 
   // 빈 상태 메시지 탭별 내용
   const emptyStates: Record<string, EmptyState> = {
@@ -68,13 +91,19 @@ export default function MyPageDashboard() {
                   href={`/mypage/lectures/${lecture.id}`}
                   className="block bg-white rounded-lg border hover:shadow-md transition-shadow overflow-hidden"
                 >
-                  <div className="relative aspect-video">
-                    <Image
-                      src={lecture.thumbnail}
-                      alt={lecture.title}
-                      fill
-                      className="object-cover"
-                    />
+                  <div className="relative aspect-video bg-gray-100">
+                    {lecture.thumbnail ? (
+                      <Image
+                        src={lecture.thumbnail}
+                        alt={lecture.title}
+                        fill
+                        className="object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <span className="text-gray-400">No Image</span>
+                      </div>
+                    )}
                     {lecture.progress > 0 && (
                       <div className="absolute bottom-0 left-0 right-0 h-1 bg-gray-200">
                         <div

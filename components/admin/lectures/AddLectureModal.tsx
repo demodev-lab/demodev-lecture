@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { X, Upload, Calendar, DollarSign, BookOpen, Image as ImageIcon, Loader2, Video, Tag } from "lucide-react";
 import Image from "next/image";
-import { uploadLectureThumbnail, validateImageFile, uploadLectureVideo, validateVideoFile, createStorageBucket } from "@/utils/supabase/storage";
+import { validateImageFile, validateVideoFile } from "@/utils/supabase/storage";
+import { fileToBase64 } from "@/utils/fileUtils";
 
 interface AddLectureModalProps {
   isOpen: boolean;
@@ -108,24 +109,20 @@ export default function AddLectureModal({
       }));
     }
 
-    // Supabase Storage에 업로드
+    // Base64로 변환하여 저장
     setIsUploading(true);
     try {
-      // Storage bucket이 존재하지 않으면 생성
-      await createStorageBucket();
-      
-      // 파일 업로드
-      const thumbnailUrl = await uploadLectureThumbnail(file, formData.title || 'lecture');
+      const base64Data = await fileToBase64(file);
       
       setFormData(prev => ({
         ...prev,
-        thumbnailUrl
+        thumbnailUrl: base64Data
       }));
     } catch (error) {
-      console.error('업로드 실패:', error);
+      console.error('썸네일 처리 실패:', error);
       setErrors(prev => ({
         ...prev,
-        thumbnail: error instanceof Error ? error.message : "업로드에 실패했습니다."
+        thumbnail: "썸네일 처리에 실패했습니다."
       }));
     } finally {
       setIsUploading(false);
@@ -162,24 +159,20 @@ export default function AddLectureModal({
       }));
     }
 
-    // Supabase Storage에 업로드
+    // Base64로 변환하여 저장
     setIsVideoUploading(true);
     try {
-      // Storage bucket이 존재하지 않으면 생성
-      await createStorageBucket();
-      
-      // 비디오 파일 업로드
-      const videoUploadUrl = await uploadLectureVideo(file, formData.title || 'lecture');
+      const base64Data = await fileToBase64(file);
       
       setFormData(prev => ({
         ...prev,
-        videoUrl: videoUploadUrl
+        videoUrl: base64Data
       }));
     } catch (error) {
-      console.error('비디오 업로드 실패:', error);
+      console.error('비디오 처리 실패:', error);
       setErrors(prev => ({
         ...prev,
-        video: error instanceof Error ? error.message : "비디오 업로드에 실패했습니다."
+        video: "비디오 처리에 실패했습니다."
       }));
     } finally {
       setIsVideoUploading(false);

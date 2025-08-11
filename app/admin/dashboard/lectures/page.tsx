@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Search, Plus, Edit, Trash2, Eye } from "lucide-react";
+import Image from "next/image";
 import AddLectureModal from "@/components/admin/lectures/AddLectureModal";
 import EditLectureModal from "@/components/admin/lectures/EditLectureModal";
 import { lectureStore } from "@/utils/lectureStore";
@@ -14,6 +15,8 @@ interface Lecture {
   students: number;
   status: "active" | "draft" | "archived";
   updatedAt: string;
+  thumbnailUrl?: string;
+  image?: string;
 }
 
 export default function LecturesPage() {
@@ -56,9 +59,32 @@ export default function LecturesPage() {
       });
     };
 
-    updateLectureList();
-    const unsubscribe = lectureStore.subscribe(updateLectureList);
-    return unsubscribe;
+    // React hydration 완료 후 실행
+    let mounted = true;
+    
+    const loadData = () => {
+      if (mounted) {
+        updateLectureList();
+      }
+    };
+
+    // 즉시 실행
+    loadData();
+    
+    // 추가 지연 로드 (hydration 대응)
+    const timer = setTimeout(loadData, 300);
+    
+    const unsubscribe = lectureStore.subscribe(() => {
+      if (mounted) {
+        updateLectureList();
+      }
+    });
+    
+    return () => {
+      mounted = false;
+      clearTimeout(timer);
+      unsubscribe();
+    };
   }, []);
 
   const filteredLectures = lectures.filter((lecture) => {
@@ -238,6 +264,9 @@ export default function LecturesPage() {
           <thead className="bg-gray-50">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                썸네일
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                 강의명
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
@@ -263,19 +292,36 @@ export default function LecturesPage() {
           <tbody className="divide-y divide-gray-200 bg-white">
             {loading ? (
               <tr>
-                <td colSpan={7} className="px-6 py-8 text-center text-sm text-gray-500">
+                <td colSpan={8} className="px-6 py-8 text-center text-sm text-gray-500">
                   강의 목록을 불러오는 중...
                 </td>
               </tr>
             ) : filteredLectures.length === 0 ? (
               <tr>
-                <td colSpan={7} className="px-6 py-8 text-center text-sm text-gray-500">
+                <td colSpan={8} className="px-6 py-8 text-center text-sm text-gray-500">
                   표시할 강의가 없습니다.
                 </td>
               </tr>
             ) : (
               filteredLectures.map((lecture) => (
               <tr key={lecture.id} className="hover:bg-gray-50">
+                <td className="whitespace-nowrap px-6 py-4">
+                  <div className="h-16 w-24">
+                    {(lecture.thumbnailUrl?.startsWith('blob:') || lecture.thumbnailUrl?.startsWith('data:') || lecture.image?.startsWith('blob:') || lecture.image?.startsWith('data:')) ? (
+                      <Image
+                        src={lecture.thumbnailUrl || lecture.image || '/placeholder.jpg'}
+                        alt={lecture.title}
+                        width={96}
+                        height={64}
+                        className="h-full w-full object-cover rounded"
+                      />
+                    ) : (
+                      <div className="h-full w-full bg-gray-200 rounded flex items-center justify-center">
+                        <span className="text-xs text-gray-500">없음</span>
+                      </div>
+                    )}
+                  </div>
+                </td>
                 <td className="whitespace-nowrap px-6 py-4">
                   <div className="text-sm font-medium text-gray-900">
                     {lecture.title}
