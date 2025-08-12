@@ -1,4 +1,6 @@
-import { Lecture } from "@/types/lecture";
+import { Lecture, LectureSection, LectureChapter } from "@/types/lecture";
+import { lectureStore } from "@/utils/lectureStore";
+import { Lecture as StoreLecture } from "@/app/lecture/[id]/lectures";
 
 export const dummyLectures: Lecture[] = [
   {
@@ -247,11 +249,107 @@ export const dummyLectures: Lecture[] = [
   }
 ];
 
+// StoreLecture를 MyPage Lecture 타입으로 변환
+function convertStoreLectureToLecture(storeLecture: StoreLecture): Lecture {
+  // 비디오가 있으면 하나의 챕터로 만들기
+  const videoUrl = storeLecture.url || storeLecture.videoUrl || (storeLecture.chapters && storeLecture.chapters[0]?.videoUrl);
+  
+  const chapters: LectureChapter[] = videoUrl ? [
+    {
+      id: `${storeLecture.id}-ch1`,
+      title: storeLecture.title,
+      duration: storeLecture.duration ? parseInt(storeLecture.duration) * 60 : 3600, // 분을 초로 변환
+      videoUrl: videoUrl,
+      order: 1,
+      completed: false
+    }
+  ] : [];
+
+  const section: LectureSection = {
+    id: `${storeLecture.id}-section1`,
+    title: "전체 강의",
+    chapters: chapters,
+    order: 1
+  };
+
+  const thumbnailUrl = storeLecture.image || storeLecture.thumbnailUrl || "/placeholder.jpg";
+  
+  const result = {
+    id: String(storeLecture.id), // ID를 문자열로 변환
+    title: storeLecture.title,
+    subtitle: `${storeLecture.category} - ${storeLecture.subcategory || ''}`,
+    instructor: storeLecture.instructor?.name || "대모산개발단",
+    description: storeLecture.description || `카테고리: ${storeLecture.category}`,
+    thumbnail: thumbnailUrl,
+    badge: storeLecture.badge || storeLecture.category,
+    category: storeLecture.category,
+    totalDuration: storeLecture.duration ? parseInt(storeLecture.duration) * 60 : 3600,
+    totalChapters: chapters.length,
+    completedChapters: 0,
+    progress: 0,
+    sections: [section],
+    rating: storeLecture.rating || 0,
+    reviewCount: storeLecture.reviews || 0,
+    enrolledAt: new Date().toISOString(),
+    lastWatchedAt: undefined,
+    lastWatchedChapterId: undefined
+  };
+  
+  return result;
+}
+
 export function getLectureById(id: string): Lecture | undefined {
-  return dummyLectures.find(lecture => lecture.id === id);
+  // 먼저 dummyLectures에서 찾기
+  const dummyLecture = dummyLectures.find(lecture => lecture.id === id);
+  if (dummyLecture) return dummyLecture;
+  
+  // lectureStore에서 찾기 (ID가 숫자일 수 있으므로 문자열 비교)
+  const storeLecture = lectureStore.getLectures().find(lecture => String(lecture.id) === id);
+  if (storeLecture) {
+    return convertStoreLectureToLecture(storeLecture);
+  }
+  
+  return undefined;
 }
 
 export function getUserLectures(): Lecture[] {
-  // 실제로는 사용자가 구매한 강의만 필터링해서 반환
-  return dummyLectures;
+  // dummyLectures와 lectureStore의 강의들을 합치기
+  const storeLectures = lectureStore.getLectures();
+  const convertedStoreLectures = storeLectures.map(convertStoreLectureToLecture);
+  
+  // 중복 제거를 위해 Set 사용
+  const allLectures = [...dummyLectures, ...convertedStoreLectures];
+  const uniqueLectures = Array.from(
+    new Map(allLectures.map(lecture => [lecture.id, lecture])).values()
+  );
+  
+  // 각 강의의 실시간 진도 정보 업데이트
+  return uniqueLectures.map(lecture => {
+    const progressData = lectureStore.calculateOverallProgress(lecture.id);
+    const lectureProgress = lectureStore.getLectureProgress(lecture.id);
+    
+    // 마지막 시청한 챕터 정보 업데이트
+    let lastWatchedChapterId = lecture.lastWatchedChapterId;
+    let lastWatchedAt = lecture.lastWatchedAt;
+    
+    if (lectureProgress) {
+      const progressArray = Array.from(lectureProgress.values());
+      const lastWatched = progressArray
+        .sort((a, b) => new Date(b.lastWatchedAt).getTime() - new Date(a.lastWatchedAt).getTime())[0];
+      
+      if (lastWatched) {
+        lastWatchedChapterId = lastWatched.chapterId;
+        lastWatchedAt = lastWatched.lastWatchedAt;
+      }
+    }
+    
+    return {
+      ...lecture,
+      progress: progressData.percentage,
+      completedChapters: progressData.completedChapters,
+      totalChapters: progressData.totalChapters || lecture.totalChapters,
+      lastWatchedChapterId,
+      lastWatchedAt
+    };
+  });
 }

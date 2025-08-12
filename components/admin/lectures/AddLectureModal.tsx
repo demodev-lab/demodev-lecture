@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { X, Upload, Calendar, DollarSign, BookOpen, Image as ImageIcon } from "lucide-react";
+import { X, Upload, Calendar, DollarSign, BookOpen, Image as ImageIcon, Loader2, Video, Tag } from "lucide-react";
 import Image from "next/image";
+import { validateImageFile, validateVideoFile } from "@/utils/supabase/storage";
+import { fileToBase64 } from "@/utils/fileUtils";
 
 interface AddLectureModalProps {
   isOpen: boolean;
@@ -16,8 +18,14 @@ interface LectureFormData {
   duration: string;
   startDate: string;
   endDate: string;
+  category: string;
+  subcategory: string;
   thumbnail: File | null;
   thumbnailPreview: string;
+  thumbnailUrl: string;
+  video: File | null;
+  videoPreview: string;
+  videoUrl: string;
 }
 
 export default function AddLectureModal({
@@ -31,11 +39,27 @@ export default function AddLectureModal({
     duration: "",
     startDate: "",
     endDate: "",
+    category: "",
+    subcategory: "",
     thumbnail: null,
     thumbnailPreview: "",
+    thumbnailUrl: "",
+    video: null,
+    videoPreview: "",
+    videoUrl: "",
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isUploading, setIsUploading] = useState(false);
+  const [isVideoUploading, setIsVideoUploading] = useState(false);
+
+  // 카테고리 데이터 (CLAUDE.md에서 가져온 구조)
+  const categories = {
+    "오리지널": ["바이브 빌더스"],
+    "바이브 코딩": ["프롬프트 엔지니어링", "컨텍스트 엔지니어링", "AI 도구 활용"],
+    "앱/웹": ["앱 바이브 코딩 입문", "웹 바이브 코딩 입문", "앱 수익화", "웹 수익화"],
+    "자동화": ["n8n", "Make", "PyTorch", "크롤링", "AI 업무 자동화"]
+  };
 
   const handleInputChange = (field: keyof LectureFormData, value: string) => {
     setFormData(prev => ({
@@ -52,44 +76,106 @@ export default function AddLectureModal({
     }
   };
 
-  const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleThumbnailChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      // 파일 크기 체크 (5MB 제한)
-      if (file.size > 5 * 1024 * 1024) {
-        setErrors(prev => ({
-          ...prev,
-          thumbnail: "파일 크기는 5MB 이하여야 합니다."
-        }));
-        return;
-      }
+    if (!file) return;
 
-      // 파일 형식 체크
-      if (!file.type.startsWith('image/')) {
-        setErrors(prev => ({
-          ...prev,
-          thumbnail: "이미지 파일만 업로드 가능합니다."
-        }));
-        return;
-      }
+    // 파일 유효성 검사
+    const validation = validateImageFile(file);
+    if (!validation.isValid) {
+      setErrors(prev => ({
+        ...prev,
+        thumbnail: validation.error || "잘못된 파일입니다."
+      }));
+      return;
+    }
 
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setFormData(prev => ({
-          ...prev,
-          thumbnail: file,
-          thumbnailPreview: e.target?.result as string
-        }));
-      };
-      reader.readAsDataURL(file);
+    // 로컬 미리보기 생성
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setFormData(prev => ({
+        ...prev,
+        thumbnail: file,
+        thumbnailPreview: e.target?.result as string
+      }));
+    };
+    reader.readAsDataURL(file);
 
-      // 에러 메시지 클리어
-      if (errors.thumbnail) {
-        setErrors(prev => ({
-          ...prev,
-          thumbnail: ""
-        }));
-      }
+    // 에러 메시지 클리어
+    if (errors.thumbnail) {
+      setErrors(prev => ({
+        ...prev,
+        thumbnail: ""
+      }));
+    }
+
+    // Base64로 변환하여 저장
+    setIsUploading(true);
+    try {
+      const base64Data = await fileToBase64(file);
+      
+      setFormData(prev => ({
+        ...prev,
+        thumbnailUrl: base64Data
+      }));
+    } catch (error) {
+      console.error('썸네일 처리 실패:', error);
+      setErrors(prev => ({
+        ...prev,
+        thumbnail: "썸네일 처리에 실패했습니다."
+      }));
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const handleVideoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // 파일 유효성 검사
+    const validation = validateVideoFile(file);
+    if (!validation.isValid) {
+      setErrors(prev => ({
+        ...prev,
+        video: validation.error || "잘못된 비디오 파일입니다."
+      }));
+      return;
+    }
+
+    // 로컬 미리보기 생성
+    const videoUrl = URL.createObjectURL(file);
+    setFormData(prev => ({
+      ...prev,
+      video: file,
+      videoPreview: videoUrl
+    }));
+
+    // 에러 메시지 클리어
+    if (errors.video) {
+      setErrors(prev => ({
+        ...prev,
+        video: ""
+      }));
+    }
+
+    // Base64로 변환하여 저장
+    setIsVideoUploading(true);
+    try {
+      const base64Data = await fileToBase64(file);
+      
+      setFormData(prev => ({
+        ...prev,
+        videoUrl: base64Data
+      }));
+    } catch (error) {
+      console.error('비디오 처리 실패:', error);
+      setErrors(prev => ({
+        ...prev,
+        video: "비디오 처리에 실패했습니다."
+      }));
+    } finally {
+      setIsVideoUploading(false);
     }
   };
 
@@ -97,7 +183,20 @@ export default function AddLectureModal({
     setFormData(prev => ({
       ...prev,
       thumbnail: null,
-      thumbnailPreview: ""
+      thumbnailPreview: "",
+      thumbnailUrl: ""
+    }));
+  };
+
+  const handleRemoveVideo = () => {
+    if (formData.videoPreview && formData.videoPreview.startsWith('blob:')) {
+      URL.revokeObjectURL(formData.videoPreview);
+    }
+    setFormData(prev => ({
+      ...prev,
+      video: null,
+      videoPreview: "",
+      videoUrl: ""
     }));
   };
 
@@ -132,8 +231,20 @@ export default function AddLectureModal({
       }
     }
 
+    if (!formData.category) {
+      newErrors.category = "카테고리를 선택해주세요.";
+    }
+
+    if (!formData.subcategory) {
+      newErrors.subcategory = "세부 카테고리를 선택해주세요.";
+    }
+
     if (!formData.thumbnail) {
       newErrors.thumbnail = "강의 썸네일을 업로드해주세요.";
+    }
+
+    if (!formData.video) {
+      newErrors.video = "강의 영상을 업로드해주세요.";
     }
 
     setErrors(newErrors);
@@ -150,14 +261,25 @@ export default function AddLectureModal({
   };
 
   const handleClose = () => {
+    // 비디오 미리보기 URL 정리
+    if (formData.videoPreview && formData.videoPreview.startsWith('blob:')) {
+      URL.revokeObjectURL(formData.videoPreview);
+    }
+    
     setFormData({
       title: "",
       price: "",
       duration: "",
       startDate: "",
       endDate: "",
+      category: "",
+      subcategory: "",
       thumbnail: null,
       thumbnailPreview: "",
+      thumbnailUrl: "",
+      video: null,
+      videoPreview: "",
+      videoUrl: "",
     });
     setErrors({});
     onClose();
@@ -180,6 +302,57 @@ export default function AddLectureModal({
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* 카테고리 선택 */}
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div>
+              <label className="mb-2 block text-sm font-medium text-gray-700">
+                <Tag className="mr-2 inline h-4 w-4" />
+                카테고리 *
+              </label>
+              <select
+                value={formData.category}
+                onChange={(e) => {
+                  handleInputChange("category", e.target.value);
+                  // 카테고리 변경시 세부 카테고리 초기화
+                  handleInputChange("subcategory", "");
+                }}
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+              >
+                <option value="">카테고리 선택</option>
+                {Object.keys(categories).map((category) => (
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
+                ))}
+              </select>
+              {errors.category && (
+                <p className="mt-1 text-sm text-red-500">{errors.category}</p>
+              )}
+            </div>
+
+            <div>
+              <label className="mb-2 block text-sm font-medium text-gray-700">
+                세부 카테고리 *
+              </label>
+              <select
+                value={formData.subcategory}
+                onChange={(e) => handleInputChange("subcategory", e.target.value)}
+                disabled={!formData.category}
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none disabled:bg-gray-100 disabled:cursor-not-allowed"
+              >
+                <option value="">세부 카테고리 선택</option>
+                {formData.category && categories[formData.category as keyof typeof categories]?.map((subcategory) => (
+                  <option key={subcategory} value={subcategory}>
+                    {subcategory}
+                  </option>
+                ))}
+              </select>
+              {errors.subcategory && (
+                <p className="mt-1 text-sm text-red-500">{errors.subcategory}</p>
+              )}
+            </div>
+          </div>
+
           {/* 썸네일 업로드 */}
           <div>
             <label className="mb-2 block text-sm font-medium text-gray-700">
@@ -193,17 +366,29 @@ export default function AddLectureModal({
                   type="file"
                   accept="image/*"
                   onChange={handleThumbnailChange}
-                  className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+                  disabled={isUploading}
+                  className="absolute inset-0 h-full w-full cursor-pointer opacity-0 disabled:cursor-not-allowed"
                 />
                 <div className="flex h-32 items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 transition-colors hover:border-gray-400 hover:bg-gray-100">
                   <div className="text-center">
-                    <Upload className="mx-auto h-8 w-8 text-gray-400" />
-                    <p className="mt-2 text-sm text-gray-600">
-                      이미지를 클릭하여 업로드하세요
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      PNG, JPG, GIF (최대 5MB)
-                    </p>
+                    {isUploading ? (
+                      <>
+                        <Loader2 className="mx-auto h-8 w-8 text-blue-500 animate-spin" />
+                        <p className="mt-2 text-sm text-blue-600">
+                          업로드 중...
+                        </p>
+                      </>
+                    ) : (
+                      <>
+                        <Upload className="mx-auto h-8 w-8 text-gray-400" />
+                        <p className="mt-2 text-sm text-gray-600">
+                          이미지를 클릭하여 업로드하세요
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          PNG, JPG, WebP, GIF (최대 5MB)
+                        </p>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
@@ -223,11 +408,82 @@ export default function AddLectureModal({
                 >
                   <X className="h-4 w-4" />
                 </button>
+                {formData.thumbnailUrl && (
+                  <div className="absolute bottom-2 left-2 rounded bg-green-500 px-2 py-1 text-xs text-white">
+                    업로드 완료
+                  </div>
+                )}
               </div>
             )}
             
             {errors.thumbnail && (
               <p className="mt-1 text-sm text-red-500">{errors.thumbnail}</p>
+            )}
+          </div>
+
+          {/* 강의 영상 업로드 */}
+          <div>
+            <label className="mb-2 block text-sm font-medium text-gray-700">
+              <Video className="mr-2 inline h-4 w-4" />
+              강의 영상 *
+            </label>
+            
+            {!formData.videoPreview ? (
+              <div className="relative">
+                <input
+                  type="file"
+                  accept="video/*"
+                  onChange={handleVideoChange}
+                  disabled={isVideoUploading}
+                  className="absolute inset-0 h-full w-full cursor-pointer opacity-0 disabled:cursor-not-allowed"
+                />
+                <div className="flex h-32 items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 transition-colors hover:border-gray-400 hover:bg-gray-100">
+                  <div className="text-center">
+                    {isVideoUploading ? (
+                      <>
+                        <Loader2 className="mx-auto h-8 w-8 text-blue-500 animate-spin" />
+                        <p className="mt-2 text-sm text-blue-600">
+                          비디오 업로드 중...
+                        </p>
+                      </>
+                    ) : (
+                      <>
+                        <Video className="mx-auto h-8 w-8 text-gray-400" />
+                        <p className="mt-2 text-sm text-gray-600">
+                          비디오를 클릭하여 업로드하세요
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          MP4, WebM, OGG, AVI, MOV (최대 500MB)
+                        </p>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="relative">
+                <video
+                  src={formData.videoPreview}
+                  controls
+                  className="h-32 w-full rounded-lg object-cover"
+                />
+                <button
+                  type="button"
+                  onClick={handleRemoveVideo}
+                  className="absolute top-2 right-2 rounded-full bg-red-500 p-1 text-white hover:bg-red-600 transition-colors"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+                {formData.videoUrl && (
+                  <div className="absolute bottom-2 left-2 rounded bg-green-500 px-2 py-1 text-xs text-white">
+                    업로드 완료
+                  </div>
+                )}
+              </div>
+            )}
+            
+            {errors.video && (
+              <p className="mt-1 text-sm text-red-500">{errors.video}</p>
             )}
           </div>
 
