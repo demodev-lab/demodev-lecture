@@ -142,6 +142,12 @@ export default function HeroSection() {
     dotsClass: "slick-dots custom-dots",
     initialSlide: 0,
     mobileFirst: false,
+    rtl: false,
+    // 모바일 터치 최적화
+    swipe: true,
+    swipeToSlide: true,
+    touchMove: true,
+    touchThreshold: 10,
     responsive: [
       {
         breakpoint: 2560, // 초대형 모니터
@@ -179,15 +185,22 @@ export default function HeroSection() {
         }
       },
       {
-        breakpoint: 768, // md - 태블릿
+        breakpoint: 768, // md - 태블릿 및 모바일
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
-          centerMode: true,
-          centerPadding: "20px",
+          centerMode: true, // centerMode 활성화로 무한 루프 개선
+          centerPadding: "40px", // 양옆 슬라이드가 살짝 보이도록
           arrows: false,
           dots: true,
           infinite: true,
+          autoplay: true,
+          autoplaySpeed: 4000,
+          swipe: true,
+          swipeToSlide: true,
+          touchMove: true,
+          touchThreshold: 10,
+          speed: 300,
         }
       },
       {
@@ -196,22 +209,36 @@ export default function HeroSection() {
           slidesToShow: 1,
           slidesToScroll: 1,
           centerMode: true,
-          centerPadding: "10px",
+          centerPadding: "30px",
           arrows: false,
           dots: true,
           infinite: true,
+          autoplay: true,
+          autoplaySpeed: 4000,
+          swipe: true,
+          swipeToSlide: true,
+          touchMove: true,
+          touchThreshold: 10,
+          speed: 300,
         }
       },
       {
         breakpoint: 480, // xs - 소형 모바일
         settings: {
-          slidesToShow: 1,  // 1개만 보이도록 설정
+          slidesToShow: 1,
           slidesToScroll: 1,
           centerMode: true,
-          centerPadding: "10px",
+          centerPadding: "20px",
           arrows: false,
           dots: true,
           infinite: true,
+          autoplay: true,
+          autoplaySpeed: 4000,
+          swipe: true,
+          swipeToSlide: true,
+          touchMove: true,
+          touchThreshold: 10,
+          speed: 300,
         }
       }
     ]
@@ -219,8 +246,10 @@ export default function HeroSection() {
 
   if (!mounted) {
     return (
-      <section className="relative overflow-hidden py-4 sm:py-6 lg:py-8">
-        <div className="h-[300px] sm:h-[400px] md:h-[450px] lg:h-[500px] xl:h-[550px] bg-gray-100 animate-pulse" />
+      <section className="relative overflow-hidden bg-gradient-to-b from-gray-50 to-white">
+        <div className="relative py-3 sm:py-4 lg:py-6 px-4 sm:px-0">
+          <div className="h-[200px] sm:h-[250px] md:h-[300px] lg:h-[350px] xl:h-[400px] bg-gray-100 animate-pulse rounded-lg" />
+        </div>
       </section>
     );
   }
@@ -242,18 +271,21 @@ export default function HeroSection() {
                     className="block relative w-full"
                     aria-label={`슬라이드 ${index + 1}`}
                   >
-                    {/* 반응형 이미지 컨테이너 - 모바일에서 더 작게 */}
+                    {/* 반응형 이미지 컨테이너 - 모바일 최적화 */}
                     <div className="relative w-full">
-                      {/* 모바일: 710*400 비율, 다른 화면은 기존 유지 */}
-                      <div className="relative w-full aspect-[710/400] sm:aspect-[16/10] md:aspect-[16/9] lg:aspect-[21/9] xl:aspect-[2/1]">
+                      {/* 모바일에서 고정 높이, 데스크톱은 aspect ratio 사용 */}
+                      <div className="relative w-full h-[200px] sm:h-[250px] md:h-auto md:aspect-[16/9] lg:aspect-[21/9] xl:aspect-[2/1]">
                         <Image
                           src={slide.image}
                           alt={`Hero banner ${index + 1}`}
                           fill
-                          sizes="(max-width: 640px) 90vw, (max-width: 768px) 85vw, (max-width: 1024px) 60vw, (max-width: 1280px) 50vw, (max-width: 1600px) 40vw, 33vw"
+                          sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 60vw, (max-width: 1280px) 50vw, (max-width: 1600px) 40vw, 33vw"
                           className="object-cover"
                           priority={index < 3}
                           quality={95}
+                          style={{ 
+                            objectPosition: 'center' 
+                          }}
                         />
                       </div>
                     </div>

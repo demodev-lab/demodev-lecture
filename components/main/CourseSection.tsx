@@ -123,6 +123,7 @@ export default function CourseSection({
             fill
             sizes="(max-width: 768px) 80vw, (max-width: 1024px) 40vw, (max-width: 1280px) 33vw, 25vw"
             className="object-cover group-hover:scale-105 transition-transform duration-300 gpu-accelerated"
+            priority={courseData.image === "/demodev_word.svg"}
           />
           {/* Badge */}
           <div className="absolute top-2 left-2 sm:top-3 sm:left-3">
